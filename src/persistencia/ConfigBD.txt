@@ -1,0 +1,5 @@
+jdbc=jdbc:sqlserver://
+servidor=BD:1433
+usuario=A_Interactivas_01
+password=A_Interactivas_01
+conexiones=3
