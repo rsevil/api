@@ -1,5 +1,5 @@
 jdbc=jdbc:sqlserver://
-servidor=BD:1433
-usuario=A_Interactivas_01
-password=A_Interactivas_01
+servidor=localhost:1433
+usuario=reclamosdbo
+password=reclamosdbo
 conexiones=3
