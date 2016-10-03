@@ -249,6 +249,8 @@ SET IDENTITY_INSERT [dbo].[Rol] OFF
 GO
 
 -- Usuarios
+SET IDENTITY_INSERT [dbo].[Usuario] ON 
+GO
 INSERT [dbo].[Usuario] ([id], [nombre], [contrasenia], [activo], [idRol]) VALUES (1, 'facturacion', 'facturacion', 1, 1)
 GO
 INSERT [dbo].[Usuario] ([id], [nombre], [contrasenia], [activo], [idRol]) VALUES (2, 'distribucion', 'distribucion', 1, 2)
