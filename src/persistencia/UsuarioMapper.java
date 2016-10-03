@@ -3,9 +3,7 @@ package persistencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-import negocio.Cliente;
 import negocio.Rol;
 import negocio.Usuario;
 

@@ -31,7 +31,7 @@ public class SistemaAdministracionReclamos {
 		Usuario usuario = UsuarioMapper.getInstancia().selectOne(nombreUsuario);
 		
 		if (usuario != null) {
-			if (usuario.getPassword().equals(contrasenia)) {
+			if (usuario.getContrasenia().equals(contrasenia)) {
 				this.usuarioLogueado = usuario;
 				return ExitCodes.OK;
 			}

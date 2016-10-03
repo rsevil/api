@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JMenuItem helpMenuItem;
 	private JMenu jMenu5;
 	private JMenuItem deleteMenuItem;

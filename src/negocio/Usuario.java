@@ -4,15 +4,15 @@ public class Usuario {
 	private Rol rol;
 	private int id;
 	private String nombre;
-	private String password;
+	private String contrasenia;
 	private boolean activo;
 	
-	public Usuario(Rol rol, int id, String nombre, String password, boolean activo) {
+	public Usuario(Rol rol, int id, String nombre, String contrasenia, boolean activo) {
 		super();
 		this.rol = rol;
 		this.id = id;
 		this.nombre = nombre;
-		this.password = password;
+		this.contrasenia = contrasenia;
 		this.activo = activo;
 	}
 	
@@ -40,12 +40,12 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getContrasenia() {
+		return contrasenia;
 	}
 	
-	public void setPassword(String password) {
-		this.password = password;
+	public void setContrasenia(String password) {
+		this.contrasenia = password;
 	}
 
 	public boolean getActivo() {
