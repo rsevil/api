@@ -2,11 +2,11 @@ package swing;
 
 import javax.swing.WindowConstants;
 
-public class MenuPrincipalDistribucion extends javax.swing.JFrame {
-	
+public class AdministrarRoles extends javax.swing.JFrame {
+
 	private static final long serialVersionUID = 1L;
 	
-	public MenuPrincipalDistribucion() {
+	public AdministrarRoles() {
 		super();
 		initGUI();
 		setVisible(true);
@@ -16,7 +16,7 @@ public class MenuPrincipalDistribucion extends javax.swing.JFrame {
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			this.setTitle("Menú Distribución");
+			this.setTitle("Administrar Roles");
 			getContentPane().setBackground(new java.awt.Color(221,221,255));
 			pack();
 			setSize(400, 300);

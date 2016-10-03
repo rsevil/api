@@ -111,6 +111,10 @@ public class Login extends javax.swing.JFrame {
 							mensaje = "El usuario o contraseña es inválido.";	
 							break;
 						}
+						case ExitCodes.USUARIO_INACTIVO: {
+							mensaje = "El usuario se encuentra inactivo.";	
+							break;
+						}
 						default: {
 							break;
 						}	
@@ -127,6 +131,7 @@ public class Login extends javax.swing.JFrame {
 							
 							if (rol != null) {
 						        try {
+						        	// Levanto la ventana según la configuración en la base de datos.
 									Class.forName(rol.getVista()).newInstance();
 								} 
 						        catch (InstantiationException e) {
@@ -146,6 +151,7 @@ public class Login extends javax.swing.JFrame {
 				}
 			);
 			}
+			getRootPane().setDefaultButton(btnLogin);
 			pack();
 			this.setSize(367, 117);
 		} catch (Exception e) {
