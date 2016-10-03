@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import vista.RolView;
 import controlador.SistemaAdministracionReclamos;
 import enums.ExitCodes;
 
@@ -122,8 +123,24 @@ public class Login extends javax.swing.JFrame {
 							// Cierro la ventana actual.
 							dispose();
 							
-							MenuPrincipal menu = new MenuPrincipal();
-							menu.setVisible(true);
+							RolView rol = SistemaAdministracionReclamos.getInstancia().obtenerRolDelUsuarioLogueado();
+							
+							if (rol != null) {
+						        try {
+									Class.forName(rol.getVista()).newInstance();
+								} 
+						        catch (InstantiationException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} 
+						        catch (IllegalAccessException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (ClassNotFoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}	
+							}
 						}
 					}
 				}

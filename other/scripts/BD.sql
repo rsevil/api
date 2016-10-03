@@ -266,3 +266,13 @@ GO
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
 GO
 
+-- Alter Rol
+ALTER TABLE dbo.Rol ADD vista varchar(255) NULL
+GO
+
+UPDATE dbo.Rol SET vista = 'swing.MenuPrincipalFacturacion' WHERE id = 1
+UPDATE dbo.Rol SET vista = 'swing.MenuPrincipalDistribucion' WHERE id = 2
+UPDATE dbo.Rol SET vista = 'swing.MenuPrincipalZona' WHERE id = 3
+UPDATE dbo.Rol SET vista = 'swing.MenuPrincipalCallCenter' WHERE id = 4
+UPDATE dbo.Rol SET vista = 'swing.MenuPrincipalAdmin' WHERE id = 5
+UPDATE dbo.Rol SET vista = 'swing.MenuPrincipalConsulta' WHERE id = 6

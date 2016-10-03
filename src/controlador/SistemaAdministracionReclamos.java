@@ -6,6 +6,7 @@ import java.util.Vector;
 import enums.ExitCodes;
 import negocio.*;
 import persistencia.*;
+import vista.*;
 
 
 public class SistemaAdministracionReclamos {
@@ -31,16 +32,30 @@ public class SistemaAdministracionReclamos {
 		Usuario usuario = UsuarioMapper.getInstancia().selectOne(nombreUsuario);
 		
 		if (usuario != null) {
-			if (usuario.getContrasenia().equals(contrasenia)) {
-				this.usuarioLogueado = usuario;
-				return ExitCodes.OK;
+			if (usuario.getActivo()) {
+				if (usuario.getContrasenia().equals(contrasenia)) {
+					this.usuarioLogueado = usuario;
+					return ExitCodes.OK;
+				}
+				else {
+					return ExitCodes.DATOS_INGRESO_INCORRECTOS;
+				}
 			}
 			else {
-				return ExitCodes.DATOS_INGRESO_INCORRECTOS;
+				return ExitCodes.USUARIO_INACTIVO;
 			}
 		}
 		else {
 			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
+		}
+	}
+	
+	public RolView obtenerRolDelUsuarioLogueado() {
+		if (this.usuarioLogueado != null) {
+			return this.usuarioLogueado.getRol().getView();
+		}
+		else {
+			return null;
 		}
 	}
 	

@@ -57,8 +57,9 @@ public class RolMapper extends BaseMapper<Rol> {
 				String nombre = result.getString(2);
 				String descripcion = result.getString(3);
 				boolean activo = result.getBoolean(4);
+				String vista = result.getString(5);
 				
-				rta = new Rol(id, nombre, descripcion, activo);						
+				rta = new Rol(id, nombre, descripcion, activo, vista);						
 			}
 			
 			PoolConnection.getPoolConnection().releaseConnection(c);
