@@ -43,7 +43,7 @@ public class PoolConnection
 			//Setear driver
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String dbConnectString = jdbc + servidor; 
-            Connection con = DriverManager.getConnection (dbConnectString, usuario, password);
+            Connection con = DriverManager.getConnection(dbConnectString, usuario, password);
             
             return con;
 		}
@@ -63,7 +63,7 @@ public class PoolConnection
 	
 	public void getConfiguration()
 	{
-		String configuracion = "ConfigBD.txt";
+		String configuracion = getClass().getResource("ConfigBD.txt").getPath();
 	    Properties propiedades;
 	 
 	    // Carga del fichero de propiedades 

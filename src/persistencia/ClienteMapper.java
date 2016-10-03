@@ -17,8 +17,9 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 	
 	public static ClienteMapper getInstancia()
 	{
-		if (instance == null)
+		if (instance == null) {
 			instance = new ClienteMapper();
+		}
 		return instance;
 	}
 	
@@ -84,7 +85,7 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 			Cliente rta = null;
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			Statement s = c.createStatement();
-			ResultSet result = s.executeQuery("Select * from A_Interactivas_XX.dbo.clientes where nroCliente = " + numero.toString());
+			ResultSet result = s.executeQuery("Select * from dbo.Cliente where nroCliente = " + numero.toString());
 			
 			while (result.next())
 			{

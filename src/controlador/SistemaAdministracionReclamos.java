@@ -3,6 +3,7 @@ package controlador;
 import java.util.Observer;
 import java.util.Vector;
 
+import enums.ExitCodes;
 import negocio.*;
 import persistencia.*;
 
@@ -12,10 +13,35 @@ public class SistemaAdministracionReclamos {
 	private Vector<Cliente> clientes;
 	private Vector<Producto> productos;
 	private Vector<Reclamo> reclamos;
+	private Usuario usuarioLogueado;
 	
+	private SistemaAdministracionReclamos() {
+		
+	}
 	
-	public static SistemaAdministracionReclamos getInstance() {
+	public static SistemaAdministracionReclamos getInstancia()
+	{
+		if (instance == null) {
+			instance = new SistemaAdministracionReclamos();
+		}
 		return instance;
+	}
+	
+	public int iniciarSesion(String nombreUsuario, String contrasenia) {
+		Usuario usuario = UsuarioMapper.getInstancia().selectOne(nombreUsuario);
+		
+		if (usuario != null) {
+			if (usuario.getPassword().equals(contrasenia)) {
+				this.usuarioLogueado = usuario;
+				return ExitCodes.OK;
+			}
+			else {
+				return ExitCodes.DATOS_INGRESO_INCORRECTOS;
+			}
+		}
+		else {
+			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
+		}
 	}
 	
 	public void addObserver(Observer o) {

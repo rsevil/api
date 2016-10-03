@@ -5,13 +5,15 @@ public class Usuario {
 	private int id;
 	private String nombre;
 	private String password;
+	private boolean activo;
 	
-	public Usuario(Rol rol, int id, String nombre, String password) {
+	public Usuario(Rol rol, int id, String nombre, String password, boolean activo) {
 		super();
 		this.rol = rol;
 		this.id = id;
 		this.nombre = nombre;
 		this.password = password;
+		this.activo = activo;
 	}
 	
 	public Rol getRol() {
@@ -44,5 +46,13 @@ public class Usuario {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}	
 }

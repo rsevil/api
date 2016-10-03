@@ -9,6 +9,7 @@ public class Cliente {
 	private String domicilio;
 	private String telefono;
 	private String mail;
+	private boolean activo;
 	
 	public Cliente(int nroCliente, String nombre, String domicilio, String telefono, String mail) {
 		super();
@@ -17,6 +18,7 @@ public class Cliente {
 		this.domicilio = domicilio;
 		this.telefono = telefono;
 		this.mail = mail;
+		this.activo = true;
 		ClienteMapper.getInstancia().insert(this);
 	}
 	
@@ -58,10 +60,12 @@ public class Cliente {
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
+	
+	public boolean getActivo() {
+		return this.activo;
+	}
 
 	public boolean sosCliente(int nroCliente){
 		return (nroCliente == this.nroCliente);
 	}
-	
-	
 }
