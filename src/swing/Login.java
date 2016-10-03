@@ -1,4 +1,6 @@
 package swing;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -57,38 +59,36 @@ public class Login extends javax.swing.JFrame {
 	
 	private void initGUI() {
 		try {
-			GridLayout thisLayout = new GridLayout(3, 2);
-			thisLayout.setColumns(2);
-			thisLayout.setVgap(5);
-			thisLayout.setHgap(5);
-			thisLayout.setRows(3);
+			FormLayout thisLayout = new FormLayout(
+					"6dlu, max(p;5dlu), 118dlu", 
+					"max(p;5dlu), max(p;5dlu), max(p;5dlu)");
 			getContentPane().setLayout(thisLayout);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			this.setTitle("Sistema de Administración de Reclamos");
 			getContentPane().setBackground(new java.awt.Color(221,221,255));
 			{
 				lblUsuario = new JLabel();
-				getContentPane().add(lblUsuario);
+				getContentPane().add(lblUsuario, new CellConstraints("2, 1, 1, 1, default, default"));
 				lblUsuario.setText("Usuario");
 				lblUsuario.setPreferredSize(new java.awt.Dimension(41, 23));
 			}
 			{
 				txtUsuario = new JTextField();
-				getContentPane().add(txtUsuario);
+				getContentPane().add(txtUsuario, new CellConstraints("3, 1, 1, 1, default, default"));
 			}
 			{
 				lblContrasenia = new JLabel();
-				getContentPane().add(lblContrasenia);
+				getContentPane().add(lblContrasenia, new CellConstraints("2, 2, 1, 1, default, default"));
 				lblContrasenia.setText("Contraseña");
 				lblContrasenia.setPreferredSize(new java.awt.Dimension(78, 23));
 			}
 			{
 				txtContrasenia = new JPasswordField();
-				getContentPane().add(txtContrasenia);
+				getContentPane().add(txtContrasenia, new CellConstraints("3, 2, 1, 1, default, default"));
 			}
 			{
 				btnLogin = new JButton();
-				getContentPane().add(btnLogin);
+				getContentPane().add(btnLogin, new CellConstraints("3, 3, 1, 1, default, default"));
 				GridLayout btnLoginLayout = new GridLayout(1, 1);
 				btnLoginLayout.setColumns(1);
 				btnLoginLayout.setVgap(5);
@@ -130,7 +130,7 @@ public class Login extends javax.swing.JFrame {
 			);
 			}
 			pack();
-			this.setSize(380, 120);
+			this.setSize(367, 117);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
