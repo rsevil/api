@@ -2,7 +2,7 @@ package persistencia;
 
 import negocio.Producto;
 
-public class ProductoMapper extends BaseMapper<Producto> {
+public class ProductoMapper extends BaseMapper {
 
 	private static ProductoMapper instance;
 	
@@ -17,7 +17,6 @@ public class ProductoMapper extends BaseMapper<Producto> {
 		return instance;
 	}
 	
-	@Override
 	public void insert(Producto o) {
 		tryCommand("insert into dbo.Producto (?,?,?,?,?)", s -> {
 			s.setString(1, o.getCodigoPublicacion());
@@ -28,7 +27,6 @@ public class ProductoMapper extends BaseMapper<Producto> {
 		});
 	}
 
-	@Override
 	public void update(Producto o) {
 		tryCommand("update dbo.Producto set titulo=?, set descripcion=?, set precio=?, set activo=? where codigoProducto=?", s -> {
 			s.setString(1, o.getTitulo());
@@ -39,18 +37,16 @@ public class ProductoMapper extends BaseMapper<Producto> {
 		});
 	}
 
-	@Override
 	public void delete(Producto r) {
 		tryCommand("update dbo.Producto set activo=0 where codigoProducto=?", s -> {
 			s.setString(1, r.getCodigoPublicacion());
 		});
 	}
 
-	@Override
-	public Producto selectOne(Object id) {
+	public Producto selectOne(String codigoProducto) {
 		return tryQuery(
 				"select * from dbo.Producto where codigoProducto = ?", 
-				s -> s.setString(1, id.toString()), 
+				s -> s.setString(1, codigoProducto), 
 				rs -> new Producto(
 						rs.getString("codigoProducto"), 
 						rs.getString("titulo"), 

@@ -5,7 +5,7 @@ import java.util.Vector;
 import negocio.DetalleReclamoFacturacion;
 import negocio.ReclamoFacturacion;
 
-public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> {
+public class ReclamoFacturacionMapper extends ReclamoMapper {
 
 	private static ReclamoFacturacionMapper instance;
 	
@@ -20,26 +20,26 @@ public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> 
 		return instance;
 	}
 	
-	@Override
 	public void insert(ReclamoFacturacion o) {
 		super.insertReclamo(o);
 		tryCommand("insert into dbo.ReclamoFacturacion (?)", s -> {
 			s.setInt(1, o.getNumReclamo());
 		});
+		insertDetalles(o);
 	}
 
-	@Override
 	public void update(ReclamoFacturacion o) {
 		super.updateReclamo(o);
+		// TODO Que pasa con los detalles?
+		
 	}
 
-	@Override
 	public void delete(ReclamoFacturacion o) {
 		super.deleteReclamo(o);
+		// TODO Que pasa con los detalles?
 	}
 
-	@Override
-	public ReclamoFacturacion selectOne(Object id) {
+	public ReclamoFacturacion selectOne(int id) {
 		return tryQuery(
 				"select "
 				+ "r.nroReclamo, "
@@ -52,7 +52,7 @@ public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> 
 				+ "from dbo.Reclamo r "
 				+ "join dbo.ReclamoFacturacion rp on rp.nroReclamo = r.nroReclamo "
 				+ "where nroReclamo = ?", 
-				s -> s.setInt(1, (int)id), 
+				s -> s.setInt(1, id), 
 				rs -> {
 					int nroReclamo = rs.getInt("nroReclamo");
 					return new ReclamoFacturacion(
@@ -77,5 +77,12 @@ public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> 
 				rs -> new DetalleReclamoFacturacion(
 						rs.getString("detalle"),
 						rs.getString("idFactura")));
+	}
+	
+	private void insertDetalles(ReclamoFacturacion o){
+		// TODO PORQUE LOS DETALLES TIENEN SU PROPIO ID??
+//		for (DetalleReclamoFacturacion d : o.getDetalles()) {
+//			tryCommand("insert dbo.DetalleReclamoFacturacion values (", null);
+//		}
 	}
 }

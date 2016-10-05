@@ -2,7 +2,7 @@ package persistencia;
 
 import negocio.ReclamoCantidades;
 
-public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
+public class ReclamoCantidadesMapper extends ReclamoMapper {
 
 	private static ReclamoCantidadesMapper instance;
 	
@@ -17,7 +17,6 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 		return instance;
 	}
 	
-	@Override
 	public void insert(ReclamoCantidades o) {
 		super.insertReclamo(o);
 		tryCommand("insert into dbo.ReclamoCantidades (?,?,?)", s -> {
@@ -27,7 +26,6 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 		});
 	}
 
-	@Override
 	public void update(ReclamoCantidades o) {
 		super.updateReclamo(o);
 		tryCommand("update dbo.ReclamoCantidades set codigoProducto=?, set cantidad=? where nroReclamo=?", s -> {
@@ -37,13 +35,11 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 		});
 	}
 
-	@Override
 	public void delete(ReclamoCantidades o) {
 		super.deleteReclamo(o);
 	}
 
-	@Override
-	public ReclamoCantidades selectOne(Object id) {
+	public ReclamoCantidades selectOne(int id) {
 		return tryQuery(
 				"select "
 				+ "r.nroReclamo, "
@@ -58,7 +54,7 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 				+ "from dbo.Reclamo r "
 				+ "join dbo.ReclamoCantidades rc on rc.nroReclamo = r.nroReclamo "
 				+ "where nroReclamo = ?", 
-				s -> s.setInt(1, (int)id), 
+				s -> s.setInt(1, id), 
 				rs -> new ReclamoCantidades(
 						rs.getDate("fecha"), 
 						rs.getInt("nroReclamo"), 

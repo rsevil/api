@@ -1,18 +1,17 @@
 package persistencia;
-//import java.util.Vector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
-public abstract class BaseMapper<T>
+public abstract class BaseMapper
 {
-	public abstract void insert (T o);
-	public abstract void update (T o);
-	public abstract void delete (T o);
+//	public abstract void insert (T o);
+//	public abstract void update (T o);
+//	public abstract void delete (T o);
 	//public abstract Vector<T> selectAll ();
-	public abstract T selectOne (Object o);
+//	public abstract T selectOne (Object o);
 	
 	protected void tryCommand(String command, Action<PreparedStatement> config) {
 		try {

@@ -2,7 +2,7 @@ package persistencia;
 
 import negocio.ReclamoProducto;
 
-public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
+public class ReclamoProductoMapper extends ReclamoMapper {
 
 	private static ReclamoProductoMapper instance;
 	
@@ -17,7 +17,6 @@ public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
 		return instance;
 	}
 	
-	@Override
 	public void insert(ReclamoProducto o) {
 		super.insertReclamo(o);
 		tryCommand("insert into dbo.ReclamoProducto (?,?,?)", s -> {
@@ -27,7 +26,6 @@ public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
 		});
 	}
 
-	@Override
 	public void update(ReclamoProducto o) {
 		super.updateReclamo(o);
 		tryCommand("update dbo.ReclamoProducto set codigoProducto=?, set cantidad=? where nroReclamo=?", s -> {
@@ -37,12 +35,10 @@ public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
 		});
 	}
 
-	@Override
 	public void delete(ReclamoProducto o) {
 		super.deleteReclamo(o);
 	}
 
-	@Override
 	public ReclamoProducto selectOne(Object id) {
 		return tryQuery(
 				"select "

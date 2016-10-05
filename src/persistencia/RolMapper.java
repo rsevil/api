@@ -2,7 +2,7 @@ package persistencia;
 
 import negocio.Rol;
 
-public class RolMapper extends BaseMapper<Rol> {
+public class RolMapper extends BaseMapper {
 
 	private static RolMapper instance;
 	
@@ -16,19 +16,17 @@ public class RolMapper extends BaseMapper<Rol> {
 		}
 		return instance;
 	}
-	
-	@Override
-	public void insert(Rol o) {
-		tryCommand("insert into dbo.Rol (?,?,?,?,?)", s -> {
-			s.setInt(1, o.getIdRol());
-			s.setString(2, o.getNombre());
-			s.setString(3, o.getDescripcion());
-			s.setBoolean(4, o.getActivo());
-			s.setString(5, o.getVista());
-		});
-	}
 
-	@Override
+//	public void insert(Rol o) {
+//		tryCommand("insert into dbo.Rol (?,?,?,?,?)", s -> {
+//			s.setInt(1, o.getIdRol());
+//			s.setString(2, o.getNombre());
+//			s.setString(3, o.getDescripcion());
+//			s.setBoolean(4, o.getActivo());
+//			s.setString(5, o.getVista());
+//		});
+//	}
+	
 	public void update(Rol o) {
 		tryCommand("update dbo.Rol set nombre=?, set descripcion=?, set activo=?, set vista=? where id=?", s -> {
 			s.setString(1, o.getNombre());
@@ -39,18 +37,16 @@ public class RolMapper extends BaseMapper<Rol> {
 		});
 	}
 
-	@Override
 	public void delete(Rol r) {
 		tryCommand("update dbo.Rol set activo=0 where id=?", s -> {
 			s.setInt(1, r.getIdRol());
 		});
 	}
 
-	@Override
-	public Rol selectOne(Object id) {
+	public Rol selectOne(int id) {
 		return tryQuery(
 				"select * from dbo.Rol where id = ?", 
-				s -> s.setInt(1, (int)id), 
+				s -> s.setInt(1, id), 
 				rs -> new Rol(
 						rs.getInt("id"), 
 						rs.getString("nombre"), 

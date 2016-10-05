@@ -1,8 +1,23 @@
 package persistencia;
 
+import java.util.Vector;
+
 import negocio.Reclamo;
 
-public abstract class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper<TReclamo> {
+public class ReclamoMapper extends BaseMapper {
+	
+	private static ReclamoMapper instance;
+	
+	protected ReclamoMapper() {
+	}
+	
+	public static ReclamoMapper getInstancia()
+	{
+		if (instance == null) 
+			instance = new ReclamoMapper();
+		
+		return instance;
+	}
 	
 	protected void insertReclamo(Reclamo o) {
 		tryCommand("insert into dbo.Reclamo (?,?,?,?,?,?,?)", s -> {
@@ -28,10 +43,16 @@ public abstract class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper
 		});
 	}
 
-	
 	protected void deleteReclamo(Reclamo r) {
 		tryCommand("update dbo.Reclamo set activo=0 where codigoProducto=?", s -> {
 			s.setInt(1, r.getNumReclamo());
 		});
 	}
+	
+//	public Vector<Reclamo> selectAll(Vector<Integer> ids){
+//		tryQuery("select "
+//				+ "dbo.Reclamo r "
+//				+ "left join ReclamoCantidades rc on rc.nroReclamo = r.nroReclamo "
+//				+ "left join ")
+//	}
 }

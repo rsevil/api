@@ -1,7 +1,7 @@
 package persistencia;
 import negocio.Usuario;
 
-public class UsuarioMapper extends BaseMapper<Usuario> {
+public class UsuarioMapper extends BaseMapper {
 
 	private static UsuarioMapper instance;
 	
@@ -16,19 +16,17 @@ public class UsuarioMapper extends BaseMapper<Usuario> {
 		return instance;
 	}
 	
-	@Override
-	public void insert(Usuario o) {
-		tryCommand("insert into dbo.Usuario (?,?,?,?,?)", s ->{
-			s.setInt(1, o.getId());
-			s.setString(2, o.getNombre());
-			s.setString(3, o.getContrasenia());
-			s.setBoolean(4, o.getActivo());
-			// TODO Puede que sea null?
-			s.setInt(5, o.getRol().getIdRol());
-		});
-	}
+//	public void insert(Usuario o) {
+//		tryCommand("insert into dbo.Usuario (?,?,?,?,?)", s ->{
+//			s.setInt(1, o.getId());
+//			s.setString(2, o.getNombre());
+//			s.setString(3, o.getContrasenia());
+//			s.setBoolean(4, o.getActivo());
+//			// TODO Puede que sea null?
+//			s.setInt(5, o.getRol().getIdRol());
+//		});
+//	}
 
-	@Override
 	public void update(Usuario o) {
 		tryCommand("update dbo.Usuario set nombre=?,set contrasenia=?,set activo=?,set idRol=? where id=?", s -> {
 			s.setString(1, o.getNombre());
@@ -39,12 +37,10 @@ public class UsuarioMapper extends BaseMapper<Usuario> {
 		});
 	}
 
-	@Override
 	public void delete(Usuario o) {
 		tryCommand("delete dbo.Usuario where id=?", s -> s.setInt(1, o.getId()));
 	}
 
-	@Override
 	public Usuario selectOne(Object nombreUsuario) {
 		return tryQuery(
 				"select * from dbo.Usuario where nombre = ?", 

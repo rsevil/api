@@ -2,7 +2,7 @@ package persistencia;
 
 import negocio.Cliente;
 
-public class ClienteMapper extends BaseMapper<Cliente> {
+public class ClienteMapper extends BaseMapper {
 
 	private static ClienteMapper instance;
 	
@@ -18,7 +18,6 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 		return instance;
 	}
 	
-	@Override
 	public void insert(Cliente c) {
 		tryCommand("insert into dbo.Cliente (?,?,?,?,?)", s -> {
 			s.setInt(1,c.getNroCliente());
@@ -29,7 +28,6 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 		});
 	}
 
-	@Override
 	public void update(Cliente c) {
 		tryCommand("update dbo.Cliente set domicilio = ?, telefono = ?, mail = ? where nroCliente = ?", s -> {
 			s.setString(1, c.getDomicilio());
@@ -39,16 +37,14 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 		});	
 	}
 
-	@Override
 	public void delete(Cliente c) {
 		tryCommand("update dbo.Cliente set activo = 0 where nroCliente = ?", s -> s.setInt(1, c.getNroCliente()));
 	}
 	
-	@Override
-	public Cliente selectOne(Object id)
+	public Cliente selectOne(int nroCliente)
 	{
 		return tryQuery("select * from dbo.Cliente where nroCliente = ?", 
-				s -> s.setInt(1, (int)id), 
+				s -> s.setInt(1, nroCliente), 
 				rs -> new Cliente(
 						rs.getInt("nroCliente"), 
 						rs.getString("nombre"), 
