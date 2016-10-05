@@ -5,14 +5,16 @@ public class Producto {
 	private String titulo;
 	private String descripcion;
 	private float precio;
+	private boolean activo;
 	
 	public Producto(String codigoPublicacion, String titulo,
-			String descripcion, float precio) {
+			String descripcion, float precio, boolean activo) {
 		super();
 		this.codigoPublicacion = codigoPublicacion;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
+		this.activo = activo;
 	}
 	
 	public String getCodigoPublicacion() {
@@ -45,5 +47,13 @@ public class Producto {
 	
 	public void setPrecio(float precio) {
 		this.precio = precio;
+	}
+	
+	public boolean getActivo(){
+		return this.activo;
+	}
+	
+	public void setActivo(boolean activo){
+		this.activo = activo;
 	}
 }

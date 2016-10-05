@@ -6,11 +6,16 @@ public class ReclamoZona extends Reclamo {
 	
 	private String zonaAfectada;
 
-	public ReclamoZona(Date fecha, int numReclamo, Cliente cliente,
-			String descripcionReclamo, String estado, Date fechaCierre,
-			String zonaAfectada) {
-		super(fecha, numReclamo, cliente, descripcionReclamo, estado,
-				fechaCierre);
+	public ReclamoZona(
+			Date fecha, 
+			int numReclamo, 
+			Cliente cliente,
+			String descripcionReclamo, 
+			String estado, 
+			Date fechaCierre,
+			String zonaAfectada, 
+			boolean activo) {
+		super(fecha, numReclamo, cliente, descripcionReclamo, estado,fechaCierre, activo);
 		this.zonaAfectada = zonaAfectada;
 	}
 

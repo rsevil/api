@@ -109,7 +109,6 @@ GO
 CREATE TABLE ReclamoFacturacion
 (
 	nroReclamo int NOT NULL,
-	activo bit NOT NULL DEFAULT 1,
 	CONSTRAINT ReclamoFacturacion_PK PRIMARY KEY (nroReclamo)
 )
 GO
@@ -130,7 +129,6 @@ CREATE TABLE ReclamoProducto
 	nroReclamo int NOT NULL,
 	codigoProducto int NOT NULL,
 	cantidad int,
-	activo bit NOT NULL DEFAULT 1,
 	CONSTRAINT ReclamoProducto_PK PRIMARY KEY (nroReclamo)
 )
 GO
@@ -140,7 +138,6 @@ CREATE TABLE ReclamoFaltante
 	nroReclamo int NOT NULL,
 	codigoProducto int NOT NULL,
 	cantFaltante int,
-	activo bit NOT NULL DEFAULT 1,
 	CONSTRAINT ReclamoFaltante_PK PRIMARY KEY (nroReclamo)
 )
 GO
@@ -149,7 +146,6 @@ CREATE TABLE ReclamoZona
 (
 	nroReclamo int NOT NULL,
 	zonaAfectada varchar(255) NOT NULL,
-	activo bit NOT NULL DEFAULT 1,
 	CONSTRAINT ReclamoZona_PK PRIMARY KEY (nroReclamo)
 )
 GO
@@ -159,7 +155,6 @@ CREATE TABLE ReclamoCantidades
 	nroReclamo int NOT NULL,
 	codigoProducto int NOT NULL,
 	cantidad int,
-	activo bit NOT NULL DEFAULT 1,
 	CONSTRAINT ReclamoCantidades_PK PRIMARY KEY (nroReclamo)
 )
 GO
@@ -167,7 +162,6 @@ GO
 CREATE TABLE ReclamoCompuesto
 (
 	nroReclamo int NOT NULL,
-	activo bit NOT NULL DEFAULT 1,
 	CONSTRAINT ReclamoCompuesto_PK PRIMARY KEY (nroReclamo)
 )
 GO

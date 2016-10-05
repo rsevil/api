@@ -8,11 +8,16 @@ public class ReclamoCompuesto extends Reclamo {
 	
 	private Vector<Reclamo> reclamos;
 	
-	public ReclamoCompuesto(Date fecha, int numReclamo, Cliente cliente,
-			String descripcionReclamo, String estado, Date fechaCierre,
-			Vector<Reclamo> reclamos) {
-		super(fecha, numReclamo, cliente, descripcionReclamo, estado,
-				fechaCierre);
+	public ReclamoCompuesto(
+			Date fecha, 
+			int numReclamo, 
+			Cliente cliente,
+			String descripcionReclamo, 
+			String estado, 
+			Date fechaCierre,
+			Vector<Reclamo> reclamos, 
+			boolean activo) {
+		super(fecha, numReclamo, cliente, descripcionReclamo, estado,fechaCierre, activo);
 		this.reclamos = reclamos;
 	}
 	

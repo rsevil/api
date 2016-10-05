@@ -1,10 +1,4 @@
 package persistencia;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import negocio.Rol;
 import negocio.Usuario;
 
 public class UsuarioMapper extends BaseMapper<Usuario> {
@@ -24,54 +18,43 @@ public class UsuarioMapper extends BaseMapper<Usuario> {
 	
 	@Override
 	public void insert(Usuario o) {
-		// TODO Auto-generated method stub
-		
+		tryExecuteCommand("insert into dbo.Usuario (?,?,?,?,?)", s ->{
+			s.setInt(1, o.getId());
+			s.setString(2, o.getNombre());
+			s.setString(3, o.getContrasenia());
+			s.setBoolean(4, o.getActivo());
+			// TODO Puede que sea null?
+			s.setInt(5, o.getRol().getIdRol());
+		});
 	}
 
 	@Override
 	public void update(Usuario o) {
-		// TODO Auto-generated method stub
-		
+		tryExecuteCommand("update dbo.Usuario set nombre=?,set contrasenia=?,set activo=?,set idRol=? where id=?", s -> {
+			s.setString(1, o.getNombre());
+			s.setString(2, o.getContrasenia());
+			s.setBoolean(3, o.getActivo());
+			s.setInt(4, o.getRol().getIdRol());
+			s.setInt(5, o.getId());
+		});
 	}
 
 	@Override
-	public void delete(Usuario d) {
-		// TODO Auto-generated method stub
-		
+	public void delete(Usuario o) {
+		tryExecuteCommand("delete dbo.Usuario where id=?", s -> s.setInt(1, o.getId()));
 	}
 
 	@Override
 	public Usuario selectOne(Object nombreUsuario) {
-		try
-		{			
-			Usuario rta = null;
-			Connection c = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = c.prepareStatement("select * from dbo.Usuario where nombre = ?");
-			s.setString(1, nombreUsuario.toString());
-			
-			ResultSet result = s.executeQuery();
-			
-			while (result.next())
-			{
-				int id = result.getInt(1);
-				String nombre = result.getString(2);
-				String contrasenia = result.getString(3);
-				boolean activo = result.getBoolean(4);
-				
-				Rol rol = RolMapper.getInstancia().selectOne(result.getInt(5));
-				
-				rta = new Usuario(rol, id, nombre, contrasenia, activo);						
-			}
-			
-			PoolConnection.getPoolConnection().releaseConnection(c);
-			return rta;
-		}
-		catch(Exception e)
-		{
-			
-		}
-		
-		return null;
+		return tryExecuteQuery(
+				"select * from dbo.Usuario where nombre = ?", 
+				s -> s.setString(1, nombreUsuario.toString()), 
+				rs -> new Usuario(
+						RolMapper.getInstancia().selectOne(rs.getInt("idRol")),
+						rs.getInt("id"),
+						rs.getString("nombre"),
+						rs.getString("contrasenia"),
+						rs.getBoolean("activo")));
 	}
 
 }

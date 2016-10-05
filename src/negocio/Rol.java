@@ -43,7 +43,7 @@ public class Rol {
 		this.descripcion = descripcion;
 	}
 
-	public boolean getctivo() {
+	public boolean getActivo() {
 		return activo;
 	}
 

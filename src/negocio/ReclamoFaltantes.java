@@ -7,11 +7,17 @@ public class ReclamoFaltantes extends Reclamo {
 	private int cantFaltante;
 	private Producto producto;
 
-	public ReclamoFaltantes(Date fecha, int numReclamo, Cliente cliente,
-			String descripcionReclamo, String estado, Date fechaCierre,
-			int cantFaltante, Producto producto) {
-		super(fecha, numReclamo, cliente, descripcionReclamo, estado,
-				fechaCierre);
+	public ReclamoFaltantes(
+			Date fecha, 
+			int numReclamo, 
+			Cliente cliente,
+			String descripcionReclamo, 
+			String estado, 
+			Date fechaCierre,
+			int cantFaltante, 
+			Producto producto, 
+			boolean activo) {
+		super(fecha, numReclamo, cliente, descripcionReclamo, estado, fechaCierre, activo);
 		this.cantFaltante = cantFaltante;
 		this.producto = producto;
 	}

@@ -31,23 +31,18 @@ public class SistemaAdministracionReclamos {
 	public int iniciarSesion(String nombreUsuario, String contrasenia) {
 		Usuario usuario = UsuarioMapper.getInstancia().selectOne(nombreUsuario);
 		
-		if (usuario != null) {
-			if (usuario.getActivo()) {
-				if (usuario.getContrasenia().equals(contrasenia)) {
-					this.usuarioLogueado = usuario;
-					return ExitCodes.OK;
-				}
-				else {
-					return ExitCodes.DATOS_INGRESO_INCORRECTOS;
-				}
-			}
-			else {
-				return ExitCodes.USUARIO_INACTIVO;
-			}
-		}
-		else {
+		if (usuario == null) {
 			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
 		}
+		if (!usuario.getActivo()) {
+			return ExitCodes.USUARIO_INACTIVO;
+		}
+		if (!usuario.getContrasenia().equals(contrasenia)){
+			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
+		}
+		
+		this.usuarioLogueado = usuario;
+		return ExitCodes.OK;
 	}
 	
 	public RolView obtenerRolDelUsuarioLogueado() {
@@ -88,7 +83,7 @@ public class SistemaAdministracionReclamos {
 	}
 	
 	private Producto buscarProducto(int codProducto) {
-		return new Producto(null, null, null, codProducto);
+		return new Producto(null, null, null, codProducto, true);
 	}
 	
 	public int registrarReclamoProducto(int nroCliente, String descripcion, int codProducto, int cant) {

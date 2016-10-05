@@ -10,9 +10,16 @@ public abstract class Reclamo {
 	private String descripcionReclamo;
 	private String estado;
 	private Date fechaCierre;
+	private boolean activo;
 	
-	public Reclamo(Date fecha, int numReclamo, Cliente cliente,
-			String descripcionReclamo, String estado, Date fechaCierre) {
+	public Reclamo(
+			Date fecha, 
+			int numReclamo, 
+			Cliente cliente,
+			String descripcionReclamo, 
+			String estado, 
+			Date fechaCierre, 
+			boolean activo) {
 		super();
 		this.fecha = fecha;
 		this.numReclamo = numReclamo;
@@ -20,6 +27,7 @@ public abstract class Reclamo {
 		this.descripcionReclamo = descripcionReclamo;
 		this.estado = estado;
 		this.fechaCierre = fechaCierre;
+		this.activo = activo;
 	}
 	
 	public Date getFecha() {
@@ -68,5 +76,13 @@ public abstract class Reclamo {
 	
 	public void setFechaCierre(Date fechaCierre) {
 		this.fechaCierre = fechaCierre;
+	}
+	
+	public boolean getActivo(){
+		return this.activo;
+	}
+	
+	public void setActivo(boolean activo){
+		this.activo = activo;
 	}
 }
