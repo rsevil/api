@@ -1,26 +1,26 @@
 package persistencia;
 
-import negocio.ReclamoCantidades;
+import negocio.ReclamoProducto;
 
-public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
+public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
 
-	private static ReclamoCantidadesMapper instance;
+	private static ReclamoProductoMapper instance;
 	
-	private ReclamoCantidadesMapper() {
+	private ReclamoProductoMapper() {
 	}
 	
-	public static ReclamoCantidadesMapper getInstancia()
+	public static ReclamoProductoMapper getInstancia()
 	{
 		if (instance == null) {
-			instance = new ReclamoCantidadesMapper();
+			instance = new ReclamoProductoMapper();
 		}
 		return instance;
 	}
 	
 	@Override
-	public void insert(ReclamoCantidades o) {
+	public void insert(ReclamoProducto o) {
 		super.insertReclamo(o);
-		tryCommand("insert into dbo.ReclamoCantidades (?,?,?)", s -> {
+		tryCommand("insert into dbo.ReclamoProducto (?,?,?)", s -> {
 			s.setInt(1, o.getNumReclamo());
 			s.setString(2, o.getProducto().getCodigoPublicacion());
 			s.setInt(3, o.getCantidad());
@@ -28,9 +28,9 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 	}
 
 	@Override
-	public void update(ReclamoCantidades o) {
+	public void update(ReclamoProducto o) {
 		super.updateReclamo(o);
-		tryCommand("update dbo.ReclamoCantidades set codigoProducto=?, set cantidad=? where nroReclamo=?", s -> {
+		tryCommand("update dbo.ReclamoProducto set codigoProducto=?, set cantidad=? where nroReclamo=?", s -> {
 			s.setString(1, o.getProducto().getCodigoPublicacion());
 			s.setInt(2, o.getCantidad());
 			s.setInt(3, o.getNumReclamo());
@@ -38,12 +38,12 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 	}
 
 	@Override
-	public void delete(ReclamoCantidades o) {
+	public void delete(ReclamoProducto o) {
 		super.deleteReclamo(o);
 	}
 
 	@Override
-	public ReclamoCantidades selectOne(Object id) {
+	public ReclamoProducto selectOne(Object id) {
 		return tryQuery(
 				"select "
 				+ "r.nroReclamo, "
@@ -53,13 +53,13 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 				+ "r.estado, "
 				+ "r.activo, "
 				+ "r.nroCliente, "
-				+ "rc.codigoProducto, "
-				+ "rc.cantidad "
+				+ "rp.codigoProducto, "
+				+ "rp.cantidad "
 				+ "from dbo.Reclamo r "
-				+ "join dbo.ReclamoCantidades rc on rc.nroReclamo = r.nroReclamo "
+				+ "join dbo.ReclamoProducto rp on rp.nroReclamo = r.nroReclamo "
 				+ "where nroReclamo = ?", 
 				s -> s.setInt(1, (int)id), 
-				rs -> new ReclamoCantidades(
+				rs -> new ReclamoProducto(
 						rs.getDate("fecha"), 
 						rs.getInt("nroReclamo"), 
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),

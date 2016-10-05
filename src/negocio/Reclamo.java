@@ -12,7 +12,7 @@ public abstract class Reclamo {
 	private Date fechaCierre;
 	private boolean activo;
 	
-	public Reclamo(
+	protected Reclamo(
 			Date fecha, 
 			int numReclamo, 
 			Cliente cliente,

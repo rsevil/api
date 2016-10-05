@@ -18,7 +18,7 @@ public class UsuarioMapper extends BaseMapper<Usuario> {
 	
 	@Override
 	public void insert(Usuario o) {
-		tryExecuteCommand("insert into dbo.Usuario (?,?,?,?,?)", s ->{
+		tryCommand("insert into dbo.Usuario (?,?,?,?,?)", s ->{
 			s.setInt(1, o.getId());
 			s.setString(2, o.getNombre());
 			s.setString(3, o.getContrasenia());
@@ -30,7 +30,7 @@ public class UsuarioMapper extends BaseMapper<Usuario> {
 
 	@Override
 	public void update(Usuario o) {
-		tryExecuteCommand("update dbo.Usuario set nombre=?,set contrasenia=?,set activo=?,set idRol=? where id=?", s -> {
+		tryCommand("update dbo.Usuario set nombre=?,set contrasenia=?,set activo=?,set idRol=? where id=?", s -> {
 			s.setString(1, o.getNombre());
 			s.setString(2, o.getContrasenia());
 			s.setBoolean(3, o.getActivo());
@@ -41,12 +41,12 @@ public class UsuarioMapper extends BaseMapper<Usuario> {
 
 	@Override
 	public void delete(Usuario o) {
-		tryExecuteCommand("delete dbo.Usuario where id=?", s -> s.setInt(1, o.getId()));
+		tryCommand("delete dbo.Usuario where id=?", s -> s.setInt(1, o.getId()));
 	}
 
 	@Override
 	public Usuario selectOne(Object nombreUsuario) {
-		return tryExecuteQuery(
+		return tryQuery(
 				"select * from dbo.Usuario where nombre = ?", 
 				s -> s.setString(1, nombreUsuario.toString()), 
 				rs -> new Usuario(

@@ -20,7 +20,7 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 	
 	@Override
 	public void insert(Cliente c) {
-		tryExecuteCommand("insert into dbo.Cliente (?,?,?,?,?)", s -> {
+		tryCommand("insert into dbo.Cliente (?,?,?,?,?)", s -> {
 			s.setInt(1,c.getNroCliente());
 			s.setString(2, c.getNombre());
 			s.setString(3,c.getDomicilio());
@@ -31,7 +31,7 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 
 	@Override
 	public void update(Cliente c) {
-		tryExecuteCommand("update dbo.Cliente set domicilio = ?, telefono = ?, mail = ? where nroCliente = ?", s -> {
+		tryCommand("update dbo.Cliente set domicilio = ?, telefono = ?, mail = ? where nroCliente = ?", s -> {
 			s.setString(1, c.getDomicilio());
 			s.setString(2, c.getTelefono());
 			s.setString(3, c.getMail());			
@@ -41,13 +41,13 @@ public class ClienteMapper extends BaseMapper<Cliente> {
 
 	@Override
 	public void delete(Cliente c) {
-		tryExecuteCommand("update dbo.Cliente set activo = 0 where nroCliente = ?", s -> s.setInt(1, c.getNroCliente()));
+		tryCommand("update dbo.Cliente set activo = 0 where nroCliente = ?", s -> s.setInt(1, c.getNroCliente()));
 	}
 	
 	@Override
 	public Cliente selectOne(Object id)
 	{
-		return tryExecuteQuery("select * from dbo.Cliente where nroCliente = ?", 
+		return tryQuery("select * from dbo.Cliente where nroCliente = ?", 
 				s -> s.setInt(1, (int)id), 
 				rs -> new Cliente(
 						rs.getInt("nroCliente"), 

@@ -4,6 +4,7 @@ package persistencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Vector;
 
 public abstract class BaseMapper<T>
 {
@@ -13,7 +14,7 @@ public abstract class BaseMapper<T>
 	//public abstract Vector<T> selectAll ();
 	public abstract T selectOne (Object o);
 	
-	protected void tryExecuteCommand(String command, Action<PreparedStatement> config) {
+	protected void tryCommand(String command, Action<PreparedStatement> config) {
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = c.prepareStatement(command);
@@ -26,22 +27,31 @@ public abstract class BaseMapper<T>
 		}
 	}
 	
-	protected T tryExecuteQuery(String query, Action<PreparedStatement> config, Func<ResultSet, T> fn){
-		T o = null;
-		
+	protected <TReturn> TReturn tryQuery(String query, Action<PreparedStatement> config, Func<ResultSet, TReturn> fn){
+		try{
+			return tryQueryMany(query,config,fn).firstElement();
+		}catch (Exception e){
+			System.out.println();
+		}
+		return null;
+	}
+	
+	protected <TReturn> Vector<TReturn> tryQueryMany(String query, Action<PreparedStatement> config, Func<ResultSet, TReturn> fn){
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = c.prepareStatement(query);
 			ResultSet rs = s.executeQuery();
+			Vector<TReturn> o = new Vector<TReturn>();
 			while (rs.next()){
-				o = fn.apply(rs);				
+				o.add(fn.apply(rs));				
 			}
 			PoolConnection.getPoolConnection().releaseConnection(c);
+			return o;
 		}
 		catch (Exception e)	{
 			System.out.println();
 		}
-		return o;
+		return null;
 	}
 }
 

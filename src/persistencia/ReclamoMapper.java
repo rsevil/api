@@ -5,7 +5,7 @@ import negocio.Reclamo;
 public abstract class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper<TReclamo> {
 	
 	protected void insertReclamo(Reclamo o) {
-		tryExecuteCommand("insert into dbo.Reclamo (?,?,?,?,?,?,?)", s -> {
+		tryCommand("insert into dbo.Reclamo (?,?,?,?,?,?,?)", s -> {
 			s.setInt(1, o.getNumReclamo());
 			s.setDate(2, o.getFecha());
 			s.setDate(3, o.getFechaCierre());
@@ -17,7 +17,7 @@ public abstract class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper
 	}
 	
 	protected void updateReclamo(Reclamo o) {
-		tryExecuteCommand("update dbo.Reclamo set fecha=?, set fechaCierre=?, set descripcionReclamo=?, set estado=?, set activo=?, set nroCliente=? where nroReclamo=?", s -> {
+		tryCommand("update dbo.Reclamo set fecha=?, set fechaCierre=?, set descripcionReclamo=?, set estado=?, set activo=?, set nroCliente=? where nroReclamo=?", s -> {
 			s.setDate(1, o.getFecha());
 			s.setDate(2, o.getFechaCierre());
 			s.setString(3, o.getDescripcionReclamo());
@@ -30,7 +30,7 @@ public abstract class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper
 
 	
 	protected void deleteReclamo(Reclamo r) {
-		tryExecuteCommand("update dbo.Reclamo set activo=0 where codigoProducto=?", s -> {
+		tryCommand("update dbo.Reclamo set activo=0 where codigoProducto=?", s -> {
 			s.setInt(1, r.getNumReclamo());
 		});
 	}

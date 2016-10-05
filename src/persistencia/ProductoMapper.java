@@ -19,7 +19,7 @@ public class ProductoMapper extends BaseMapper<Producto> {
 	
 	@Override
 	public void insert(Producto o) {
-		tryExecuteCommand("insert into dbo.Producto (?,?,?,?,?)", s -> {
+		tryCommand("insert into dbo.Producto (?,?,?,?,?)", s -> {
 			s.setString(1, o.getCodigoPublicacion());
 			s.setString(2, o.getTitulo());
 			s.setString(3, o.getDescripcion());
@@ -30,7 +30,7 @@ public class ProductoMapper extends BaseMapper<Producto> {
 
 	@Override
 	public void update(Producto o) {
-		tryExecuteCommand("update dbo.Producto set titulo=?, set descripcion=?, set precio=?, set activo=? where codigoProducto=?", s -> {
+		tryCommand("update dbo.Producto set titulo=?, set descripcion=?, set precio=?, set activo=? where codigoProducto=?", s -> {
 			s.setString(1, o.getTitulo());
 			s.setString(2, o.getDescripcion());
 			s.setFloat(3, o.getPrecio());
@@ -41,14 +41,14 @@ public class ProductoMapper extends BaseMapper<Producto> {
 
 	@Override
 	public void delete(Producto r) {
-		tryExecuteCommand("update dbo.Producto set activo=0 where codigoProducto=?", s -> {
+		tryCommand("update dbo.Producto set activo=0 where codigoProducto=?", s -> {
 			s.setString(1, r.getCodigoPublicacion());
 		});
 	}
 
 	@Override
 	public Producto selectOne(Object id) {
-		return tryExecuteQuery(
+		return tryQuery(
 				"select * from dbo.Producto where codigoProducto = ?", 
 				s -> s.setString(1, id.toString()), 
 				rs -> new Producto(
