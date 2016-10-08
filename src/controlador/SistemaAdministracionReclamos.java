@@ -34,9 +34,6 @@ public class SistemaAdministracionReclamos {
 		if (usuario == null) {
 			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
 		}
-		if (!usuario.getActivo()) {
-			return ExitCodes.USUARIO_INACTIVO;
-		}
 		if (!usuario.getContrasenia().equals(contrasenia)){
 			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
 		}
@@ -83,7 +80,7 @@ public class SistemaAdministracionReclamos {
 	}
 	
 	private Producto buscarProducto(int codProducto) {
-		return new Producto(null, null, null, codProducto, true);
+		return new Producto(null, null, null, codProducto);
 	}
 	
 	public int registrarReclamoProducto(int nroCliente, String descripcion, int codProducto, int cant) {

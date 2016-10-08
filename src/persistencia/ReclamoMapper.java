@@ -1,51 +1,43 @@
 package persistencia;
 
+import java.sql.PreparedStatement;
 import java.util.Vector;
 
 import negocio.Reclamo;
 
-public class ReclamoMapper extends BaseMapper {
+public class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper {
 	
-	private static ReclamoMapper instance;
+	protected final Class<TReclamo> tipoReclamo;
 	
-	protected ReclamoMapper() {
+	protected ReclamoMapper(Class<TReclamo> tipoReclamo) {
+		this.tipoReclamo = tipoReclamo;
 	}
 	
-	public static ReclamoMapper getInstancia()
-	{
-		if (instance == null) 
-			instance = new ReclamoMapper();
-		
-		return instance;
+	protected int configureInsert(PreparedStatement s, TReclamo o) throws Exception {
+		int i = 1;
+		s.setInt(i++, o.getNroReclamo());
+		s.setString(i++, tipoReclamo.getSimpleName());
+		s.setDate(i++, o.getFecha());
+		s.setDate(i++, o.getFechaCierre());
+		s.setString(i++, o.getDescripcionReclamo());
+		s.setString(i++, o.getEstado());
+		s.setInt(i++, o.getCliente().getNroCliente());
+		return i++;
 	}
 	
-	protected void insertReclamo(Reclamo o) {
-		tryCommand("insert into dbo.Reclamo (?,?,?,?,?,?,?)", s -> {
-			s.setInt(1, o.getNumReclamo());
-			s.setDate(2, o.getFecha());
-			s.setDate(3, o.getFechaCierre());
-			s.setString(4, o.getDescripcionReclamo());
-			s.setString(5, o.getEstado());
-			s.setBoolean(6, o.getActivo());
-			s.setInt(7, o.getCliente().getNroCliente());
-		});
-	}
-	
-	protected void updateReclamo(Reclamo o) {
-		tryCommand("update dbo.Reclamo set fecha=?, set fechaCierre=?, set descripcionReclamo=?, set estado=?, set activo=?, set nroCliente=? where nroReclamo=?", s -> {
-			s.setDate(1, o.getFecha());
-			s.setDate(2, o.getFechaCierre());
-			s.setString(3, o.getDescripcionReclamo());
-			s.setString(4, o.getEstado());
-			s.setBoolean(5, o.getActivo());
-			s.setInt(6, o.getCliente().getNroCliente());
-			s.setInt(7, o.getNumReclamo());
-		});
+	protected int configureUpdate(PreparedStatement s, Reclamo o) throws Exception {
+		int i = 1;
+		s.setDate(i++, o.getFecha());
+		s.setDate(i++, o.getFechaCierre());
+		s.setString(i++, o.getDescripcionReclamo());
+		s.setString(i++, o.getEstado());
+		s.setInt(i++, o.getCliente().getNroCliente());
+		return i;
 	}
 
 	protected void deleteReclamo(Reclamo r) {
 		tryCommand("update dbo.Reclamo set activo=0 where codigoProducto=?", s -> {
-			s.setInt(1, r.getNumReclamo());
+			s.setInt(1, r.getNroReclamo());
 		});
 	}
 	

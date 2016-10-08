@@ -4,30 +4,28 @@ import java.sql.Date;
 
 public abstract class Reclamo {
 	
+	private int nroReclamo;
 	private Date fecha;
-	private int numReclamo;
-	private Cliente cliente;
+	private Date fechaCierre;
 	private String descripcionReclamo;
 	private String estado;
-	private Date fechaCierre;
-	private boolean activo;
+	
+	private Cliente cliente;
 	
 	protected Reclamo(
-			Date fecha, 
 			int numReclamo, 
-			Cliente cliente,
-			String descripcionReclamo, 
-			String estado, 
-			Date fechaCierre, 
-			boolean activo) {
+			Date fecha, 
+			Date fechaCierre,
+			String descripcionReclamo,
+			String estado,
+			Cliente cliente) {
 		super();
+		this.nroReclamo = numReclamo;
 		this.fecha = fecha;
-		this.numReclamo = numReclamo;
-		this.cliente = cliente;
+		this.fechaCierre = fechaCierre;
 		this.descripcionReclamo = descripcionReclamo;
 		this.estado = estado;
-		this.fechaCierre = fechaCierre;
-		this.activo = activo;
+		this.cliente = cliente;
 	}
 	
 	public Date getFecha() {
@@ -38,12 +36,12 @@ public abstract class Reclamo {
 		this.fecha = fecha;
 	}
 	
-	public int getNumReclamo() {
-		return numReclamo;
+	public int getNroReclamo() {
+		return nroReclamo;
 	}
 	
 	public void setNumReclamo(int numReclamo) {
-		this.numReclamo = numReclamo;
+		this.nroReclamo = numReclamo;
 	}
 	
 	public Cliente getCliente() {
@@ -76,13 +74,5 @@ public abstract class Reclamo {
 	
 	public void setFechaCierre(Date fechaCierre) {
 		this.fechaCierre = fechaCierre;
-	}
-	
-	public boolean getActivo(){
-		return this.activo;
-	}
-	
-	public void setActivo(boolean activo){
-		this.activo = activo;
 	}
 }

@@ -3,12 +3,14 @@ package negocio;
 public class DetalleReclamoFacturacion {
 	
 	private String detalle;
-	private String numFactura;
+	private int idFactura;
 	
-	public DetalleReclamoFacturacion(String detalle, String numFactura) {
+	public DetalleReclamoFacturacion(
+			String detalle, 
+			int idFactura) {
 		super();
 		this.detalle = detalle;
-		this.numFactura = numFactura;
+		this.idFactura = idFactura;
 	}
 	
 	public String getDetalle() {
@@ -19,11 +21,11 @@ public class DetalleReclamoFacturacion {
 		this.detalle = detalle;
 	}
 	
-	public String getNumFactura() {
-		return numFactura;
+	public int getNumFactura() {
+		return idFactura;
 	}
 	
-	public void setNumFactura(String numFactura) {
-		this.numFactura = numFactura;
+	public void setNumFactura(int idFactura) {
+		this.idFactura = idFactura;
 	}
 }

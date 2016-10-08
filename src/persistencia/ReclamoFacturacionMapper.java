@@ -3,13 +3,15 @@ package persistencia;
 import java.util.Vector;
 
 import negocio.DetalleReclamoFacturacion;
+import negocio.ReclamoCantidades;
 import negocio.ReclamoFacturacion;
 
-public class ReclamoFacturacionMapper extends ReclamoMapper {
+public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> {
 
 	private static ReclamoFacturacionMapper instance;
 	
 	private ReclamoFacturacionMapper() {
+		super(ReclamoFacturacion.class);
 	}
 	
 	public static ReclamoFacturacionMapper getInstancia()
@@ -21,68 +23,88 @@ public class ReclamoFacturacionMapper extends ReclamoMapper {
 	}
 	
 	public void insert(ReclamoFacturacion o) {
-		super.insertReclamo(o);
-		tryCommand("insert into dbo.ReclamoFacturacion (?)", s -> {
-			s.setInt(1, o.getNumReclamo());
-		});
+		tryCommand("INSERT INTO dbo.Reclamo (nroReclamo, tipoReclamo, fecha, fechaCierre, descripcionReclamo, estado, activo, nroCliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", 
+				s -> super.configureInsert(s, o));
 		insertDetalles(o);
 	}
 
 	public void update(ReclamoFacturacion o) {
-		super.updateReclamo(o);
-		// TODO Que pasa con los detalles?
-		
+		tryCommand("UPDATE dbo.Reclamo "
+				+ "SET fecha = ?, "
+				+ "SET fechaCierre = ?, "
+				+ "SET descripcionReclamo = ?, "
+				+ "SET estado = ?, "
+				+ "SET codigoProducto = ?, "
+				+ "SET cantidad = ? "
+				+ "WHERE nroReclamo = ? "
+				+ "AND tipoReclamo = ? "
+				+ "AND activo = 1 ", 
+				s -> {
+					int i = super.configureUpdate(s, o);
+					s.setInt(i++, o.getNroReclamo());
+					s.setString(i++, tipoReclamo.getSimpleName());
+				});
 	}
 
 	public void delete(ReclamoFacturacion o) {
+		deleteDetalles(o);
 		super.deleteReclamo(o);
-		// TODO Que pasa con los detalles?
 	}
 
 	public ReclamoFacturacion selectOne(int id) {
 		return tryQuery(
-				"select "
-				+ "r.nroReclamo, "
-				+ "r.fecha, "
-				+ "r.fechaCierre, "
-				+ "r.descripcionReclamo, "
-				+ "r.estado, "
-				+ "r.activo, "
-				+ "r.nroCliente "
-				+ "from dbo.Reclamo r "
-				+ "join dbo.ReclamoFacturacion rp on rp.nroReclamo = r.nroReclamo "
-				+ "where nroReclamo = ?", 
-				s -> s.setInt(1, id), 
+				"SELECT * "
+				+ "FROM dbo.Reclamo r "
+				+ "WHERE nroReclamo = ? "
+				+ "AND tipoReclamo = ? " 
+				+ "AND activo = 1 ",
+				s -> { 
+					s.setInt(1, id);
+					s.setString(2, tipoReclamo.getSimpleName());
+				},
 				rs -> {
 					int nroReclamo = rs.getInt("nroReclamo");
 					return new ReclamoFacturacion(
-						rs.getDate("fecha"), 
 						nroReclamo, 
-						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
+						rs.getDate("fecha"), 
+						rs.getDate("fechaCierre"), 
 						rs.getString("descripcionReclamo"), 
 						rs.getString("estado"),
-						rs.getDate("fechaCierre"),
-						this.getDetalles(nroReclamo),
-						rs.getBoolean("activo"));
-				}
-			);
+						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
+						this.getDetalles(nroReclamo));
+				});
 	}
 	
 	private Vector<DetalleReclamoFacturacion> getDetalles(int nroReclamo){
 		return tryQueryMany(
-				"select * "
-				+ "from dbo.DetalleReclamoFacturacion "
-				+ "where nroReclamo = ?",
+				"SELECT * "
+				+ "FROM dbo.DetalleReclamoFacturacion "
+				+ "WHERE nroReclamo = ?",
 				s -> s.setInt(1, nroReclamo),
 				rs -> new DetalleReclamoFacturacion(
 						rs.getString("detalle"),
-						rs.getString("idFactura")));
+						rs.getInt("idFactura")));
 	}
 	
 	private void insertDetalles(ReclamoFacturacion o){
-		// TODO PORQUE LOS DETALLES TIENEN SU PROPIO ID??
-//		for (DetalleReclamoFacturacion d : o.getDetalles()) {
-//			tryCommand("insert dbo.DetalleReclamoFacturacion values (", null);
-//		}
+		for(DetalleReclamoFacturacion detalle : o.getDetalles())
+			insertDetalle(o,detalle);
+	}
+	
+	public void insertDetalle(ReclamoFacturacion o, DetalleReclamoFacturacion detalle){
+		tryCommand("INSERT INTO dbo.DetalleReclamoFacturacion (detalle, activo, nroReclamo, idFactura) VALUES (?,?,?,?)", 
+				s -> {
+					s.setString(1, detalle.getDetalle());
+					s.setBoolean(2, true);
+					s.setInt(3, o.getNroReclamo());
+					s.setInt(4, detalle.getNumFactura());
+				});
+	}
+	
+	private void deleteDetalles(ReclamoFacturacion o){
+		tryCommand("UPDATE dbo.DetalleReclamoFacturacion "
+				+ "SET activo = 0 "
+				+ "WHERE nroReclamo = ?",
+				s -> s.setInt(1, o.getNroReclamo()));
 	}
 }

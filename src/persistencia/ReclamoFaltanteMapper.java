@@ -1,12 +1,14 @@
 package persistencia;
 
+import negocio.ReclamoCantidades;
 import negocio.ReclamoFaltantes;
 
-public class ReclamoFaltanteMapper extends ReclamoMapper {
+public class ReclamoFaltanteMapper extends ReclamoMapper<ReclamoFaltantes> {
 
 	private static ReclamoFaltanteMapper instance;
 	
 	private ReclamoFaltanteMapper() {
+		super(ReclamoFaltantes.class);
 	}
 	
 	public static ReclamoFaltanteMapper getInstancia()
@@ -18,21 +20,32 @@ public class ReclamoFaltanteMapper extends ReclamoMapper {
 	}
 	
 	public void insert(ReclamoFaltantes o) {
-		super.insertReclamo(o);
-		tryCommand("insert into dbo.ReclamoFaltante (?,?,?)", s -> {
-			s.setInt(1, o.getNumReclamo());
-			s.setString(2, o.getProducto().getCodigoPublicacion());
-			s.setInt(3, o.getCantFaltante());
-		});
+		tryCommand("INSERT INTO dbo.Reclamo (nroReclamo, tipoReclamo, fecha, fechaCierre, descripcionReclamo, estado, activo, nroCliente, codigoProducto, cantFaltante) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+				s -> {
+					int i = super.configureInsert(s, o);
+					s.setString(i++, o.getProducto().getCodigoProducto());
+					s.setInt(i++, o.getCantFaltante());					
+				});
 	}
 
 	public void update(ReclamoFaltantes o) {
-		super.updateReclamo(o);
-		tryCommand("update dbo.ReclamoFaltante (?,?) where nroReclamo = ?", s -> {
-			s.setString(1, o.getProducto().getCodigoPublicacion());
-			s.setInt(2, o.getCantFaltante());
-			s.setInt(3, o.getNumReclamo());
-		});
+		tryCommand("UPDATE dbo.Reclamo "
+				+ "SET fecha = ?, "
+				+ "SET fechaCierre = ?, "
+				+ "SET descripcionReclamo = ?, "
+				+ "SET estado = ?, "
+				+ "SET codigoProducto = ?, "
+				+ "SET cantFaltante = ? "
+				+ "WHERE nroReclamo = ? "
+				+ "AND tipoReclamo = ? "
+				+ "AND activo = 1 ", 
+				s -> {
+					int i = super.configureUpdate(s, o);
+					s.setString(i++, o.getProducto().getCodigoProducto());
+					s.setInt(i++, o.getCantFaltante());
+					s.setInt(i++, o.getNroReclamo());
+					s.setString(i++, tipoReclamo.getSimpleName());
+				});
 	}
 
 	public void delete(ReclamoFaltantes o) {
@@ -41,32 +54,23 @@ public class ReclamoFaltanteMapper extends ReclamoMapper {
 
 	public ReclamoFaltantes selectOne(int id) {
 		return tryQuery(
-				"select "
-				+ "r.nroReclamo, "
-				+ "r.fecha, "
-				+ "r.fechaCierre, "
-				+ "r.descripcionReclamo, "
-				+ "r.estado, "
-				+ "r.activo, "
-				+ "r.nroCliente, "
-				+ "rf.codigoProducto, "
-				+ "rf.cantFaltante "
-				+ "from dbo.Reclamo r "
-				+ "join dbo.ReclamoFaltante rf on rf.nroReclamo = r.nroReclamo "
-				+ "where nroReclamo = ?", 
-				s -> s.setInt(1, id), 
-				rs -> {
-					return new ReclamoFaltantes(
-						rs.getDate("fecha"), 
+				"SELECT * "
+				+ "FROM dbo.Reclamo r "
+				+ "WHERE nroReclamo = ? "
+				+ "AND tipoReclamo = ? " 
+				+ "AND activo = 1 ",
+				s -> { 
+					s.setInt(1, id);
+					s.setString(2, tipoReclamo.getSimpleName());
+				},
+				rs -> new ReclamoFaltantes(
 						rs.getInt("nroReclamo"), 
-						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
+						rs.getDate("fecha"), 
+						rs.getDate("fechaCierre"), 
 						rs.getString("descripcionReclamo"), 
 						rs.getString("estado"),
-						rs.getDate("fechaCierre"),
+						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						rs.getInt("cantFaltante"),
-						ProductoMapper.getInstancia().selectOne(rs.getString("codigoProducto")),
-						rs.getBoolean("activo"));
-				}
-			);
+						ProductoMapper.getInstancia().selectOne(rs.getString("codigoProducto"))));
 	}
 }

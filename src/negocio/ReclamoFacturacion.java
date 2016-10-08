@@ -8,15 +8,14 @@ public class ReclamoFacturacion extends Reclamo {
 	private Vector<DetalleReclamoFacturacion> detalles;
 	
 	public ReclamoFacturacion(
+			int nroReclamo, 
 			Date fecha, 
-			int numReclamo, 
-			Cliente cliente,
+			Date fechaCierre,
 			String descripcionReclamo, 
 			String estado, 
-			Date fechaCierre,
-			Vector<DetalleReclamoFacturacion> detalles, 
-			boolean activo) {
-		super(fecha, numReclamo, cliente, descripcionReclamo, estado,fechaCierre,activo);
+			Cliente cliente,
+			Vector<DetalleReclamoFacturacion> detalles) {
+		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
 		this.detalles = detalles;
 	}
 

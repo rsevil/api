@@ -4,22 +4,21 @@ import java.sql.Date;
 
 public class ReclamoProducto extends Reclamo {
 	
-	private Producto producto;
 	private int cantidad;
+	private Producto producto;
 	
 	public ReclamoProducto(
+			int nroReclamo, 
 			Date fecha, 
-			int numReclamo, 
-			Cliente cliente,
+			Date fechaCierre,
 			String descripcionReclamo, 
 			String estado, 
-			Date fechaCierre,
-			Producto producto, 
-			int cantidad, 
-			boolean activo) {
-		super(fecha, numReclamo, cliente, descripcionReclamo, estado,fechaCierre, activo);
-		this.producto = producto;
+			Cliente cliente, 
+			int cantidad,
+			Producto producto) {
+		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
 		this.cantidad = cantidad;
+		this.producto = producto;
 	}
 	
 	public Producto getProducto() {

@@ -39,6 +39,7 @@ public abstract class BaseMapper
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = c.prepareStatement(query);
+			config.apply(s);
 			ResultSet rs = s.executeQuery();
 			Vector<TReturn> o = new Vector<TReturn>();
 			while (rs.next()){
@@ -56,6 +57,10 @@ public abstract class BaseMapper
 
 interface Action<T>{
 	void apply(T t) throws Exception;
+}
+
+interface Action2<T,T2>{
+	void apply(T t, T2 t2) throws Exception;
 }
 
 interface Func<T,T2>{
