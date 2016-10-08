@@ -22,7 +22,9 @@ public abstract class BaseMapper
 			PoolConnection.getPoolConnection().releaseConnection(c);
 		}
 		catch (Exception e)	{
-			System.out.println();
+			//System.out.println(e.getClass());
+			//System.out.println(e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 	
@@ -30,7 +32,9 @@ public abstract class BaseMapper
 		try{
 			return tryQueryMany(query,config,fn).firstElement();
 		}catch (Exception e){
-			System.out.println();
+			//System.out.println(e.getClass());
+			//System.out.println(e.getMessage());
+			//e.printStackTrace();
 		}
 		return null;
 	}
@@ -39,6 +43,7 @@ public abstract class BaseMapper
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = c.prepareStatement(query);
+			config.apply(s);
 			ResultSet rs = s.executeQuery();
 			Vector<TReturn> o = new Vector<TReturn>();
 			while (rs.next()){
@@ -48,7 +53,9 @@ public abstract class BaseMapper
 			return o;
 		}
 		catch (Exception e)	{
-			System.out.println();
+			//System.out.println(e.getClass());
+			//System.out.println(e.getMessage());
+			//e.printStackTrace();
 		}
 		return null;
 	}

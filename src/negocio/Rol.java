@@ -4,23 +4,20 @@ import vista.RolView;
 
 public class Rol {
 	
-	private int idRol;
+	private int id;
 	private String nombre;
 	private String descripcion;
-	private boolean activo;
 	private String vista;
 	
-	public Rol(int idRol, String nombre, String descripcion, boolean activo, String vista) {
-		super();
-		this.idRol = idRol;
+	public Rol(int id, String nombre, String descripcion, String vista) {
+		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.activo = activo;
-		this.setVista(vista);
+		this.vista = vista;
 	}
 	
-	public int getIdRol() {
-		return idRol;
+	public int getId() {
+		return id;
 	}
 	
 	/*public void setIdRol(int idRol) {
@@ -42,14 +39,6 @@ public class Rol {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
-	public boolean getActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
 	
 	public String getVista() {
 		return vista;
@@ -61,7 +50,6 @@ public class Rol {
 
 	public RolView getView()
 	{
-		RolView rolView = new RolView(this.idRol, this.nombre, this.descripcion, this.activo, this.vista);
-		return rolView;
+		return new RolView(this.id, this.nombre, this.descripcion, this.vista);
 	}
 }

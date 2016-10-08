@@ -1,4 +1,6 @@
 package persistencia;
+import java.util.Vector;
+
 import negocio.Usuario;
 
 public class UsuarioMapper extends BaseMapper {
@@ -28,12 +30,11 @@ public class UsuarioMapper extends BaseMapper {
 //	}
 
 	public void update(Usuario o) {
-		tryCommand("update dbo.Usuario set nombre=?,set contrasenia=?,set activo=?,set idRol=? where id=?", s -> {
+		tryCommand("update dbo.Usuario set nombre=?, contrasenia=?, idRol=? where id=?", s -> {
 			s.setString(1, o.getNombre());
 			s.setString(2, o.getContrasenia());
-			s.setBoolean(3, o.getActivo());
-			s.setInt(4, o.getRol().getIdRol());
-			s.setInt(5, o.getId());
+			s.setInt(3, o.getRol().getId());
+			s.setInt(4, o.getId());
 		});
 	}
 
@@ -46,11 +47,34 @@ public class UsuarioMapper extends BaseMapper {
 				"select * from dbo.Usuario where nombre = ?", 
 				s -> s.setString(1, nombreUsuario.toString()), 
 				rs -> new Usuario(
+						RolMapper.getInstancia().selectOne(rs.getInt("id")),
+						rs.getInt("id"),
+						rs.getString("nombre"),
+						rs.getString("contrasenia"))
+				);
+	}
+	
+	public Usuario selectById(int id) {
+		return tryQuery(
+				"select * from dbo.Usuario where id = ?", 
+				s -> s.setInt(1, id), 
+				rs -> new Usuario(
+						RolMapper.getInstancia().selectOne(rs.getInt("id")),
+						rs.getInt("id"),
+						rs.getString("nombre"),
+						rs.getString("contrasenia"))
+				);
+	}
+	
+	public Vector<Usuario> selectAll() {
+		return tryQueryMany(
+				"select * from dbo.Usuario where activo = ?", 
+				s -> s.setBoolean(1, true), 
+				rs -> new Usuario(
 						RolMapper.getInstancia().selectOne(rs.getInt("idRol")),
 						rs.getInt("id"),
 						rs.getString("nombre"),
-						rs.getString("contrasenia"),
-						rs.getBoolean("activo")));
+						rs.getString("contrasenia"))
+				);
 	}
-
 }

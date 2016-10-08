@@ -111,10 +111,6 @@ public class Login extends javax.swing.JFrame {
 							mensaje = "El usuario o contraseña es inválido.";	
 							break;
 						}
-						case ExitCodes.USUARIO_INACTIVO: {
-							mensaje = "El usuario se encuentra inactivo.";	
-							break;
-						}
 						default: {
 							break;
 						}	

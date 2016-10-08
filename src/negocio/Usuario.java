@@ -1,19 +1,20 @@
 package negocio;
 
+import persistencia.UsuarioMapper;
+import vista.UsuarioView;
+
 public class Usuario {
 	private Rol rol;
 	private int id;
 	private String nombre;
 	private String contrasenia;
-	private boolean activo;
 	
-	public Usuario(Rol rol, int id, String nombre, String contrasenia, boolean activo) {
+	public Usuario(Rol rol, int id, String nombre, String contrasenia) {
 		super();
 		this.rol = rol;
 		this.id = id;
 		this.nombre = nombre;
 		this.contrasenia = contrasenia;
-		this.activo = activo;
 	}
 	
 	public Rol getRol() {
@@ -47,12 +48,12 @@ public class Usuario {
 	public void setContrasenia(String password) {
 		this.contrasenia = password;
 	}
-
-	public boolean getActivo() {
-		return activo;
+	
+	public UsuarioView getView() {
+		return new UsuarioView(this.id, this.nombre, this.rol != null ? this.rol.getView() : null);
 	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}	
+	
+	public void update() {
+		UsuarioMapper.getInstancia().update(this);
+	}
 }

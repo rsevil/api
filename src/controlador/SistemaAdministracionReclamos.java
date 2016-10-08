@@ -17,7 +17,7 @@ public class SistemaAdministracionReclamos {
 	private Usuario usuarioLogueado;
 	
 	private SistemaAdministracionReclamos() {
-		
+	
 	}
 	
 	public static SistemaAdministracionReclamos getInstancia()
@@ -34,9 +34,6 @@ public class SistemaAdministracionReclamos {
 		if (usuario == null) {
 			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
 		}
-		if (!usuario.getActivo()) {
-			return ExitCodes.USUARIO_INACTIVO;
-		}
 		if (!usuario.getContrasenia().equals(contrasenia)){
 			return ExitCodes.DATOS_INGRESO_INCORRECTOS;
 		}
@@ -52,6 +49,51 @@ public class SistemaAdministracionReclamos {
 		else {
 			return null;
 		}
+	}
+	
+	public Vector<UsuarioView> listarUsuarios() {
+		Vector<UsuarioView> usuariosView = new Vector<UsuarioView>();
+		Vector<Usuario> usuarios = UsuarioMapper.getInstancia().selectAll();
+		
+		if (usuarios != null && usuarios.size() > 0){
+			for (Usuario u : usuarios)
+			{
+				usuariosView.add(u.getView());
+			}
+		}
+		
+		return usuariosView;
+	}
+	
+	public Vector<RolView> listarRoles() {
+		Vector<RolView> rolesView = new Vector<RolView>();
+		Vector<Rol> roles = RolMapper.getInstancia().selectAll();
+		
+		if (roles != null && roles.size() > 0){
+			for (Rol r : roles)
+			{
+				rolesView.add(r.getView());
+			}
+		}
+		
+		return rolesView;
+	}
+	
+	public int asignarRol(int idUsuario, int idRol) {
+		Usuario usuario = UsuarioMapper.getInstancia().selectById(idUsuario);
+		
+		if (usuario != null) {
+			Rol rol = RolMapper.getInstancia().selectOne(idRol);
+			
+			if (rol != null) {
+				usuario.setRol(rol);
+				usuario.update();
+			}
+			
+			return ExitCodes.OK;
+		}
+		
+		return ExitCodes.ERROR_GENERICO;
 	}
 	
 	public void addObserver(Observer o) {

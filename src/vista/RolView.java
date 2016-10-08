@@ -2,38 +2,32 @@ package vista;
 
 public class RolView {
 	
-	private int idRol;
+	private int id;
 	private String nombre;
 	private String descripcion;
-	private boolean activo;
 	private String vista;
 	
-	public RolView(int idRol, String nombre, String descripcion, boolean activo, String vista) {
+	public RolView(int id, String nombre, String descripcion, String vista) {
 		super();
-		this.idRol = idRol;
+		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.activo = activo;
 		this.vista = vista;
 	}
 	
-	public int getIdRol() {
-		return idRol;
+	public int getId() {
+		return this.id;
 	}
 	
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
 	public String getDescripcion() {
-		return descripcion;
-	}
-	
-	public boolean getctivo() {
-		return activo;
+		return this.descripcion;
 	}
 	
 	public String getVista() {
-		return vista;
+		return this.vista;
 	}
 }

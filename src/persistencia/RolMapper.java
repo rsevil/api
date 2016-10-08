@@ -1,5 +1,7 @@
 package persistencia;
 
+import java.util.Vector;
+
 import negocio.Rol;
 
 public class RolMapper extends BaseMapper {
@@ -28,18 +30,17 @@ public class RolMapper extends BaseMapper {
 //	}
 	
 	public void update(Rol o) {
-		tryCommand("update dbo.Rol set nombre=?, set descripcion=?, set activo=?, set vista=? where id=?", s -> {
+		tryCommand("update dbo.Rol set nombre=?, set descripcion=?, set vista=? where id=?", s -> {
 			s.setString(1, o.getNombre());
 			s.setString(2, o.getDescripcion());
-			s.setBoolean(3, o.getActivo());
-			s.setString(4, o.getVista());
-			s.setInt(5, o.getIdRol());
+			s.setString(3, o.getVista());
+			s.setInt(4, o.getId());
 		});
 	}
 
 	public void delete(Rol r) {
 		tryCommand("update dbo.Rol set activo=0 where id=?", s -> {
-			s.setInt(1, r.getIdRol());
+			s.setInt(1, r.getId());
 		});
 	}
 
@@ -51,7 +52,18 @@ public class RolMapper extends BaseMapper {
 						rs.getInt("id"), 
 						rs.getString("nombre"), 
 						rs.getString("descripcion"), 
-						rs.getBoolean("activo"), 
+						rs.getString("vista"))
+			);
+	}
+	
+	public Vector<Rol> selectAll() {
+		return tryQueryMany(
+				"select * from dbo.Rol where activo = ?", 
+				s -> s.setBoolean(1, true), 
+				rs -> new Rol(
+						rs.getInt("id"), 
+						rs.getString("nombre"), 
+						rs.getString("descripcion"), 
 						rs.getString("vista"))
 			);
 	}

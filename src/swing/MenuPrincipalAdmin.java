@@ -40,11 +40,12 @@ public class MenuPrincipalAdmin extends javax.swing.JFrame {
 				btnAdministrarRoles = new JButton();
 				getContentPane().add(btnAdministrarRoles);
 				btnAdministrarRoles.setText("Administrar Roles");
-				btnAdministrarRoles.setBounds(12, 12, 300, 23);
+				btnAdministrarRoles.setBounds(12, 14, 300, 23);
 				btnAdministrarRoles.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) 
 					{
 						AdministrarRoles a = new AdministrarRoles();
+						a.setVisible(true);
 					}
 				});
 			}
