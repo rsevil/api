@@ -125,7 +125,7 @@ public class SistemaAdministracionReclamos {
 	}
 	
 	private Producto buscarProducto(int codProducto) {
-		return new Producto(null, null, null, codProducto, true);
+		return new Producto(null, null, null, codProducto);
 	}
 	
 	public int registrarReclamoProducto(int nroCliente, String descripcion, int codProducto, int cant) {

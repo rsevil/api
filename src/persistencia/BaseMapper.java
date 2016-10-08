@@ -65,6 +65,10 @@ interface Action<T>{
 	void apply(T t) throws Exception;
 }
 
+interface Action2<T,T2>{
+	void apply(T t, T2 t2) throws Exception;
+}
+
 interface Func<T,T2>{
 	T2 apply(T t) throws Exception;
 }

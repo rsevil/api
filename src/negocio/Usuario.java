@@ -4,25 +4,21 @@ import persistencia.UsuarioMapper;
 import vista.UsuarioView;
 
 public class Usuario {
-	private Rol rol;
+
 	private int id;
 	private String nombre;
 	private String contrasenia;
+	private Rol rol;
 	
-	public Usuario(Rol rol, int id, String nombre, String contrasenia) {
+	public Usuario(
+			int id, 
+			String nombre, 
+			String contrasenia,
+			Rol rol) {
 		super();
-		this.rol = rol;
 		this.id = id;
 		this.nombre = nombre;
 		this.contrasenia = contrasenia;
-	}
-	
-	public Rol getRol() {
-		return rol;
-	}
-	
-	public void setRol(Rol rol) {
-		this.rol = rol;
 	}
 	
 	public int getId() {
@@ -31,6 +27,14 @@ public class Usuario {
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public Rol getRol() {
+		return rol;
+	}
+	
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 	
 	public String getNombre() {

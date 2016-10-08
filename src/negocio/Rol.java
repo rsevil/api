@@ -20,10 +20,6 @@ public class Rol {
 		return id;
 	}
 	
-	/*public void setIdRol(int idRol) {
-		this.idRol = idRol;
-	}*/
-	
 	public String getNombre() {
 		return nombre;
 	}

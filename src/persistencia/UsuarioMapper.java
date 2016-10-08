@@ -17,20 +17,14 @@ public class UsuarioMapper extends BaseMapper {
 			instance = new UsuarioMapper();
 		return instance;
 	}
-	
-//	public void insert(Usuario o) {
-//		tryCommand("insert into dbo.Usuario (?,?,?,?,?)", s ->{
-//			s.setInt(1, o.getId());
-//			s.setString(2, o.getNombre());
-//			s.setString(3, o.getContrasenia());
-//			s.setBoolean(4, o.getActivo());
-//			// TODO Puede que sea null?
-//			s.setInt(5, o.getRol().getIdRol());
-//		});
-//	}
 
 	public void update(Usuario o) {
-		tryCommand("update dbo.Usuario set nombre=?, contrasenia=?, idRol=? where id=?", s -> {
+		tryCommand("UPDATE dbo.Usuario "
+				+ "SET nombre = ?, "
+				+ "SET contrasenia = ?, "
+				+ "SET idRol = ? "
+				+ "WHERE id = ? "
+				+ "AND activo = 1", s -> {
 			s.setString(1, o.getNombre());
 			s.setString(2, o.getContrasenia());
 			s.setInt(3, o.getRol().getId());
@@ -39,19 +33,21 @@ public class UsuarioMapper extends BaseMapper {
 	}
 
 	public void delete(Usuario o) {
-		tryCommand("delete dbo.Usuario where id=?", s -> s.setInt(1, o.getId()));
+		tryCommand("UPDATE dbo.Usuario SET activo = 0 WHERE id = ? AND activo = 1", s -> s.setInt(1, o.getId()));
 	}
 
-	public Usuario selectOne(Object nombreUsuario) {
+	public Usuario selectOne(String nombreUsuario) {
 		return tryQuery(
-				"select * from dbo.Usuario where nombre = ?", 
+				"SELECT * "
+				+ "FROM dbo.Usuario "
+				+ "WHERE nombre = ? "
+				+ "AND activo = 1", 
 				s -> s.setString(1, nombreUsuario.toString()), 
 				rs -> new Usuario(
-						RolMapper.getInstancia().selectOne(rs.getInt("id")),
 						rs.getInt("id"),
 						rs.getString("nombre"),
-						rs.getString("contrasenia"))
-				);
+						rs.getString("contrasenia"),
+						RolMapper.getInstancia().selectOne(rs.getInt("idRol"))));
 	}
 	
 	public Usuario selectById(int id) {
@@ -59,10 +55,10 @@ public class UsuarioMapper extends BaseMapper {
 				"select * from dbo.Usuario where id = ?", 
 				s -> s.setInt(1, id), 
 				rs -> new Usuario(
-						RolMapper.getInstancia().selectOne(rs.getInt("id")),
 						rs.getInt("id"),
 						rs.getString("nombre"),
-						rs.getString("contrasenia"))
+						rs.getString("contrasenia"),
+						RolMapper.getInstancia().selectOne(rs.getInt("id")))
 				);
 	}
 	
@@ -71,10 +67,9 @@ public class UsuarioMapper extends BaseMapper {
 				"select * from dbo.Usuario where activo = ?", 
 				s -> s.setBoolean(1, true), 
 				rs -> new Usuario(
-						RolMapper.getInstancia().selectOne(rs.getInt("idRol")),
 						rs.getInt("id"),
 						rs.getString("nombre"),
-						rs.getString("contrasenia"))
-				);
+						rs.getString("contrasenia"),
+						RolMapper.getInstancia().selectOne(rs.getInt("idRol"))));
 	}
 }

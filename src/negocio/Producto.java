@@ -1,28 +1,30 @@
 package negocio;
 
 public class Producto {
-	private String codigoPublicacion;
+	
+	private String codigoProducto;
 	private String titulo;
 	private String descripcion;
 	private float precio;
-	private boolean activo;
 	
-	public Producto(String codigoPublicacion, String titulo,
-			String descripcion, float precio, boolean activo) {
+	public Producto(
+			String codigoPublicacion, 
+			String titulo,
+			String descripcion, 
+			float precio) {
 		super();
-		this.codigoPublicacion = codigoPublicacion;
+		this.codigoProducto = codigoPublicacion;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;
-		this.activo = activo;
 	}
 	
-	public String getCodigoPublicacion() {
-		return codigoPublicacion;
+	public String getCodigoProducto() {
+		return codigoProducto;
 	}
 	
-	public void setCodigoPublicacion(String codigoPublicacion) {
-		this.codigoPublicacion = codigoPublicacion;
+	public void setCodigoProducto(String codigoPublicacion) {
+		this.codigoProducto = codigoPublicacion;
 	}
 	
 	public String getTitulo() {
@@ -47,13 +49,5 @@ public class Producto {
 	
 	public void setPrecio(float precio) {
 		this.precio = precio;
-	}
-	
-	public boolean getActivo(){
-		return this.activo;
-	}
-	
-	public void setActivo(boolean activo){
-		this.activo = activo;
 	}
 }

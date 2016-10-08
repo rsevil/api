@@ -2,69 +2,75 @@ package persistencia;
 
 import negocio.ReclamoProducto;
 
-public class ReclamoProductoMapper extends ReclamoMapper {
+public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
 
 	private static ReclamoProductoMapper instance;
 	
 	private ReclamoProductoMapper() {
+		super(ReclamoProducto.class);
 	}
 	
 	public static ReclamoProductoMapper getInstancia()
 	{
-		if (instance == null) {
+		if (instance == null)
 			instance = new ReclamoProductoMapper();
-		}
+			
 		return instance;
 	}
 	
 	public void insert(ReclamoProducto o) {
-		super.insertReclamo(o);
-		tryCommand("insert into dbo.ReclamoProducto (?,?,?)", s -> {
-			s.setInt(1, o.getNumReclamo());
-			s.setString(2, o.getProducto().getCodigoPublicacion());
-			s.setInt(3, o.getCantidad());
-		});
+		tryCommand("INSERT INTO dbo.Reclamo (nroReclamo, tipoReclamo, fecha, fechaCierre, descripcionReclamo, estado, activo, nroCliente, codigoProducto, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+				s -> {
+					int i = super.configureInsert(s, o);
+					s.setString(i++, o.getProducto().getCodigoProducto());
+					s.setInt(i++, o.getCantidad());					
+				});
 	}
 
 	public void update(ReclamoProducto o) {
-		super.updateReclamo(o);
-		tryCommand("update dbo.ReclamoProducto set codigoProducto=?, set cantidad=? where nroReclamo=?", s -> {
-			s.setString(1, o.getProducto().getCodigoPublicacion());
-			s.setInt(2, o.getCantidad());
-			s.setInt(3, o.getNumReclamo());
-		});
+		tryCommand("UPDATE dbo.Reclamo "
+				+ "SET fecha = ?, "
+				+ "SET fechaCierre = ?, "
+				+ "SET descripcionReclamo = ?, "
+				+ "SET estado = ?, "
+				+ "SET codigoProducto = ?, "
+				+ "SET cantidad = ? "
+				+ "WHERE nroReclamo = ? "
+				+ "AND tipoReclamo = ? "
+				+ "AND activo = 1 ", 
+				s -> {
+					int i = super.configureUpdate(s, o);
+					s.setString(i++, o.getProducto().getCodigoProducto());
+					s.setInt(i++, o.getCantidad());
+					s.setInt(i++, o.getNroReclamo());
+					s.setString(i++, tipoReclamo.getSimpleName());
+				});
+
 	}
 
 	public void delete(ReclamoProducto o) {
 		super.deleteReclamo(o);
 	}
 
-	public ReclamoProducto selectOne(Object id) {
+	public ReclamoProducto selectOne(int id) {
 		return tryQuery(
-				"select "
-				+ "r.nroReclamo, "
-				+ "r.fecha, "
-				+ "r.fechaCierre, "
-				+ "r.descripcionReclamo, "
-				+ "r.estado, "
-				+ "r.activo, "
-				+ "r.nroCliente, "
-				+ "rp.codigoProducto, "
-				+ "rp.cantidad "
-				+ "from dbo.Reclamo r "
-				+ "join dbo.ReclamoProducto rp on rp.nroReclamo = r.nroReclamo "
-				+ "where nroReclamo = ?", 
-				s -> s.setInt(1, (int)id), 
+				"SELECT * "
+				+ "FROM dbo.Reclamo r "
+				+ "WHERE nroReclamo = ? "
+				+ "AND tipoReclamo = ? " 
+				+ "AND activo = 1 ",
+				s -> { 
+					s.setInt(1, id);
+					s.setString(2, tipoReclamo.getSimpleName());
+				},
 				rs -> new ReclamoProducto(
-						rs.getDate("fecha"), 
 						rs.getInt("nroReclamo"), 
-						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
+						rs.getDate("fecha"), 
+						rs.getDate("fechaCierre"), 
 						rs.getString("descripcionReclamo"), 
 						rs.getString("estado"),
-						rs.getDate("fechaCierre"), 
-						ProductoMapper.getInstancia().selectOne(rs.getString("codigoProducto")),
+						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						rs.getInt("cantidad"),
-						rs.getBoolean("activo"))
-			);
+						ProductoMapper.getInstancia().selectOne(rs.getString("codigoProducto"))));
 	}
 }
