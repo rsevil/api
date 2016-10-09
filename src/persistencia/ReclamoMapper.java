@@ -41,10 +41,13 @@ public class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper {
 		});
 	}
 	
-//	public Vector<Reclamo> selectAll(Vector<Integer> ids){
-//		tryQuery("select "
-//				+ "dbo.Reclamo r "
-//				+ "left join ReclamoCantidades rc on rc.nroReclamo = r.nroReclamo "
-//				+ "left join ")
-//	}
+	private int ultimoId = -1;
+	
+	public int getUltimoId(){
+		if (ultimoId < 0)
+			ultimoId = tryQuery("SELECT ISNULL(MAX(nroReclamo),0) AS nroReclamo FROM dbo.Reclamo", rs -> rs.getInt("nroReclamo"));
+		
+		ultimoId++;
+		return ultimoId;
+	}
 }

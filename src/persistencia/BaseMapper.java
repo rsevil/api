@@ -5,14 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
 
+import utils.Action;
+import utils.Func2;
+
 public abstract class BaseMapper
-{
-//	public abstract void insert (T o);
-//	public abstract void update (T o);
-//	public abstract void delete (T o);
-	//public abstract Vector<T> selectAll ();
-//	public abstract T selectOne (Object o);
-	
+{	
 	protected void tryCommand(String command, Action<PreparedStatement> config) {
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
@@ -28,22 +25,34 @@ public abstract class BaseMapper
 		}
 	}
 	
-	protected <TReturn> TReturn tryQuery(String query, Action<PreparedStatement> config, Func<ResultSet, TReturn> fn){
+	protected <TReturn> TReturn tryQuery(String query, Action<PreparedStatement> config, Func2<ResultSet, TReturn> fn){
 		try{
 			return tryQueryMany(query,config,fn).firstElement();
 		}catch (Exception e){
-			//System.out.println(e.getClass());
-			//System.out.println(e.getMessage());
-			//e.printStackTrace();
+			System.out.println(e.getClass());
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	protected <TReturn> Vector<TReturn> tryQueryMany(String query, Action<PreparedStatement> config, Func<ResultSet, TReturn> fn){
+	protected <TReturn> TReturn tryQuery(String query, Func2<ResultSet, TReturn> fn){
+		try{
+			return tryQueryMany(query,null,fn).firstElement();
+		}catch (Exception e){
+			System.out.println(e.getClass());
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	protected <TReturn> Vector<TReturn> tryQueryMany(String query, Action<PreparedStatement> config, Func2<ResultSet, TReturn> fn){
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = c.prepareStatement(query);
-			config.apply(s);
+			if (config != null)
+				config.apply(s);
 			ResultSet rs = s.executeQuery();
 			Vector<TReturn> o = new Vector<TReturn>();
 			while (rs.next()){
@@ -53,22 +62,10 @@ public abstract class BaseMapper
 			return o;
 		}
 		catch (Exception e)	{
-			//System.out.println(e.getClass());
-			//System.out.println(e.getMessage());
-			//e.printStackTrace();
+			System.out.println(e.getClass());
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
-}
-
-interface Action<T>{
-	void apply(T t) throws Exception;
-}
-
-interface Action2<T,T2>{
-	void apply(T t, T2 t2) throws Exception;
-}
-
-interface Func<T,T2>{
-	T2 apply(T t) throws Exception;
 }

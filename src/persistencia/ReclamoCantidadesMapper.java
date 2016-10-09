@@ -1,5 +1,6 @@
 package persistencia;
 
+import enums.EstadosReclamo;
 import negocio.ReclamoCantidades;
 
 public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
@@ -22,7 +23,7 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 		tryCommand("INSERT INTO dbo.Reclamo (nroReclamo, tipoReclamo, fecha, fechaCierre, descripcionReclamo, estado, activo, nroCliente, codigoProducto, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
 				s -> {
 					int i = super.configureInsert(s, o);
-					s.setString(i++, o.getProducto().getCodigoProducto());
+					s.setInt(i++, o.getProducto().getCodigoProducto());
 					s.setInt(i++, o.getCantidad());					
 				});
 	}
@@ -33,6 +34,7 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 				+ "SET fechaCierre = ?, "
 				+ "SET descripcionReclamo = ?, "
 				+ "SET estado = ?, "
+				+ "SET nroCliente = ?, "
 				+ "SET codigoProducto = ?, "
 				+ "SET cantidad = ? "
 				+ "WHERE nroReclamo = ? "
@@ -40,7 +42,7 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 				+ "AND activo = 1 ", 
 				s -> {
 					int i = super.configureUpdate(s, o);
-					s.setString(i++, o.getProducto().getCodigoProducto());
+					s.setInt(i++, o.getProducto().getCodigoProducto());
 					s.setInt(i++, o.getCantidad());
 					s.setInt(i++, o.getNroReclamo());
 					s.setString(i++, tipoReclamo.getSimpleName());
@@ -67,9 +69,9 @@ public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
 						rs.getDate("fecha"), 
 						rs.getDate("fechaCierre"), 
 						rs.getString("descripcionReclamo"), 
-						rs.getString("estado"),
+						EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						rs.getInt("cantidad"),
-						ProductoMapper.getInstancia().selectOne(rs.getString("codigoProducto"))));
+						ProductoMapper.getInstancia().selectOne(rs.getInt("codigoProducto"))));
 	}
 }

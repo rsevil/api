@@ -2,6 +2,7 @@ package persistencia;
 
 import java.util.Vector;
 
+import enums.EstadosReclamo;
 import negocio.DetalleReclamoFacturacion;
 import negocio.ReclamoCantidades;
 import negocio.ReclamoFacturacion;
@@ -34,8 +35,7 @@ public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> 
 				+ "SET fechaCierre = ?, "
 				+ "SET descripcionReclamo = ?, "
 				+ "SET estado = ?, "
-				+ "SET codigoProducto = ?, "
-				+ "SET cantidad = ? "
+				+ "SET nroCliente = ?, "
 				+ "WHERE nroReclamo = ? "
 				+ "AND tipoReclamo = ? "
 				+ "AND activo = 1 ", 
@@ -69,7 +69,7 @@ public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> 
 						rs.getDate("fecha"), 
 						rs.getDate("fechaCierre"), 
 						rs.getString("descripcionReclamo"), 
-						rs.getString("estado"),
+						EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						this.getDetalles(nroReclamo));
 				});

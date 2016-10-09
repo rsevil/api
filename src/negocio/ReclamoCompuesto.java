@@ -3,6 +3,8 @@ package negocio;
 import java.sql.Date;
 import java.util.Vector;
 
+import enums.EstadosReclamo;
+
 
 public class ReclamoCompuesto extends Reclamo {
 	
@@ -13,7 +15,7 @@ public class ReclamoCompuesto extends Reclamo {
 			Date fecha, 
 			Date fechaCierre,
 			String descripcionReclamo, 
-			String estado, 
+			EstadosReclamo estado, 
 			Cliente cliente,
 			Vector<Reclamo> reclamos) {
 		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);

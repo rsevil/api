@@ -1,0 +1,1 @@
+ALTER TABLE Producto ADD codigoPublicacion varchar(255) NOT NULL

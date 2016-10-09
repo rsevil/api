@@ -2,10 +2,13 @@ package controlador;
 
 import java.util.Observer;
 import java.util.Vector;
+import java.util.function.Function;
 
 import enums.ExitCodes;
+import interfaces.SistemaFacturacion;
 import negocio.*;
 import persistencia.*;
+import utils.Func;
 import vista.*;
 
 
@@ -109,48 +112,91 @@ public class SistemaAdministracionReclamos {
 	}
 	
 	private Cliente buscarCliente(int nroCliente) {
-		Cliente clienteBuscado = null;		
-		for (Cliente c : clientes){
-			if(c.sosCliente(nroCliente)){
-				clienteBuscado = c;
-			}
-		}		
-		if(clienteBuscado == null){
-			clienteBuscado = ClienteMapper.getInstancia().selectOne(nroCliente);
-			if(clienteBuscado != null){
-				clientes.add(clienteBuscado);
-			}
-		}
-		return clienteBuscado;		
+		return buscar(
+				clientes,
+				c -> c.sosCliente(nroCliente),
+				() -> ClienteMapper.getInstancia().selectOne(nroCliente));
 	}
 	
 	private Producto buscarProducto(int codProducto) {
-		return new Producto(null, null, null, codProducto);
+		return buscar(
+				productos,
+				p -> p.sosProducto(codProducto), 
+				() -> ProductoMapper.getInstancia().selectOne(codProducto));
+	}
+	
+	
+	private <T> T buscar(Vector<T> cache, Function<T, Boolean> predicate, Func<T> getter) {
+		for (T c : cache){
+			if (predicate.apply(c)){
+				return c;
+			}
+		}
+		
+		T o = null;
+		
+		try{
+			o = getter.apply();
+		}catch(Exception ex){
+			System.out.println(ex.toString());
+		}
+		
+		if(o != null){
+			cache.add(o);
+		}
+		
+		return o;
 	}
 	
 	public int registrarReclamoProducto(int nroCliente, String descripcion, int codProducto, int cant) {
 		Cliente cliente = this.buscarCliente(nroCliente);
-		return 0;
+		
+		if (cliente == null)
+			return ExitCodes.NO_EXISTE_CLIENTE;
+		
+		return ExitCodes.OK;
 	}
 	
-	public int registrarReclamoFaltante(int nroCliente, String descripcion, int codProducto, int cantFaltante) {
+	public int registrarReclamoFaltante(int nroCliente, String descripcion, int codProducto, int cantFaltante, int numFactura) {
 		Cliente cliente = this.buscarCliente(nroCliente);
-		return 0;
+		
+		if (cliente == null)
+			return ExitCodes.NO_EXISTE_CLIENTE;
+		
+		Producto producto = this.buscarProducto(codProducto);
+		
+		if (producto == null)
+			return ExitCodes.NO_EXISTE_PRODUCTO;		
+		
+		if (!SistemaFacturacion.getInstancia().Facture(numFactura, producto, cantFaltante))
+			return ExitCodes.FALLA_RECLAMO_PRODUCTO_FALTANTE;
+					
+		ReclamoFaltantes r = new ReclamoFaltantes(descripcion,cliente,cantFaltante,producto);
+		
+		this.reclamos.add(r);
+		return r.getNroReclamo();
 	}
 	
 	public int registrarReclamoZona(int nroCliente, String descripcion, String zona) {
 		Cliente cliente = this.buscarCliente(nroCliente);
-		return 0;
+		
+		if (cliente == null)
+			return ExitCodes.NO_EXISTE_CLIENTE;
+		
+		ReclamoZona r = new ReclamoZona(descripcion,cliente, zona);
+		
+		this.reclamos.add(r);
+		return r.getNroReclamo();
 	}
 	
 	public int registrarReclamoCantidades(int nroCliente, String descripcion) {
 		Cliente cliente = this.buscarCliente(nroCliente);
-		return 0;
+		return ExitCodes.OK;
 	}
 	
 	public int registrarReclamoFacturacion(int nroCliente) {
 		Cliente cliente = this.buscarCliente(nroCliente);
-		return 0;
+		return ExitCodes.OK;
 	}
 	
 	private Reclamo buscarReclamo(int nroReclamo) {

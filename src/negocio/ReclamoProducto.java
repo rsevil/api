@@ -2,6 +2,8 @@ package negocio;
 
 import java.sql.Date;
 
+import enums.EstadosReclamo;
+
 public class ReclamoProducto extends Reclamo {
 	
 	private int cantidad;
@@ -12,7 +14,7 @@ public class ReclamoProducto extends Reclamo {
 			Date fecha, 
 			Date fechaCierre,
 			String descripcionReclamo, 
-			String estado, 
+			EstadosReclamo estado, 
 			Cliente cliente, 
 			int cantidad,
 			Producto producto) {

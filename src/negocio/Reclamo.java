@@ -2,6 +2,8 @@ package negocio;
 
 import java.sql.Date;
 
+import enums.EstadosReclamo;
+
 public abstract class Reclamo {
 	
 	private int nroReclamo;
@@ -17,14 +19,14 @@ public abstract class Reclamo {
 			Date fecha, 
 			Date fechaCierre,
 			String descripcionReclamo,
-			String estado,
+			EstadosReclamo estado,
 			Cliente cliente) {
 		super();
 		this.nroReclamo = numReclamo;
 		this.fecha = fecha;
 		this.fechaCierre = fechaCierre;
 		this.descripcionReclamo = descripcionReclamo;
-		this.estado = estado;
+		this.estado = estado.getTexto();
 		this.cliente = cliente;
 	}
 	
