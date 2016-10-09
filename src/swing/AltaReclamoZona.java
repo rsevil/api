@@ -98,7 +98,7 @@ public class AltaReclamoZona extends javax.swing.JFrame {
 								!TextoUtils.isNullOrEmpty(descripcion) &&
 								!TextoUtils.isNullOrEmpty(zona)) {
 
-							if (!NumeroUtils.isInteger(txtNroCliente.getText())) {
+							if (!NumeroUtils.isInteger(nroCliente)) {
 								JOptionPane.showMessageDialog(null, "El número de cliente es inválido.");
 							} else {								
 								int rdo = SistemaAdministracionReclamos.getInstancia().registrarReclamoZona(Integer.parseInt(nroCliente), descripcion, zona);

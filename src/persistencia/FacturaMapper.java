@@ -38,7 +38,7 @@ public class FacturaMapper extends BaseMapper {
 	
 	public Vector<ItemFactura> getItems(int idFactura) {
 		return tryQueryMany(
-				"SELECGT * "
+				"SELECT * "
 				+ "FROM dbo.ItemFactura "
 				+ "WHERE idFactura = ? "
 				+ "AND activo = 1", 

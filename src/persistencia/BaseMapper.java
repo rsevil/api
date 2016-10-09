@@ -10,6 +10,8 @@ import utils.Func2;
 
 public abstract class BaseMapper
 {	
+	private boolean mostrarExcepciones = true;
+	
 	protected void tryCommand(String command, Action<PreparedStatement> config) {
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
@@ -19,9 +21,11 @@ public abstract class BaseMapper
 			PoolConnection.getPoolConnection().releaseConnection(c);
 		}
 		catch (Exception e)	{
-			System.out.println(e.getClass());
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			if (mostrarExcepciones) {
+				System.out.println(e.getClass());
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -29,9 +33,11 @@ public abstract class BaseMapper
 		try{
 			return tryQueryMany(query,config,fn).firstElement();
 		}catch (Exception e){
-			System.out.println(e.getClass());
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			if (mostrarExcepciones) {
+				System.out.println(e.getClass());
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -40,9 +46,11 @@ public abstract class BaseMapper
 		try{
 			return tryQueryMany(query,null,fn).firstElement();
 		}catch (Exception e){
-			System.out.println(e.getClass());
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			if (mostrarExcepciones) {
+				System.out.println(e.getClass());
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -62,9 +70,11 @@ public abstract class BaseMapper
 			return o;
 		}
 		catch (Exception e)	{
-			System.out.println(e.getClass());
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			if (mostrarExcepciones) {
+				System.out.println(e.getClass());
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

@@ -12,7 +12,7 @@ import utils.Func;
 
 public class SistemaFacturacion {
 	
-	private Vector<Factura> facturas;
+	private Vector<Factura> facturas = new Vector<Factura>();
 	
 	private static SistemaFacturacion instance;
 	public static SistemaFacturacion getInstancia()

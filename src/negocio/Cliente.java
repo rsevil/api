@@ -1,7 +1,5 @@
 package negocio;
 
-import persistencia.ClienteMapper;
-
 public class Cliente {
 	
 	private int nroCliente;
