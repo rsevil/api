@@ -1,8 +1,26 @@
 package enums;
 
-public final class EstadosReclamo {
-	public final static int INGRESADO = 1;
-	public final static int EN_TRATAMIENTO = 2;
-	public final static int CERRADO = 3;
-	public final static int SOLUCIONADO = 4;
+public enum EstadosReclamo {
+	INGRESADO("Ingresado"),
+	EN_TRATAMIENTO("En Tratamiento"),
+	CERRADO("Cerrado"),
+	SOLUCIONADO("Solucionado");
+	
+	private String texto;
+	
+	private EstadosReclamo(String texto){
+		this.texto = texto;
+	}
+	
+	public String getTexto(){
+		return this.texto;
+	}
+	
+	public static EstadosReclamo getEstadoReclamo(String texto) {
+		for (EstadosReclamo r : EstadosReclamo.values()){
+			if (r.getTexto() == texto)
+				return r;
+		}
+		return null;
+	}
 }

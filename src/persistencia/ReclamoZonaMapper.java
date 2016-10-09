@@ -1,60 +1,55 @@
 package persistencia;
 
 import enums.EstadosReclamo;
-import negocio.ReclamoProducto;
+import negocio.ReclamoZona;
 
-public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
+public class ReclamoZonaMapper extends ReclamoMapper<ReclamoZona> {
 
-	private static ReclamoProductoMapper instance;
+	private static ReclamoZonaMapper instance;
 	
-	private ReclamoProductoMapper() {
-		super(ReclamoProducto.class);
+	private ReclamoZonaMapper() {
+		super(ReclamoZona.class);
 	}
 	
-	public static ReclamoProductoMapper getInstancia()
+	public static ReclamoZonaMapper getInstancia()
 	{
 		if (instance == null)
-			instance = new ReclamoProductoMapper();
+			instance = new ReclamoZonaMapper();
 			
 		return instance;
 	}
 	
-	public void insert(ReclamoProducto o) {
-		tryCommand("INSERT INTO dbo.Reclamo (nroReclamo, tipoReclamo, fecha, fechaCierre, descripcionReclamo, estado, activo, nroCliente, codigoProducto, cantidad) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+	public void insert(ReclamoZona o) {
+		tryCommand("INSERT INTO dbo.Reclamo (nroReclamo, tipoReclamo, fecha, fechaCierre, descripcionReclamo, estado, activo, nroCliente, zonaAfectada) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
 				s -> {
 					int i = super.configureInsert(s, o);
-					s.setInt(i++, o.getProducto().getCodigoProducto());
-					s.setInt(i++, o.getCantidad());					
+					s.setString(i++, o.getZonaAfectada());				
 				});
 	}
 
-	public void update(ReclamoProducto o) {
+	public void update(ReclamoZona o) {
 		tryCommand("UPDATE dbo.Reclamo "
 				+ "SET fecha = ?, "
 				+ "SET fechaCierre = ?, "
 				+ "SET descripcionReclamo = ?, "
 				+ "SET estado = ?, "
-				+ "SET nroCliente = ?, "
-				+ "SET codigoProducto = ?, "
-				+ "SET cantidad = ? "
+				+ "SET zonaAfectada = ?, "
 				+ "WHERE nroReclamo = ? "
 				+ "AND tipoReclamo = ? "
 				+ "AND activo = 1 ", 
 				s -> {
 					int i = super.configureUpdate(s, o);
-					s.setInt(i++, o.getProducto().getCodigoProducto());
-					s.setInt(i++, o.getCantidad());
+					s.setString(i++, o.getZonaAfectada());
 					s.setInt(i++, o.getNroReclamo());
 					s.setString(i++, tipoReclamo.getSimpleName());
 				});
-
 	}
 
-	public void delete(ReclamoProducto o) {
+	public void delete(ReclamoZona o) {
 		super.deleteReclamo(o);
 	}
 
-	public ReclamoProducto selectOne(int id) {
+	public ReclamoZona selectOne(int id) {
 		return tryQuery(
 				"SELECT * "
 				+ "FROM dbo.Reclamo r "
@@ -65,14 +60,13 @@ public class ReclamoProductoMapper extends ReclamoMapper<ReclamoProducto> {
 					s.setInt(1, id);
 					s.setString(2, tipoReclamo.getSimpleName());
 				},
-				rs -> new ReclamoProducto(
+				rs -> new ReclamoZona(
 						rs.getInt("nroReclamo"), 
 						rs.getDate("fecha"), 
 						rs.getDate("fechaCierre"), 
 						rs.getString("descripcionReclamo"), 
 						EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
-						rs.getInt("cantidad"),
-						ProductoMapper.getInstancia().selectOne(rs.getInt("codigoProducto"))));
+						rs.getString("zonaAfectada")));
 	}
 }

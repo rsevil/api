@@ -1,5 +1,27 @@
 package interfaces;
 
-public class ItemFactura {
+import negocio.Producto;
 
+public class ItemFactura {
+	
+	private int codigoProducto;
+	private int cantidad;
+	private float precio;
+	
+	public ItemFactura(
+			int codigoProducto,
+			int cantidad,
+			float precio){
+		this.codigoProducto = codigoProducto;
+		this.cantidad = cantidad;
+		this.precio = precio;
+	}
+	
+	public boolean tengoElProducto(Producto p){
+		return p.sosProducto(this.codigoProducto);
+	}
+	
+	public boolean tengoLaCantidad(int cantidad){
+		return this.cantidad == cantidad;
+	}
 }

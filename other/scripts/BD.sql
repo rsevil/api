@@ -114,7 +114,6 @@ CREATE TABLE Reclamo
 	zonaAfectada varchar(255) NULL,
 	CONSTRAINT Reclamo_PK PRIMARY KEY (nroReclamo),
 	CONSTRAINT Reclamo_Cliente_FK FOREIGN KEY (nroCliente) REFERENCES Cliente(nroCliente),
-	CONSTRAINT Reclamo_Reclamo_FK FOREIGN KEY (nroReclamo) REFERENCES Reclamo(nroReclamo),
 	CONSTRAINT Reclamo_Producto_FK FOREIGN KEY (codigoProducto) REFERENCES Producto(codigoProducto)
 )
 GO

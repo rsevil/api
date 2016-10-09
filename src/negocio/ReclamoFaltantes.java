@@ -1,6 +1,10 @@
 package negocio;
 
 import java.sql.Date;
+import java.util.Calendar;
+
+import enums.EstadosReclamo;
+import persistencia.ReclamoFaltanteMapper;
 
 public class ReclamoFaltantes extends Reclamo {
 	
@@ -12,15 +16,47 @@ public class ReclamoFaltantes extends Reclamo {
 			Date fecha, 
 			Date fechaCierre,
 			String descripcionReclamo, 
-			String estado, 
+			EstadosReclamo estado, 
 			Cliente cliente,
 			int cantFaltante,
-			Producto producto) {
+			Producto producto,
+			boolean persistir) {
 		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
 		this.cantFaltante = cantFaltante;
 		this.producto = producto;
+		
+		if (persistir)
+			ReclamoFaltanteMapper.getInstancia().insert(this);
 	}
-
+	
+	public ReclamoFaltantes(
+			int nroReclamo, 
+			Date fecha, 
+			Date fechaCierre,
+			String descripcionReclamo, 
+			EstadosReclamo estado, 
+			Cliente cliente,
+			int cantFaltante,
+			Producto producto) {
+		this(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente, cantFaltante, producto, false);
+	}
+	
+	public ReclamoFaltantes(
+			String descripcionReclamo,
+			Cliente cliente,
+			int cantFaltante,
+			Producto producto){
+		this(ReclamoFaltanteMapper.getInstancia().getUltimoId(),
+				new Date(Calendar.getInstance().getTimeInMillis()),
+				null,
+				descripcionReclamo,
+				EstadosReclamo.INGRESADO,
+				cliente,
+				cantFaltante,
+				producto,
+				true);
+	}
+	
 	public int getCantFaltante() {
 		return cantFaltante;
 	}
