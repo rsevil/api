@@ -3,10 +3,7 @@ package interfaces;
 import java.util.Vector;
 import java.util.function.Function;
 
-import controlador.SistemaAdministracionReclamos;
-import negocio.Cliente;
 import negocio.Producto;
-import persistencia.ClienteMapper;
 import persistencia.FacturaMapper;
 import utils.Func;
 

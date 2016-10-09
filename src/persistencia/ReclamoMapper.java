@@ -1,7 +1,6 @@
 package persistencia;
 
 import java.sql.PreparedStatement;
-import java.util.Vector;
 
 import negocio.Reclamo;
 

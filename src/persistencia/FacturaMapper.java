@@ -3,7 +3,6 @@ import java.util.Vector;
 
 import interfaces.Factura;
 import interfaces.ItemFactura;
-import negocio.Usuario;
 
 public class FacturaMapper extends BaseMapper {
 

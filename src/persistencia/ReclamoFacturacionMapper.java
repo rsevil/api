@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import enums.EstadosReclamo;
 import negocio.DetalleReclamoFacturacion;
-import negocio.ReclamoCantidades;
 import negocio.ReclamoFacturacion;
 
 public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> {

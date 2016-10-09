@@ -154,7 +154,15 @@ public class SistemaAdministracionReclamos {
 		if (cliente == null)
 			return ExitCodes.NO_EXISTE_CLIENTE;
 		
-		return ExitCodes.OK;
+		Producto producto = this.buscarProducto(codProducto);
+		
+		if (producto == null)
+			return ExitCodes.NO_EXISTE_PRODUCTO;	
+		
+		ReclamoProducto r = new ReclamoProducto(descripcion, cliente, cant, producto);
+		
+		this.reclamos.add(r);
+		return r.getNroReclamo();
 	}
 	
 	public int registrarReclamoFaltante(int nroCliente, String descripcion, int codProducto, int cantFaltante, int numFactura) {
