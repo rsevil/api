@@ -21,6 +21,7 @@ public class ReclamoMapper<TReclamo extends Reclamo> extends BaseMapper {
 		s.setDate(i++, o.getFechaCierre());
 		s.setString(i++, o.getDescripcionReclamo());
 		s.setString(i++, o.getEstado());
+		s.setBoolean(i++, true);
 		s.setInt(i++, o.getCliente().getNroCliente());
 		return i++;
 	}

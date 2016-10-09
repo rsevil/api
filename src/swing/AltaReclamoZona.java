@@ -1,13 +1,23 @@
 package swing;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import controlador.SistemaAdministracionReclamos;
+import enums.ExitCodes;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
+import utils.NumeroUtils;
+import utils.TextoUtils;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -69,10 +79,6 @@ public class AltaReclamoZona extends javax.swing.JFrame {
 				getContentPane().add(txtNroCliente, new CellConstraints("4, 2, 1, 1, default, default"));
 			}
 			{
-				//txtDescripcion = new JTextArea();
-				//getContentPane().add(txtDescripcion, new CellConstraints("4, 4, 1, 1, default, default"));
-			}
-			{
 				txtZonaAfectada = new JTextField();
 				getContentPane().add(txtZonaAfectada, new CellConstraints("4, 6, 1, 1, default, default"));
 			}
@@ -80,6 +86,43 @@ public class AltaReclamoZona extends javax.swing.JFrame {
 				btnRegistrarReclamo = new JButton();
 				getContentPane().add(btnRegistrarReclamo, new CellConstraints("4, 8, 1, 1, default, default"));
 				btnRegistrarReclamo.setText("Registrar reclamo");
+				btnRegistrarReclamo.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{				
+						String nroCliente = txtNroCliente.getText(); 
+						String descripcion = txtDescripcion.getText(); 
+						String zona = txtZonaAfectada.getText();
+						
+						if (!TextoUtils.isNullOrEmpty(nroCliente) &&
+								!TextoUtils.isNullOrEmpty(descripcion) &&
+								!TextoUtils.isNullOrEmpty(zona)) {
+
+							if (!NumeroUtils.isInteger(txtNroCliente.getText())) {
+								JOptionPane.showMessageDialog(null, "El número de cliente es inválido.");
+							} else {								
+								int rdo = SistemaAdministracionReclamos.getInstancia().registrarReclamoZona(Integer.parseInt(nroCliente), descripcion, zona);
+								
+								String mensaje = "";
+								if (rdo > 0) {
+									mensaje = "El reclamo se ha registrado con éxito.";
+								} else  if (rdo == ExitCodes.NO_EXISTE_CLIENTE) {
+										mensaje = "No existe el cliente.";
+								}
+								
+								JOptionPane.showMessageDialog(null, mensaje);
+								if (rdo > 0){
+									txtNroCliente.setText("");
+									txtDescripcion.setText("");
+									txtZonaAfectada.setText("");
+								}
+							}
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Por favor, ingrese todos los datos.");
+						}
+					}
+				});
 			}
 			{
 				scrllTxtDescripcion = new JScrollPane();

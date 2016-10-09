@@ -14,9 +14,9 @@ import vista.*;
 
 public class SistemaAdministracionReclamos {
 	private static SistemaAdministracionReclamos instance;
-	private Vector<Cliente> clientes;
-	private Vector<Producto> productos;
-	private Vector<Reclamo> reclamos;
+	private Vector<Cliente> clientes = new Vector<Cliente>();
+	private Vector<Producto> productos = new Vector<Producto>();
+	private Vector<Reclamo> reclamos = new Vector<Reclamo>();
 	private Usuario usuarioLogueado;
 	
 	private SistemaAdministracionReclamos() {

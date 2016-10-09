@@ -22,7 +22,7 @@ public class Cliente {
 		this.domicilio = domicilio;
 		this.telefono = telefono;
 		this.mail = mail;
-		ClienteMapper.getInstancia().insert(this);
+		//ClienteMapper.getInstancia().insert(this);
 	}
 	
 	public int getNroCliente() {
