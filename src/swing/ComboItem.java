@@ -23,6 +23,7 @@ public class ComboItem<V, L> {
 	
 	public boolean equals(Object object)
 	{
+		@SuppressWarnings("unchecked")
 		ComboItem<V, L> item = (ComboItem<V, L>)object;
 		return this.value.equals(item.getValue());
 	}

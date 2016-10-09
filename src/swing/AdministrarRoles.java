@@ -48,6 +48,7 @@ public class AdministrarRoles extends javax.swing.JFrame {
 		super();
 		initGUI();
 		setLocationRelativeTo(null);
+		setResizable(false);
 	}
 	
 	private void initGUI() {

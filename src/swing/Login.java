@@ -47,7 +47,6 @@ public class Login extends javax.swing.JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Login inst = new Login();
-				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
@@ -56,6 +55,8 @@ public class Login extends javax.swing.JFrame {
 	public Login() {
 		super();
 		initGUI();
+		setLocationRelativeTo(null);
+		setResizable(false);
 	}
 	
 	private void initGUI() {

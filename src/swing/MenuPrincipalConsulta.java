@@ -11,6 +11,7 @@ public class MenuPrincipalConsulta extends javax.swing.JFrame {
 		initGUI();
 		setVisible(true);
 		setLocationRelativeTo(null);
+		setResizable(false);
 	}
 	
 	private void initGUI() {

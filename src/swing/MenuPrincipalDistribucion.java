@@ -11,6 +11,7 @@ public class MenuPrincipalDistribucion extends javax.swing.JFrame {
 		initGUI();
 		setVisible(true);
 		setLocationRelativeTo(null);
+		setResizable(false);
 	}
 	
 	private void initGUI() {

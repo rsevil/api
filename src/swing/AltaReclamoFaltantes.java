@@ -1,10 +1,6 @@
 package swing;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.WindowConstants;
-
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -18,15 +14,26 @@ import javax.swing.WindowConstants;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class MenuPrincipalAdmin extends javax.swing.JFrame {
+public class AltaReclamoFaltantes extends javax.swing.JFrame {
+
+	/**
+	* Auto-generated main method to display this JFrame
+	*/
+	/*public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				AltaReclamoFaltantes inst = new AltaReclamoFaltantes();
+				inst.setLocationRelativeTo(null);
+				inst.setVisible(true);
+			}
+		});
+	}*/
 	
 	private static final long serialVersionUID = 1L;
-	private JButton btnAdministrarRoles;
-
-	public MenuPrincipalAdmin() {
+	
+	public AltaReclamoFaltantes() {
 		super();
 		initGUI();
-		setVisible(true);
 		setLocationRelativeTo(null);
 		setResizable(false);
 	}
@@ -34,27 +41,12 @@ public class MenuPrincipalAdmin extends javax.swing.JFrame {
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			this.setTitle("Menú Administrador");
 			getContentPane().setBackground(new java.awt.Color(221,221,255));
-			getContentPane().setLayout(null);
-			{
-				btnAdministrarRoles = new JButton();
-				getContentPane().add(btnAdministrarRoles);
-				btnAdministrarRoles.setText("Administrar Roles");
-				btnAdministrarRoles.setBounds(12, 14, 300, 23);
-				btnAdministrarRoles.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent evt) 
-					{
-						AdministrarRoles a = new AdministrarRoles();
-						a.setVisible(true);
-					}
-				});
-			}
+			this.setTitle("Ingresar Reclamo de Faltantes");
 			pack();
 			setSize(400, 300);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

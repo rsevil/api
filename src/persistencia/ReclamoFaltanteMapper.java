@@ -1,6 +1,5 @@
 package persistencia;
 
-import negocio.ReclamoCantidades;
 import negocio.ReclamoFaltantes;
 
 public class ReclamoFaltanteMapper extends ReclamoMapper<ReclamoFaltantes> {
