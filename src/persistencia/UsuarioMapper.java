@@ -21,8 +21,8 @@ public class UsuarioMapper extends BaseMapper {
 	public void update(Usuario o) {
 		tryCommand("UPDATE dbo.Usuario "
 				+ "SET nombre = ?, "
-				+ "SET contrasenia = ?, "
-				+ "SET idRol = ? "
+				+ "contrasenia = ?, "
+				+ "idRol = ? "
 				+ "WHERE id = ? "
 				+ "AND activo = 1", s -> {
 			s.setString(1, o.getNombre());
@@ -58,13 +58,13 @@ public class UsuarioMapper extends BaseMapper {
 						rs.getInt("id"),
 						rs.getString("nombre"),
 						rs.getString("contrasenia"),
-						RolMapper.getInstancia().selectOne(rs.getInt("id")))
+						RolMapper.getInstancia().selectOne(rs.getInt("idRol")))
 				);
 	}
 	
 	public Vector<Usuario> selectAll() {
 		return tryQueryMany(
-				"select * from dbo.Usuario where activo = ?", 
+				"select * from dbo.Usuario where activo = ? order by nombre", 
 				s -> s.setBoolean(1, true), 
 				rs -> new Usuario(
 						rs.getInt("id"),

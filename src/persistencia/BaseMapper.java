@@ -22,9 +22,9 @@ public abstract class BaseMapper
 			PoolConnection.getPoolConnection().releaseConnection(c);
 		}
 		catch (Exception e)	{
-			//System.out.println(e.getClass());
-			//System.out.println(e.getMessage());
-			//e.printStackTrace();
+			System.out.println(e.getClass());
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	

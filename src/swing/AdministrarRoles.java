@@ -40,6 +40,9 @@ public class AdministrarRoles extends javax.swing.JFrame {
 	private JLabel lblRol;
 	private JLabel lblUsuario;
 	private Canvas canvas;
+	
+	private Vector<UsuarioView> usuariosView;
+	private Vector<RolView> rolesView;
 
 	public AdministrarRoles() {
 		super();
@@ -71,7 +74,7 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				lblRol.setText("Rol");
 			}
 			{
-				Vector<UsuarioView> usuariosView = SistemaAdministracionReclamos.getInstancia().listarUsuarios();
+				this.usuariosView = SistemaAdministracionReclamos.getInstancia().listarUsuarios();
 				Vector<ComboItem<Integer, String>> itemsUsuarios;
 				cmbUsuario = new JComboBox<ComboItem<Integer, String>>();
 				if (usuariosView != null && usuariosView.size() > 0) {
@@ -87,9 +90,37 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				}
 				
 				getContentPane().add(cmbUsuario, new CellConstraints("4, 2, 1, 1, default, default"));
+				
+				cmbUsuario.addActionListener(new ActionListener()
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						ComboItem<Integer, String> usuarioSeleccionado = (ComboItem<Integer, String>)cmbUsuario.getSelectedItem(); 
+						ComboItem<Integer, String> rolASeleccionar; 
+						
+						if (usuarioSeleccionado.getValue() != 0) {
+							for (UsuarioView uv : usuariosView) {
+								if (uv.getId() == usuarioSeleccionado.getValue()) {
+							        for (int i = 0; i < cmbRol.getItemCount(); i++)
+							        {
+							            rolASeleccionar = (ComboItem<Integer, String>)cmbRol.getItemAt(i);
+							            if (rolASeleccionar.getValue() == uv.getRolView().getId())
+							            {
+							            	cmbRol.setSelectedItem(rolASeleccionar);
+							                break;
+							            }
+							        }
+								}
+							}
+						}
+						else {
+							cmbRol.setSelectedIndex(0);
+						}
+					}
+				});
 			}
 			{
-				Vector<RolView> rolesView = SistemaAdministracionReclamos.getInstancia().listarRoles();
+				this.rolesView = SistemaAdministracionReclamos.getInstancia().listarRoles();
 				Vector<ComboItem<Integer, String>> itemsRoles;
 				cmbRol = new JComboBox<ComboItem<Integer, String>>();
 				if (rolesView  != null && rolesView.size() > 0) {
@@ -114,26 +145,34 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						int rdo = SistemaAdministracionReclamos.getInstancia().asignarRol(((ComboItem<Integer, String>)cmbUsuario.getSelectedItem()).getValue(), ((ComboItem<Integer, String>)cmbRol.getSelectedItem()).getValue());					
-						String mensaje = "";
-						switch(rdo) {
-							case ExitCodes.OK: {
-								mensaje = "El rol se ha asignado con exito.";
-								break;
+						ComboItem<Integer, String> usuarioSeleccionado = (ComboItem<Integer, String>)cmbUsuario.getSelectedItem(); 
+						ComboItem<Integer, String> rolSeleccionado = (ComboItem<Integer, String>)cmbRol.getSelectedItem();
+						
+						if (usuarioSeleccionado.getValue() != 0 && rolSeleccionado.getValue() != 0) {
+							int rdo = SistemaAdministracionReclamos.getInstancia().asignarRol(usuarioSeleccionado.getValue(), rolSeleccionado.getValue());					
+							String mensaje = "";
+							switch(rdo) {
+								case ExitCodes.OK: {
+									mensaje = "El rol se ha asignado con exito.";
+									break;
+								}
+								case ExitCodes.ERROR_GENERICO: {
+									mensaje = "Hubo un error al asignar el rol.";
+									break;
+								}
+								default: {
+									break;
+								}
 							}
-							case ExitCodes.ERROR_GENERICO: {
-								mensaje = "Hubo un error al asignar el rol.";
-								break;
-							}
-							default: {
-								break;
+							
+							JOptionPane.showMessageDialog(null, mensaje);
+							if (rdo == ExitCodes.OK){
+								cmbUsuario.setSelectedIndex(0);
+								cmbRol.setSelectedIndex(0);
 							}
 						}
-						
-						JOptionPane.showMessageDialog(null, mensaje);
-						if (rdo == ExitCodes.OK){
-							cmbUsuario.setSelectedIndex(0);
-							cmbRol.setSelectedIndex(0);
+						else {
+							JOptionPane.showMessageDialog(null, "Por favor, seleccione un usuario y un rol.");
 						}
 					}
 				});

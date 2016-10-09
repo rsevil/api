@@ -35,7 +35,7 @@ public class RolMapper extends BaseMapper {
 	
 	public Vector<Rol> selectAll() {
 		return tryQueryMany(
-				"select * from dbo.Rol where activo = ?", 
+				"select * from dbo.Rol where activo = ? order by nombre", 
 				s -> s.setBoolean(1, true), 
 				rs -> new Rol(
 						rs.getInt("id"), 

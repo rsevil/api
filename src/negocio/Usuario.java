@@ -19,6 +19,7 @@ public class Usuario {
 		this.id = id;
 		this.nombre = nombre;
 		this.contrasenia = contrasenia;
+		this.rol = rol;
 	}
 	
 	public int getId() {
