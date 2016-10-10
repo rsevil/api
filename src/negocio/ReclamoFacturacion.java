@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import persistencia.ReclamoFacturacionMapper;
-import persistencia.ReclamoMapper;
+import persistencia.BaseReclamoMapper;
 import enums.EstadosReclamo;
 
 public class ReclamoFacturacion extends Reclamo {
@@ -54,7 +54,7 @@ public class ReclamoFacturacion extends Reclamo {
 				descripcionReclamo,
 				EstadosReclamo.INGRESADO,
 				cliente,
-				null,
+				new Vector<DetalleReclamoFacturacion>(),
 				true);
 	}
 	

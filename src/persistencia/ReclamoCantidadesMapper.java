@@ -7,7 +7,7 @@ import negocio.DetalleReclamoFacturacion;
 import negocio.ItemReclamoCantidad;
 import negocio.ReclamoCantidades;
 
-public class ReclamoCantidadesMapper extends ReclamoMapper<ReclamoCantidades> {
+public class ReclamoCantidadesMapper extends BaseReclamoMapper<ReclamoCantidades> {
 
 	private static ReclamoCantidadesMapper instance;
 	

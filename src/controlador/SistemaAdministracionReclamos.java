@@ -197,6 +197,38 @@ public class SistemaAdministracionReclamos {
 		return ExitCodes.OK;
 	}
 	
+	public int registrarReclamoCompuesto(int nroCliente, String descripcion){
+		Cliente cliente = this.buscarCliente(nroCliente);
+		
+		if (cliente == null)
+			return ExitCodes.NO_EXISTE_CLIENTE;
+		
+		ReclamoCompuesto r = new ReclamoCompuesto(descripcion, cliente);
+		
+		this.reclamos.add(r);
+		return r.getNroReclamo(); 
+	}
+	
+	public int agregarReclamoReclamoCompuesto(int nroReclamoCompuesto, int nroReclamo){
+		ReclamoCompuesto reclamoCompuesto = this.buscarReclamoCompuesto(nroReclamoCompuesto);
+		
+		if (reclamoCompuesto == null)
+			return ExitCodes.NO_EXISTE_RECLAMO;
+		
+		Reclamo reclamo = this.buscarReclamo(nroReclamo, () -> ReclamoMapper.getInstancia().selectOne(nroReclamo));
+		
+		if (reclamo == null)
+			return ExitCodes.NO_EXISTE_RECLAMO;
+		
+		reclamoCompuesto.agregarReclamo(reclamo);
+		
+		return ExitCodes.OK;
+	}
+	
+	private ReclamoCompuesto buscarReclamoCompuesto(int nroReclamoCompuesto) {
+		return this.buscarReclamo(nroReclamoCompuesto, () -> ReclamoCompuestoMapper.getInstancia().selectOne(nroReclamoCompuesto));
+	}
+
 	private <T> T buscar(Vector<T> cache, Function<T, Boolean> predicate, Func<T> getter) {
 		for (T c : cache){
 			if (predicate.apply(c)){

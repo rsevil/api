@@ -10,9 +10,6 @@ import persistencia.ReclamoCantidadesMapper;
 
 public class ReclamoCantidades extends Reclamo {
 	
-//	private int cantidad;
-//	private Producto producto;
-	
 	private Vector<ItemReclamoCantidad> items;
 	
 	private ReclamoCantidades(
@@ -51,7 +48,7 @@ public class ReclamoCantidades extends Reclamo {
 				descripcionReclamo,
 				EstadosReclamo.INGRESADO,
 				cliente,
-				null,
+				new Vector<ItemReclamoCantidad>(),
 				true); 
 	}
 	

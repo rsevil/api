@@ -10,7 +10,7 @@ import negocio.ReclamoFacturacion;
 import negocio.ReclamoFaltantes;
 import negocio.ReclamoProducto;
 
-public class ReclamoCompuestoMapper extends ReclamoMapper<ReclamoCompuesto> {
+public class ReclamoCompuestoMapper extends BaseReclamoMapper<ReclamoCompuesto> {
 
 	private static ReclamoCompuestoMapper instance;
 	
@@ -104,25 +104,10 @@ public class ReclamoCompuestoMapper extends ReclamoMapper<ReclamoCompuesto> {
 				+ "r.tipoReclamo "
 				+ "FROM dbo.ReclamoCompuestoReclamoSimple rs"
 				+ "JOIN dbo.Reclamo r ON r.nroReclamo = rs.nroReclamo"
-				+ "where rs.nroReclamoCompuesto = ?",
+				+ "WHERE rs.nroReclamoCompuesto = ?",
 				s -> s.setInt(1, nroReclamoCompuesto),
 				rs -> {
-					int nroReclamo = rs.getInt("nroReclamo");
-					String tipoReclamo = rs.getString("tipoReclamo");
-					if (tipoReclamo == ReclamoCantidades.class.getSimpleName())
-						return ReclamoCantidadesMapper.getInstancia().selectOne(nroReclamo);
-					else if (tipoReclamo == ReclamoCompuesto.class.getSimpleName())
-						return ReclamoCompuestoMapper.getInstancia().selectOne(nroReclamo);
-					else if (tipoReclamo == ReclamoFacturacion.class.getSimpleName())
-						return ReclamoFacturacionMapper.getInstancia().selectOne(nroReclamo);
-					else if (tipoReclamo == ReclamoFaltantes.class.getSimpleName())
-						return ReclamoFaltanteMapper.getInstancia().selectOne(nroReclamo);
-					else if (tipoReclamo == ReclamoProducto.class.getSimpleName())
-						return ReclamoProductoMapper.getInstancia().selectOne(nroReclamo);
-					else {
-						System.out.println("Tipo de reclamo no reconocido: '" + tipoReclamo + "' id: '" + nroReclamo + "'");
-						return null;
-					}
+					return ReclamoMapper.getInstancia().buildReclamo(rs.getInt("nroReclamo"), rs.getString("tipoReclamo"));
 				});
 	}
 	

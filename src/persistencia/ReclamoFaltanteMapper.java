@@ -3,7 +3,7 @@ package persistencia;
 import enums.EstadosReclamo;
 import negocio.ReclamoFaltantes;
 
-public class ReclamoFaltanteMapper extends ReclamoMapper<ReclamoFaltantes> {
+public class ReclamoFaltanteMapper extends BaseReclamoMapper<ReclamoFaltantes> {
 
 	private static ReclamoFaltanteMapper instance;
 	

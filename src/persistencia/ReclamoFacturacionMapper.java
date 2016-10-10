@@ -6,7 +6,7 @@ import enums.EstadosReclamo;
 import negocio.DetalleReclamoFacturacion;
 import negocio.ReclamoFacturacion;
 
-public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> {
+public class ReclamoFacturacionMapper extends BaseReclamoMapper<ReclamoFacturacion> {
 
 	private static ReclamoFacturacionMapper instance;
 	
