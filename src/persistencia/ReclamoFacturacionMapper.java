@@ -86,8 +86,10 @@ public class ReclamoFacturacionMapper extends ReclamoMapper<ReclamoFacturacion> 
 	}
 	
 	private void insertDetalles(ReclamoFacturacion o){
-		for(DetalleReclamoFacturacion detalle : o.getDetalles())
-			insertDetalle(o,detalle);
+		if (o.getDetalles() != null && o.getDetalles().size() > 0) {
+			for(DetalleReclamoFacturacion detalle : o.getDetalles())
+				insertDetalle(o,detalle);
+		}
 	}
 	
 	public void insertDetalle(ReclamoFacturacion o, DetalleReclamoFacturacion detalle){

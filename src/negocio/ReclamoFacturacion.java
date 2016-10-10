@@ -22,7 +22,13 @@ public class ReclamoFacturacion extends Reclamo {
 			Vector<DetalleReclamoFacturacion> detalles,
 			boolean persistir) {
 		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
-		this.detalles = detalles;
+		
+		if (detalles == null) {
+			this.detalles = new Vector<DetalleReclamoFacturacion>();
+		}
+		else {
+			this.detalles = detalles;
+		}
 		
 		if (persistir)
 			ReclamoFacturacionMapper.getInstancia().insert(this);
