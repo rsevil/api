@@ -47,4 +47,21 @@ public class FacturaMapper extends BaseMapper {
 						rs.getInt("cantidad"),
 						rs.getFloat("precio")));
 	}
+	
+	public Factura selectOneByIdAndCliente(int idFactura, int nroCliente) {
+		return tryQuery(
+				"SELECT * "
+				+ "FROM dbo.Factura "
+				+ "WHERE idFactura = ?"
+				+ "AND nroCliente = ? "
+				+ "AND activo = 1", 
+				s -> { s.setInt(1, idFactura); s.setInt(1, nroCliente); }, 
+				rs -> {
+					return new Factura(
+						rs.getInt("idFactura"),
+						rs.getInt("nroCliente"),
+						rs.getDate("fecha"),
+						getItems(idFactura));
+				});
+	}
 }

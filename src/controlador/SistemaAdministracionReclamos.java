@@ -202,9 +202,38 @@ public class SistemaAdministracionReclamos {
 		return ExitCodes.OK;
 	}
 	
-	public int registrarReclamoFacturacion(int nroCliente) {
+	public int registrarReclamoFacturacion(int nroCliente, String descripcion) {
 		Cliente cliente = this.buscarCliente(nroCliente);
+		
+		if (cliente == null)
+			return ExitCodes.NO_EXISTE_CLIENTE;
+		
+		ReclamoFacturacion r = new ReclamoFacturacion(descripcion, cliente);
+		
+		this.reclamos.add(r);
+		return r.getNroReclamo();
+	}
+	
+	public int agregarDetalleReclamoFacturacion(int nroReclamo, String detalle, int nroFactura) {
+		ReclamoFacturacion reclamo = (ReclamoFacturacion)buscarReclamoFacturacion(nroReclamo);
+		
+		if (reclamo == null)
+			return ExitCodes.NO_EXISTE_RECLAMO;
+		
+		if (SistemaFacturacion.getInstancia().facturaEsDeEsteCliente(nroFactura, reclamo.getCliente().getNroCliente())) {
+			reclamo.agregarDetalle(nroFactura, detalle);
+		} else {
+			return ExitCodes.FALLA_RECLAMO_DETALLE_FACTURACION;
+		}
+		
 		return ExitCodes.OK;
+	}
+		
+	private Reclamo buscarReclamoFacturacion(int nroReclamo) {
+		return buscar(
+				reclamos,
+				r -> r.sosReclamo(nroReclamo), 
+				() -> ReclamoFacturacionMapper.getInstancia().selectOne(nroReclamo));
 	}
 	
 	private Reclamo buscarReclamo(int nroReclamo) {

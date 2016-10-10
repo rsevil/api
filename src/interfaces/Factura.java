@@ -36,4 +36,8 @@ public class Factura {
 		
 		return false;
 	}
+	
+	public boolean sosDeEsteCliente(int nroCliente) {
+		return this.nroCliente == nroCliente;
+	}
 }
