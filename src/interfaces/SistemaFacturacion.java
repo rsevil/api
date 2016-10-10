@@ -26,8 +26,8 @@ public class SistemaFacturacion {
 	}
 	
 	public boolean facturaEsDeEsteCliente(int nroFactura, int nroCliente) {
-		Factura f = buscarFacturaCliente(nroFactura, nroCliente);
-		return f != null;
+		Factura f = buscarFactura(nroFactura);
+		return f != null && f.sosDeEsteCliente(nroCliente);
 	}
 	
 	private Factura buscarFactura(int nroFactura) {
@@ -35,13 +35,6 @@ public class SistemaFacturacion {
 				facturas,
 				c -> c.sosFactura(nroFactura),
 				() -> FacturaMapper.getInstancia().selectOne(nroFactura));
-	}
-	
-	private Factura buscarFacturaCliente(int nroFactura, int nroCliente) {
-		return buscar(
-				facturas,
-				c -> c.sosDeEsteCliente(nroCliente),
-				() -> FacturaMapper.getInstancia().selectOneByIdAndCliente(nroFactura, nroCliente));
 	}
 	
 	private <T> T buscar(Vector<T> cache, Function<T, Boolean> predicate, Func<T> getter) {

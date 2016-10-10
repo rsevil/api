@@ -11,7 +11,7 @@ public class ReclamoFaltantes extends Reclamo {
 	private int cantFaltante;
 	private Producto producto;
 
-	public ReclamoFaltantes(
+	private ReclamoFaltantes(
 			int nroReclamo, 
 			Date fecha, 
 			Date fechaCierre,

@@ -8,7 +8,22 @@ public class ReclamoCantidades extends Reclamo {
 	
 	private int cantidad;
 	private Producto producto;
-		
+	
+	private ReclamoCantidades(
+			int nroReclamo, 
+			Date fecha, 
+			Date fechaCierre,
+			String descripcionReclamo, 
+			EstadosReclamo estado, 
+			Cliente cliente, 
+			int cantidad,
+			Producto producto, 
+			boolean persistir) {
+		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
+		this.cantidad = cantidad;
+		this.producto = producto;
+	}
+	
 	public ReclamoCantidades(
 			int nroReclamo, 
 			Date fecha, 
@@ -18,9 +33,7 @@ public class ReclamoCantidades extends Reclamo {
 			Cliente cliente, 
 			int cantidad,
 			Producto producto) {
-		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
-		this.cantidad = cantidad;
-		this.producto = producto;
+		this(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente, cantidad, producto, false);
 	}
 	
 	public Producto getProducto() {

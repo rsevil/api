@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import persistencia.ReclamoFacturacionMapper;
+import persistencia.ReclamoMapper;
 import enums.EstadosReclamo;
 
 public class ReclamoFacturacion extends Reclamo {
@@ -60,6 +61,10 @@ public class ReclamoFacturacion extends Reclamo {
 	}
 
 	public void agregarDetalle(int nroFactura, String detalle) {
-		this.detalles.addElement(new DetalleReclamoFacturacion(detalle, nroFactura));
+		DetalleReclamoFacturacion detalleFacturacion = new DetalleReclamoFacturacion(detalle, nroFactura);
+		this.detalles.addElement(detalleFacturacion);
+		
+		//Como ReclamoFacturacion es el Componente es el que se encarga de persistir a los items
+		ReclamoFacturacionMapper.getInstancia().insertDetalle(this, detalleFacturacion);
 	}
 }

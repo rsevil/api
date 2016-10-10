@@ -20,7 +20,6 @@ public class SistemaAdministracionReclamos {
 	private Usuario usuarioLogueado;
 	
 	private SistemaAdministracionReclamos() {
-	
 	}
 	
 	public static SistemaAdministracionReclamos getInstancia()
@@ -85,18 +84,17 @@ public class SistemaAdministracionReclamos {
 	public int asignarRol(int idUsuario, int idRol) {
 		Usuario usuario = UsuarioMapper.getInstancia().selectById(idUsuario);
 		
-		if (usuario != null) {
-			Rol rol = RolMapper.getInstancia().selectOne(idRol);
+		if (usuario == null)
+			return ExitCodes.ERROR_GENERICO;
+		
+		Rol rol = RolMapper.getInstancia().selectOne(idRol);
 			
-			if (rol != null) {
-				usuario.setRol(rol);
-				usuario.update();
-			}
-			
-			return ExitCodes.OK;
+		if (rol != null) {
+			usuario.setRol(rol);
+			usuario.update();
 		}
 		
-		return ExitCodes.ERROR_GENERICO;
+		return ExitCodes.OK;
 	}
 	
 	public void addObserver(Observer o) {
@@ -220,23 +218,18 @@ public class SistemaAdministracionReclamos {
 		if (reclamo == null)
 			return ExitCodes.NO_EXISTE_RECLAMO;
 		
-		if (SistemaFacturacion.getInstancia().facturaEsDeEsteCliente(nroFactura, reclamo.getCliente().getNroCliente())) {
-			reclamo.agregarDetalle(nroFactura, detalle);
-		} else {
+		if (!SistemaFacturacion.getInstancia().facturaEsDeEsteCliente(nroFactura, reclamo.getCliente().getNroCliente()))
 			return ExitCodes.FALLA_RECLAMO_DETALLE_FACTURACION;
-		}
+
+		reclamo.agregarDetalle(nroFactura, detalle);
 		
 		return ExitCodes.OK;
 	}
 		
-	private Reclamo buscarReclamoFacturacion(int nroReclamo) {
-		return buscar(
+	private ReclamoFacturacion buscarReclamoFacturacion(int nroReclamo) {
+		return (ReclamoFacturacion)buscar(
 				reclamos,
 				r -> r.sosReclamo(nroReclamo), 
 				() -> ReclamoFacturacionMapper.getInstancia().selectOne(nroReclamo));
-	}
-	
-	private Reclamo buscarReclamo(int nroReclamo) {
-		return null;
 	}
 }
