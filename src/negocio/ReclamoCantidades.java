@@ -1,13 +1,19 @@
 package negocio;
 
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.Vector;
 
 import enums.EstadosReclamo;
+import enums.ExitCodes;
+import persistencia.ReclamoCantidadesMapper;
 
 public class ReclamoCantidades extends Reclamo {
 	
-	private int cantidad;
-	private Producto producto;
+//	private int cantidad;
+//	private Producto producto;
+	
+	private Vector<ItemReclamoCantidad> items;
 	
 	private ReclamoCantidades(
 			int nroReclamo, 
@@ -16,12 +22,13 @@ public class ReclamoCantidades extends Reclamo {
 			String descripcionReclamo, 
 			EstadosReclamo estado, 
 			Cliente cliente, 
-			int cantidad,
-			Producto producto, 
+			Vector<ItemReclamoCantidad> items,
 			boolean persistir) {
 		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
-		this.cantidad = cantidad;
-		this.producto = producto;
+		this.items = items;
+		
+		if (persistir)
+			ReclamoCantidadesMapper.getInstancia().insert(this);
 	}
 	
 	public ReclamoCantidades(
@@ -31,24 +38,41 @@ public class ReclamoCantidades extends Reclamo {
 			String descripcionReclamo, 
 			EstadosReclamo estado, 
 			Cliente cliente, 
-			int cantidad,
-			Producto producto) {
-		this(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente, cantidad, producto, false);
+			Vector<ItemReclamoCantidad> items) {
+		this(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente, items, false);
 	}
 	
-	public Producto getProducto() {
-		return producto;
+	public ReclamoCantidades(
+			String descripcionReclamo,
+			Cliente cliente){
+		this(ReclamoCantidadesMapper.getInstancia().getUltimoId(),
+				new Date(Calendar.getInstance().getTimeInMillis()),
+				null,
+				descripcionReclamo,
+				EstadosReclamo.INGRESADO,
+				cliente,
+				null,
+				true); 
 	}
 	
-	public void setProducto(Producto producto) {
-		this.producto = producto;
+	public void agregarProducto(Producto producto, int cantidad){
+		if (cantidad < 1){
+			// QUE HACEMOS??		
+		}
+		
+		ItemReclamoCantidad item = null;
+		for(ItemReclamoCantidad i : items)
+			if (i.getProducto().sosProducto(producto.getCodigoProducto()))
+				item = i;
+		
+		if (item == null){
+			item = new ItemReclamoCantidad(cantidad, producto);
+			this.items.add(item);
+			ReclamoCantidadesMapper.getInstancia().insertItemReclamoCantidad(this, item);
+		}else{ //si se llama a agregarProducto de nuevo, se agrega la cantidad al item
+			item.agregarCantidad(cantidad);
+			ReclamoCantidadesMapper.getInstancia().updateItemReclamoCantidad(this, item);
+		}
+				
 	}
-	
-	public int getCantidad() {
-		return cantidad;
-	}
-	
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}		
 }
