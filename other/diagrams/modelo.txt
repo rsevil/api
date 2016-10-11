@@ -65,7 +65,7 @@ class Producto {;
 	+boolean sosProducto(int codigoProducto);
 };
 
-{abstract} class Reclamo {;
+abstract class Reclamo {;
 	-int nroReclamo;
 	-Date fecha;
 	-Date fechaCierre;
