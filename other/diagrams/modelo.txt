@@ -1,0 +1,174 @@
+http://g.gravizo.com/g?
+@startuml;
+
+class Cliente {;
+	-int nroCliente;
+	-String nombre;
+	-String domicilio;
+	-String telefono;
+	-String mail;
+	
+	+int getNroCliente();
+	+void setNroCliente(int nroCliente);
+	+String getNombre();
+	+void setNombre(String nombre);
+	+String getDomicilio();
+	+void setDomicilio(String domicilio);
+	+String getTelefono();
+	+void setTelefono(String telefono);
+	+String getMail();
+	+void setMail(String mail);
+	+boolean sosCliente(int nroCliente);
+};
+
+class DetalleReclamoFacturacion {;	
+	-String detalle;
+	-int idFactura;
+	
+	+DetalleReclamoFacturacion(String detalle, int idFactura);
+	+String getDetalle();
+	+void setDetalle(String detalle);
+	+int getNumFactura();
+	+void setNumFactura(int idFactura);
+};
+
+class ItemReclamoCantidad {;
+	-int cantidad;
+	
+	+ItemReclamoCantidad(int cantidad,Producto producto);
+	+int getCantidad();
+	+void setCantidad(int cantidad);
+	+Producto getProducto();
+	+void agregarCantidad(int cantidad);
+};
+
+class Producto {;
+	private int codigoProducto;
+	private String codigoPublicacion;
+	private String titulo;
+	private String descripcion;
+	private float precio;
+	
+	public Producto(int idProducto,String codigoPublicacion, String titulo,String descripcion, float precio, boolean persistir);
+	public Producto(int idProducto,String codigoPublicacion, String titulo,String descripcion, float precio);
+	public Producto(String codigoPublicacion, String titulo,String descripcion, float precio);
+	
+	public int getCodigoProducto();
+	public String getCodigoPublicacion();
+	public void setCodigoPublicacion(String codigoPublicacion);
+	public String getTitulo();
+	public void setTitulo(String titulo);
+	public String getDescripcion();
+	public void setDescripcion(String descripcion);
+	public float getPrecio();
+	public void setPrecio(float precio);
+	public boolean sosProducto(int codigoProducto);
+};
+
+{abstract} class Reclamo {;
+	private int nroReclamo;
+	private Date fecha;
+	private Date fechaCierre;
+	private String descripcionReclamo;
+	private String estado;
+	
+	protected Reclamo(int numReclamo, Date fecha, Date fechaCierre,String descripcionReclamo,EstadosReclamo estado,Cliente cliente);
+	
+	public Date getFecha();
+	public void setFecha(Date fecha);
+	public int getNroReclamo();
+	public void setNumReclamo(int numReclamo);
+	public Cliente getCliente();
+	public void setCliente(Cliente cliente);
+	public String getDescripcionReclamo();
+	public void setDescripcionReclamo(String descripcionReclamo);
+	public String getEstado();
+	public void setEstado(String estado);
+	public Date getFechaCierre();
+	public void setFechaCierre(Date fechaCierre);
+	public boolean sosReclamo(int nroReclamo);
+};
+
+class ReclamoCantidades {;
+	private ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items,boolean persistir);blic ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items);
+	public ReclamoCantidades(String descripcionReclamo,Cliente cliente);
+	
+	public void agregarProducto(Producto producto, int cantidad);
+};
+
+class ReclamoCompuesto {;
+	private ReclamoCompuesto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<Reclamo> reclamos,boolean persistir);ublic ReclamoCompuesto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<Reclamo> reclamos);
+	public ReclamoCompuesto(String descripcionReclamo,Cliente cliente);
+	
+	public Vector<Reclamo> getReclamos();
+	public void setReclamos(Vector<Reclamo> reclamos);
+	public void agregarReclamo(Reclamo r);
+}
+
+class ReclamoFacturacion{;
+	private ReclamoFacturacion(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<DetalleReclamoFacturacion> detalles,boolean persistir);
+	public ReclamoFacturacion(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<DetalleReclamoFacturacion> detalles);
+	public ReclamoFacturacion(String descripcionReclamo,Cliente cliente);
+	
+	public Vector<DetalleReclamoFacturacion> getDetalles();
+	public void setDetalles(Vector<DetalleReclamoFacturacion> detalles);
+	public void agregarDetalle(int nroFactura, String detalle);
+};
+
+class ReclamoFaltantes {;
+	private int cantFaltante;
+
+	private ReclamoFaltantes(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,int cantFaltante,Producto producto,boolean persistir);
+	public ReclamoFaltantes(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,int cantFaltante,Producto producto);
+	public ReclamoFaltantes(String descripcionReclamo,Cliente cliente,int cantFaltante,Producto producto);
+	
+	public int getCantFaltante();
+	public void setCantFaltante(int cantFaltante);
+	public Producto getProducto();
+	public void setProducto(Producto producto);
+};
+
+class ReclamoProducto {;
+	private int cantidad;
+	
+	private ReclamoProducto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, int cantidad,Producto producto,boolean persistir);
+	public ReclamoProducto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,int cantidad,Producto producto);
+	public ReclamoProducto(String descripcionReclamo,Cliente cliente,int cantidad,Producto producto);
+	
+	public Producto getProducto();
+	public void setProducto(Producto producto);
+	public int getCantidad();
+	public void setCantidad(int cantidad);
+};
+
+class ReclamoZona {;
+	private String zonaAfectada;
+
+	private ReclamoZona(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,String zonaAfectada,boolean persistir);
+	public ReclamoZona(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,String zonaAfectada);
+	public ReclamoZona(String descripcionReclamo,Cliente cliente,String zonaAfectada);
+
+	public String getZonaAfectada();
+	public void setZonaAfectada(String zonaAfectada);
+};
+
+class Rol {;
+	private int id;
+	private String nombre;
+	private String descripcion;
+	private String vista;
+	
+	public Rol(int id, String nombre, String descripcion, String vista);
+	
+	public int getId();
+	public String getNombre();
+	public void setNombre(String nombre);
+	public String getDescripcion();
+	public void setDescripcion(String descripcion);
+	public String getVista();
+	public void setVista(String vista);
+	public RolView getView();
+};
+
+
+@enduml;
