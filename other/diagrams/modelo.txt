@@ -90,14 +90,16 @@ abstract class Reclamo {;
 };
 
 class ReclamoCantidades {;
-	-ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items,boolean persistir);blic ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items);
+	-ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items,boolean persistir);
+	+ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items);
 	+ReclamoCantidades(String descripcionReclamo,Cliente cliente);
 	
 	+void agregarProducto(Producto producto, int cantidad);
 };
 
 class ReclamoCompuesto {;
-	-ReclamoCompuesto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<Reclamo> reclamos,boolean persistir);ublic ReclamoCompuesto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<Reclamo> reclamos);
+	-ReclamoCompuesto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<Reclamo> reclamos,boolean persistir);
+	+ReclamoCompuesto(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<Reclamo> reclamos);
 	+ReclamoCompuesto(String descripcionReclamo,Cliente cliente);
 	
 	+Vector<Reclamo> getReclamos();
