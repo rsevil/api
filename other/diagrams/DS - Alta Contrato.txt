@@ -1,0 +1,110 @@
+@startuml;
+
+actor EjecutivoDeCuentas;
+participant "SistemaAdministracionDeCocheras" as A;
+participant "c: Cliente" as C;
+participant "ContratoCheque" as D;
+participant "ContratoEfectivo" as E;
+participant "ContratoCBU" as F;
+participant "ContratoCredito" as G;
+participant "Contrato" as B;
+
+EjecutivoDeCuentas -> A: iniciarAltaContrato();
+activate A;
+
+A -> A : clientesView = construirViewsCliente(clientesActivos);
+
+EjecutivoDeCuentas <-- A: clientesView;
+deactivate A;
+
+EjecutivoDeCuentas -> A: elegirCliente(dni: String);
+activate A;
+A -> A : clienteActual = buscarCliente(dni);
+
+alt clienteActual != null;
+	
+	A -> C : vehiculos = getVehiculos();
+	A -> A : vehiculosView = construirViewsVehiculos(vehiculos);
+	EjecutivoDeCuentas <-- A: vehiculosView;
+	deactivate A;
+	
+	EjecutivoDeCuentas -> A: elegirVehiculo(codigoVehiculo: int);
+	activate A;
+	A -> A : vehiculoActual = buscarVehiculo(codigoVehiculo);
+	
+	alt vehiculoActual != null;
+		A -> A : cocherasView = construirViewsCocheras(cocherasDisponibles);
+		EjecutivoDeCuentas <-- A: cocherasView;
+		deactivate A;
+		
+		EjecutivoDeCuentas -> A: elegirCochera(numero: String);
+		activate A;
+		A -> A : cocheraActual = buscarCochera(numero);
+		A -> A : abonosView = construirViewsAbonos(abonos);
+		EjecutivoDeCuentas <-- A: abonosView;
+		deactivate A;
+		
+		EjecutivoDeCuentas -> A: elegirAbono(nombre: String);
+		activate A;
+		A -> A : abonoActual = buscarAbono(nombre);
+		EjecutivoDeCuentas <-- A: ;
+		deactivate A;
+		
+		EjecutivoDeCuentas -> A: crearContratoCheque(descripcion: String);
+		activate A;
+		A -> D: contratoActual = ContratoCheque(descripcion);
+		activate D;
+		activate B;
+		D -> B: contratoActual = Contrato(descripcion);
+		B -> B: fecha = Date();
+		B -> B: estado = true;
+		deactivate B;
+		deactivate D;
+		A -> A : add(contratoActual);
+		A -> A : resetVariables(contratoActual);
+		deactivate A;
+		
+		EjecutivoDeCuentas -> A: crearContratoEfectivo(descripcion: String);
+		activate A;
+		A -> E: contratoActual = ContratoEfectivo(descripcion);
+		activate E;
+		activate B;
+		E -> B: contratoActual = Contrato(descripcion);
+		B -> B: fecha = Date();
+		B -> B: estado = true;
+		deactivate B;
+		deactivate E;
+		A -> A : add(contratoActual);
+		A -> A : resetVariables(contratoActual);
+		deactivate A;
+		
+		EjecutivoDeCuentas -> A: crearContratoCBU(descripcion: String, cbu : String);
+		activate A;
+		A -> F: contratoActual = ContratoCBU(descripcion, cbu);
+		activate F;
+		activate B;
+		F -> B: contratoActual = Contrato(descripcion);
+		B -> B: fecha = Date();
+		B -> B: estado = true;
+		deactivate B;
+		deactivate F;
+		A -> A : add(contratoActual);
+		A -> A : resetVariables(contratoActual);
+		deactivate A;
+		
+		EjecutivoDeCuentas -> A: crearContratoCredito(descripcion: String, tarjeta : int, codigo : int, vencimiento : Date);
+		activate A;
+		A -> G: contratoActual = ContratoCredito(descripcion, tarjeta, codigo, vencimiento);
+		activate G;
+		activate B;
+		G -> B: contratoActual = Contrato(descripcion);
+		B -> B: fecha = Date();
+		B -> B: estado = true;
+		deactivate B;
+		deactivate G;
+		A -> A : add(contratoActual);
+		A -> A : resetVariables(contratoActual);
+		deactivate A;
+	end;
+end;
+@enduml
