@@ -11,6 +11,15 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 
 private static ReclamoMapper instance;
 	
+
+private static final String RECLAMO_CANTIDADES = "ReclamoCantidades";
+private static final String RECLAMO_COMPUESTO = "ReclamoCompuesto";
+private static final String RECLAMO_FACTURACION = "ReclamoFacturacion";
+private static final String RECLAMO_FALTANTES = "ReclamoFaltantes";
+private static final String RECLAMO_PRODUCTO = "ReclamoProducto";
+
+
+
 	private ReclamoMapper() {
 		super(Reclamo.class);
 	}
@@ -34,20 +43,40 @@ private static ReclamoMapper instance;
 	}
 	
 	public Reclamo buildReclamo(int nroReclamo, String tipoReclamo){
-		if (tipoReclamo == ReclamoCantidades.class.getSimpleName())
+		
+		switch (tipoReclamo) {
+        case RECLAMO_CANTIDADES:
+        	return ReclamoCantidadesMapper.getInstancia().selectOne(nroReclamo);
+        case RECLAMO_COMPUESTO:
+        	return ReclamoCompuestoMapper.getInstancia().selectOne(nroReclamo);
+        case RECLAMO_FACTURACION:
+        	return ReclamoFacturacionMapper.getInstancia().selectOne(nroReclamo);
+        case RECLAMO_FALTANTES:
+        	return ReclamoFaltanteMapper.getInstancia().selectOne(nroReclamo);
+        case RECLAMO_PRODUCTO:
+        	return ReclamoProductoMapper.getInstancia().selectOne(nroReclamo);
+        default:
+        	System.out.println("Tipo de reclamo no reconocido: '" + tipoReclamo + "' id: '" + nroReclamo + "'");
+			return null;
+		}
+			
+		/*
+		if (tipoReclamo.equals(ReclamoCantidades.class.getSimpleName()))
 			return ReclamoCantidadesMapper.getInstancia().selectOne(nroReclamo);
-		else if (tipoReclamo == ReclamoCompuesto.class.getSimpleName())
+		else if (tipoReclamo.equals(ReclamoCompuesto.class.getSimpleName()))
 			return ReclamoCompuestoMapper.getInstancia().selectOne(nroReclamo);
-		else if (tipoReclamo == ReclamoFacturacion.class.getSimpleName())
+		else if (tipoReclamo.equals(ReclamoFacturacion.class.getSimpleName()))
 			return ReclamoFacturacionMapper.getInstancia().selectOne(nroReclamo);
-		else if (tipoReclamo == ReclamoFaltantes.class.getSimpleName())
+		else if (tipoReclamo.equals(ReclamoFaltantes.class.getSimpleName()))
 			return ReclamoFaltanteMapper.getInstancia().selectOne(nroReclamo);
-		else if (tipoReclamo == ReclamoProducto.class.getSimpleName())
+		else if (tipoReclamo.equals(ReclamoProducto.class.getSimpleName()))
 			return ReclamoProductoMapper.getInstancia().selectOne(nroReclamo);
 		else {
 			System.out.println("Tipo de reclamo no reconocido: '" + tipoReclamo + "' id: '" + nroReclamo + "'");
 			return null;
 		}
+		*/
+		
 	}
 	
 }
