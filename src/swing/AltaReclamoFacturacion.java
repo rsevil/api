@@ -2,23 +2,26 @@ package swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-
-import utils.NumeroUtils;
-import utils.TextoUtils;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import controlador.SistemaAdministracionReclamos;
 import enums.ExitCodes;
+import swing.model.DetalleFacturacionTableModel;
+import utils.NumeroUtils;
+import utils.TextoUtils;
+import vista.DetalleReclamoFacturacionView;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -36,6 +39,8 @@ public class AltaReclamoFacturacion extends javax.swing.JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private JLabel lblNroFactura;
+	private JLabel jLabel1;
+	private JTable jTableItems;
 	private JButton btnAgregarDetalle;
 	private JTextArea txtDetalleFactura;
 	private JScrollPane scrllDetalleFactura;
@@ -49,6 +54,7 @@ public class AltaReclamoFacturacion extends javax.swing.JFrame {
 	private JLabel lblNroCliente;
 	
 	private int rdo;
+	private DetalleFacturacionTableModel detalleFacturacionTableModel;
 	
 	public AltaReclamoFacturacion() {
 		super();
@@ -183,8 +189,9 @@ public class AltaReclamoFacturacion extends javax.swing.JFrame {
 								int rdo2 = SistemaAdministracionReclamos.getInstancia().agregarDetalleReclamoFacturacion(rdo, detalle, Integer.parseInt(nroFactura));
 								
 								String mensaje = "";
-								if (rdo2 == ExitCodes.OK) {
+								if (rdo2 == ExitCodes.OK) {	
 									mensaje = "El detalle se ha registrado con éxito.";
+									detalleFacturacionTableModel.addRow(new DetalleReclamoFacturacionView(detalle, nroFactura, 0));
 								} else  if (rdo2 == ExitCodes.NO_EXISTE_RECLAMO) {
 										mensaje = "No existe el reclamo.";
 								} else  if (rdo2 == ExitCodes.FALLA_RECLAMO_DETALLE_FACTURACION) {
@@ -210,8 +217,27 @@ public class AltaReclamoFacturacion extends javax.swing.JFrame {
 					}
 				});
 			}
+			{
+				ArrayList<String> columnas = new ArrayList<String>();
+				columnas.add("Número");
+				columnas.add("Descripción");
+				detalleFacturacionTableModel = new DetalleFacturacionTableModel(columnas);
+				
+
+				jTableItems = new JTable();
+				jTableItems.setModel(detalleFacturacionTableModel);
+				JScrollPane pane = new JScrollPane(jTableItems);
+				pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				getContentPane().add(pane, new CellConstraints("4, 14, 1, 1, default, default"));
+				pane.setPreferredSize(new java.awt.Dimension(230, 150));
+			}
+			{
+				jLabel1 = new JLabel();
+				getContentPane().add(jLabel1, new CellConstraints("2, 14, 1, 1, default, default"));
+				jLabel1.setText("Conceptos ingresados");
+			}
 			pack();
-			this.setSize(442, 502);
+			this.setSize(442, 539);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
