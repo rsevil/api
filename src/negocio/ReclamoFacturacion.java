@@ -4,9 +4,9 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.Vector;
 
-import persistencia.ReclamoFacturacionMapper;
-import persistencia.BaseReclamoMapper;
 import enums.EstadosReclamo;
+import persistencia.ReclamoFacturacionMapper;
+import swing.ReclamoFacturacionView;
 
 public class ReclamoFacturacion extends Reclamo {
 	
@@ -72,5 +72,13 @@ public class ReclamoFacturacion extends Reclamo {
 		
 		//Como ReclamoFacturacion es el Componente es el que se encarga de persistir a los items
 		ReclamoFacturacionMapper.getInstancia().insertDetalle(this, detalleFacturacion);
+	}
+	
+	public ReclamoFacturacionView getView(){
+		ReclamoFacturacionView reclamoFacturacionView = new ReclamoFacturacionView(this);
+		for (DetalleReclamoFacturacion detalleReclamoFacturacion : detalles) {
+			reclamoFacturacionView.agregarDetalle(detalleReclamoFacturacion.getView());
+		}
+		return reclamoFacturacionView;
 	}
 }

@@ -1,5 +1,7 @@
 package negocio;
 
+import vista.DetalleReclamoFacturacionView;
+
 public class DetalleReclamoFacturacion {
 	
 	private String detalle;
@@ -27,5 +29,9 @@ public class DetalleReclamoFacturacion {
 	
 	public void setNumFactura(int idFactura) {
 		this.idFactura = idFactura;
+	}
+	
+	public DetalleReclamoFacturacionView getView(){
+		return new DetalleReclamoFacturacionView(this.detalle, String.valueOf(idFactura), 0);
 	}
 }
