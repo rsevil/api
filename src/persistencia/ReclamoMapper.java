@@ -1,11 +1,6 @@
 package persistencia;
 
 import negocio.Reclamo;
-import negocio.ReclamoCantidades;
-import negocio.ReclamoCompuesto;
-import negocio.ReclamoFacturacion;
-import negocio.ReclamoFaltantes;
-import negocio.ReclamoProducto;
 
 public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 
