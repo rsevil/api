@@ -10,6 +10,12 @@ public class ReclamoFacturacionMapper extends BaseReclamoMapper<ReclamoFacturaci
 
 	private static ReclamoFacturacionMapper instance;
 	
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo WHERE tipoReclamo = 'ReclamoFacturacion' AND activo = 1 ";
+	
+	private static final String SELECT_ALL_NOT_RESOLVED = SELECT_ALL + " AND (estado <> 'Solucionado' AND estado <> 'Cerrado')";
+	
+	private static final String UPDATE_ESTADO = "UPDATE dbo.Reclamo SET estado = ? WHERE nroReclamo = ?";
+	
 	private ReclamoFacturacionMapper() {
 		super(ReclamoFacturacion.class);
 	}
@@ -44,10 +50,35 @@ public class ReclamoFacturacionMapper extends BaseReclamoMapper<ReclamoFacturaci
 					s.setString(i++, tipoReclamo.getSimpleName());
 				});
 	}
+	
+	public void updateEstado(final int nroReclamo, final String estado){
+		tryCommand(UPDATE_ESTADO, s -> {
+			s.setString(1, estado);
+			s.setInt(2, nroReclamo);
+		});
+	}
 
 	public void delete(ReclamoFacturacion o) {
 		deleteDetalles(o);
 		super.deleteReclamo(o);
+	}
+	
+	public Vector<ReclamoFacturacion> selectAll(boolean noSolucionados){
+		String query = SELECT_ALL;
+		if(noSolucionados){
+			query = SELECT_ALL_NOT_RESOLVED;
+		}
+		return tryQueryMany(query, null, rs -> {
+			int nroReclamo = rs.getInt("nroReclamo");
+			return new ReclamoFacturacion(
+				nroReclamo, 
+				rs.getDate("fecha"), 
+				rs.getDate("fechaCierre"), 
+				rs.getString("descripcionReclamo"), 
+				EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
+				ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
+				this.getDetalles(nroReclamo));
+		});
 	}
 
 	public ReclamoFacturacion selectOne(int id) {
