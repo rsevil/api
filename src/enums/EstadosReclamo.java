@@ -18,8 +18,9 @@ public enum EstadosReclamo {
 	
 	public static EstadosReclamo getEstadoReclamo(String texto) {
 		for (EstadosReclamo r : EstadosReclamo.values()){
-			if (r.getTexto() == texto)
+			if (r.getTexto().equals(texto)){
 				return r;
+			}
 		}
 		return null;
 	}
