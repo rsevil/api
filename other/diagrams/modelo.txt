@@ -1,4 +1,3 @@
-http://g.gravizo.com/g?
 @startuml;
 
 class Cliente {;
@@ -72,7 +71,7 @@ abstract class Reclamo {;
 	-String descripcionReclamo;
 	-String estado;
 	
-	#Reclamo(int numReclamo, Date fecha, Date fechaCierre,String descripcionReclamo,EstadosReclamo estado,Cliente cliente);
+	+Reclamo(int numReclamo, Date fecha, Date fechaCierre,String descripcionReclamo,EstadosReclamo estado,Cliente cliente);
 	
 	+Date getFecha();
 	+void setFecha(Date fecha);
@@ -105,7 +104,7 @@ class ReclamoCompuesto {;
 	+Vector<Reclamo> getReclamos();
 	+void setReclamos(Vector<Reclamo> reclamos);
 	+void agregarReclamo(Reclamo r);
-}
+};
 
 class ReclamoFacturacion{;
 	-ReclamoFacturacion(int nroReclamo, Date fecha, Date fechaCierre,String descripcionReclamo, EstadosReclamo estado, Cliente cliente,Vector<DetalleReclamoFacturacion> detalles,boolean persistir);
@@ -171,6 +170,5 @@ class Rol {;
 	+void setVista(String vista);
 	+RolView getView();
 };
-
 
 @enduml;
