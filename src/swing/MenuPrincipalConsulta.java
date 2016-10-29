@@ -54,8 +54,8 @@ public class MenuPrincipalConsulta extends javax.swing.JFrame {
 				btnReporte1.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) 
 					{
-						/*AltaReclamoCantidades a = new AltaReclamoCantidades();
-						a.setVisible(true);*/
+						ReporteRankingClientes a = new ReporteRankingClientes();
+						a.setVisible(true);
 					}
 				});
 			}
@@ -66,8 +66,8 @@ public class MenuPrincipalConsulta extends javax.swing.JFrame {
 				btnReporte2.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) 
 					{
-						/*AltaReclamoProducto a = new AltaReclamoProducto();
-						a.setVisible(true);*/
+						ReporteReclamosTratadosMesAnio a = new ReporteReclamosTratadosMesAnio();
+						a.setVisible(true);
 					}
 				});
 			}
@@ -78,8 +78,8 @@ public class MenuPrincipalConsulta extends javax.swing.JFrame {
 				btnReporte3.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) 
 					{
-						/*AltaReclamoFaltantes a = new AltaReclamoFaltantes();
-						a.setVisible(true);*/
+						ReporteRankingTratamientoReclamos a = new ReporteRankingTratamientoReclamos();
+						a.setVisible(true);
 					}
 				});
 			}
@@ -90,8 +90,8 @@ public class MenuPrincipalConsulta extends javax.swing.JFrame {
 				btnReporte4.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) 
 					{
-						/*AltaReclamoZona a = new AltaReclamoZona();
-						a.setVisible(true);*/
+						ReporteTiempoPromedioRespuesta a = new ReporteTiempoPromedioRespuesta();
+						a.setVisible(true);
 					}
 				});
 			}

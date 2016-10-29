@@ -1,5 +1,6 @@
 package controlador;
 
+import java.util.Date;
 import java.util.Observer;
 import java.util.Vector;
 import java.util.function.Function;
@@ -285,5 +286,44 @@ public class SistemaAdministracionReclamos {
 
 	private ReclamoCantidades buscarReclamoCantidades(int nroReclamo) {
 		return buscarReclamo(nroReclamo, () -> ReclamoCantidadesMapper.getInstancia().selectOne(nroReclamo));
+	}
+	
+	
+	/* Reportes */
+	
+	public Vector<ReporteView> obtenerReporteRankingClientes() {
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteRankingClientes();
+		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
+		for (Reporte r: itemsReporte) {
+			itemsReporteView.addElement(r.getView());
+		}
+		return itemsReporteView;
+	}
+	
+	public Vector<ReporteView> obtenerReporteReclamosTratadosMesAnio(int paramMes, int paramAnio) {
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteReclamosTratadosMesAnio(paramMes, paramAnio);
+		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
+		for (Reporte r: itemsReporte) {
+			itemsReporteView.addElement(r.getView());
+		}
+		return itemsReporteView;
+	}
+	
+	public Vector<ReporteView> obtenerReporteRankingTratamientoReclamos(Date fechaDesde, Date fechaHasta) {
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteRankingTratamientoReclamos(fechaDesde, fechaHasta);
+		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
+		for (Reporte r: itemsReporte) {
+			itemsReporteView.addElement(r.getView());
+		}
+		return itemsReporteView;
+	}
+
+	public Vector<ReporteView> obtenerReporteTiempoPromedioRespuesta(Date fechaDesde, Date fechaHasta) {
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteTiempoPromedioRespuesta(fechaDesde, fechaHasta);
+		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
+		for (Reporte r: itemsReporte) {
+			itemsReporteView.addElement(r.getView());
+		}
+		return itemsReporteView;
 	}
 }

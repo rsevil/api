@@ -77,8 +77,8 @@ public abstract class Reclamo {
 	public void setFechaCierre(Date fechaCierre) {
 		this.fechaCierre = fechaCierre;
 	}
-	
-	public boolean sosReclamo(int nroReclamo){
+
+	public boolean sosReclamo(int nroReclamo) {
 		return (nroReclamo == this.nroReclamo);
 	}
 }
