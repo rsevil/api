@@ -184,5 +184,11 @@ public class AltaReclamoCompuesto extends javax.swing.JFrame {
 				e.printStackTrace();
 			}
 		}
+	
+	public void registrarReclamo(int id){
+		/**
+		 * TODO agregar reclamo
+		 */
+	}
 
 }

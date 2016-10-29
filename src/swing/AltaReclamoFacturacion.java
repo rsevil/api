@@ -56,11 +56,18 @@ public class AltaReclamoFacturacion extends javax.swing.JFrame {
 	private int rdo;
 	private DetalleFacturacionTableModel detalleFacturacionTableModel;
 	
+	private AltaReclamoCompuesto compuesto;
+	
 	public AltaReclamoFacturacion() {
 		super();
 		initGUI();
 		setLocationRelativeTo(null);
 		setResizable(false);
+	}
+	
+	public AltaReclamoFacturacion(AltaReclamoCompuesto parent){
+		this();
+		this.compuesto = parent;
 	}
 	
 	private void initGUI() {
@@ -108,6 +115,9 @@ public class AltaReclamoFacturacion extends javax.swing.JFrame {
 								String mensaje = "";
 								if (rdo > 0) {
 									mensaje = "El reclamo se ha registrado con éxito.";
+									if(compuesto != null){
+										compuesto.registrarReclamo(rdo);
+									}
 								} else  if (rdo == ExitCodes.NO_EXISTE_CLIENTE) {
 										mensaje = "No existe el cliente.";
 								}
