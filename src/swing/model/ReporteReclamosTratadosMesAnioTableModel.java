@@ -79,8 +79,10 @@ public class ReporteReclamosTratadosMesAnioTableModel extends AbstractTableModel
 		ReporteView item = itemsReporte.get(row);
 		switch (col) {
 		case 0:
-			return item.getNombre();
+			return item.getMes();
 		case 1:
+			return item.getAnio();
+		case 2:
 			return item.getCantidad();
 		default:
 			return null;

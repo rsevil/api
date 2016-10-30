@@ -74,7 +74,7 @@ public class AltaReclamoCompuesto extends javax.swing.JFrame {
 						"max(p;5dlu), max(p;5dlu), max(p;5dlu), 115dlu", 
 						"max(p;5dlu), max(p;5dlu), max(p;5dlu), 69dlu, max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)");
 				getContentPane().setLayout(thisLayout);
-				this.setTitle("Ingresar Reclamo de Producto");
+				this.setTitle("Ingresar Reclamo Compuesto");
 				{
 					lblNroCliente = new JLabel();
 					getContentPane().add(lblNroCliente, new CellConstraints("2, 2, 1, 1, default, default"));

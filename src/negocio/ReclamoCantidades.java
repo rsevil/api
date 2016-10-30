@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import enums.EstadosReclamo;
-import enums.ExitCodes;
 import persistencia.ReclamoCantidadesMapper;
 
 public class ReclamoCantidades extends Reclamo {

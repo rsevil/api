@@ -161,14 +161,14 @@ private static final String REPORTE_TIEMPO_PROMEDIO_RESPUESTA = "select " +
 				});
 	}
 	
-	public Vector<Reporte> getReporteReclamosTratadosMesAnio(int paramMes, int paramAnio) {
+	public Vector<Reporte> getReporteReclamosTratadosMesAnio() {
 		return tryQueryMany(ReclamoMapper.REPORTE_RECLAMOS_TRATADOS_MES_ANIO,
-				s -> { s.setInt(1, paramMes); s.setInt(2, paramAnio); }, 
+				null, 
 				rs -> {
 					String nombre = null;
-					int cantidad = rs.getInt("cantidad");
 					int mes = rs.getInt("mes");
-					int anio = rs.getInt("anio");		
+					int anio = rs.getInt("anio");
+					int cantidad = rs.getInt("cantidad");
 					return new Reporte(
 						nombre,
 						cantidad, 
@@ -195,8 +195,9 @@ private static final String REPORTE_TIEMPO_PROMEDIO_RESPUESTA = "select " +
 	
 	public Vector<Reporte> getReporteTiempoPromedioRespuesta(Date fechaDesde, Date fechaHasta) {
 		return tryQueryMany(ReclamoMapper.REPORTE_TIEMPO_PROMEDIO_RESPUESTA,
-				null, rs -> {
-					String nombre = rs.getString("nombreCliente");
+				s -> { s.setDate(1, new java.sql.Date(fechaDesde.getTime())); s.setDate(2, new java.sql.Date(fechaHasta.getTime())); }, 
+				rs -> {
+					String nombre = rs.getString("nombreUsuario");
 					int cantidad = rs.getInt("tiempoRespuestaPromedio");
 					int mes = 0;
 					int anio = 0;		

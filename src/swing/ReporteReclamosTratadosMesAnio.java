@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 
-import swing.model.ReporteRankingClientesTableModel;
+import swing.model.ReporteReclamosTratadosMesAnioTableModel;
 import vista.ReporteView;
 import controlador.SistemaAdministracionReclamos;
 
@@ -30,7 +30,7 @@ public class ReporteReclamosTratadosMesAnio extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTable tablaReporte;
-	private ReporteRankingClientesTableModel tableModel;
+	private ReporteReclamosTratadosMesAnioTableModel tableModel;
 	
 	public ReporteReclamosTratadosMesAnio() {
 		super();
@@ -53,11 +53,12 @@ public class ReporteReclamosTratadosMesAnio extends javax.swing.JFrame {
 			getContentPane().setLayout(thisLayout);
 			{
 				ArrayList<String> columnNames = new ArrayList<String>();
-				columnNames.add("Nombre cliente");
-				columnNames.add("Cantidad reclamos");
+				columnNames.add("Mes");
+				columnNames.add("Año");
+				columnNames.add("Cantidad reportes");
 				ArrayList<ReporteView> itemsReporte = new ArrayList<ReporteView>(
-						SistemaAdministracionReclamos.getInstancia().obtenerReporteRankingClientes());
-				tableModel = new ReporteRankingClientesTableModel(columnNames, itemsReporte);
+						SistemaAdministracionReclamos.getInstancia().obtenerReporteReclamosTratadosMesAnio());
+				tableModel = new ReporteReclamosTratadosMesAnioTableModel(columnNames, itemsReporte);
 				tablaReporte = new JTable();
 				tablaReporte.setModel(tableModel);
 				JScrollPane pane = new JScrollPane(tablaReporte);
@@ -72,3 +73,4 @@ public class ReporteReclamosTratadosMesAnio extends javax.swing.JFrame {
 	}
 
 }
+

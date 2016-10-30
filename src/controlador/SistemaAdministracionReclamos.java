@@ -300,8 +300,8 @@ public class SistemaAdministracionReclamos {
 		return itemsReporteView;
 	}
 	
-	public Vector<ReporteView> obtenerReporteReclamosTratadosMesAnio(int paramMes, int paramAnio) {
-		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteReclamosTratadosMesAnio(paramMes, paramAnio);
+	public Vector<ReporteView> obtenerReporteReclamosTratadosMesAnio() {
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteReclamosTratadosMesAnio();
 		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
 		for (Reporte r: itemsReporte) {
 			itemsReporteView.addElement(r.getView());

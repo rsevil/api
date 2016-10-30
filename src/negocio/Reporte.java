@@ -1,8 +1,5 @@
 package negocio;
 
-import java.util.Vector;
-
-import persistencia.ReclamoMapper;
 import vista.ReporteView;
 
 public class Reporte {
