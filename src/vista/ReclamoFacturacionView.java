@@ -1,10 +1,9 @@
-package swing;
+package vista;
 
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import negocio.ReclamoFacturacion;
-import vista.DetalleReclamoFacturacionView;
 
 public class ReclamoFacturacionView {
 

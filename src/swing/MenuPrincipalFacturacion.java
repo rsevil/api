@@ -22,6 +22,7 @@ import javax.swing.event.PopupMenuListener;
 import controlador.SistemaAdministracionReclamos;
 import enums.EstadosReclamo;
 import swing.model.TratamientoFacturacionTableModel;
+import vista.ReclamoFacturacionView;
 
 public class MenuPrincipalFacturacion extends javax.swing.JFrame {
 

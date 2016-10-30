@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import enums.EstadosReclamo;
 import persistencia.ReclamoFacturacionMapper;
-import swing.ReclamoFacturacionView;
+import vista.ReclamoFacturacionView;
 
 public class ReclamoFacturacion extends Reclamo {
 	

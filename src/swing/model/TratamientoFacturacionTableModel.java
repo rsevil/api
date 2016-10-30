@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import swing.ReclamoFacturacionView;
+import vista.ReclamoFacturacionView;
 
 public class TratamientoFacturacionTableModel extends AbstractTableModel {
 

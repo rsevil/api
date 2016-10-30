@@ -42,7 +42,6 @@ public class ReporteTiempoPromedioRespuesta extends javax.swing.JFrame implement
 	private JButton btnVerReporte;
 	private JTable tablaReporte;
 	private ReporteTiempoPromedioRespuestaTableModel tableModel;
-	//private ArrayList<ReporteView> itemsReporte;
 	JLabel lblFechaDesde = new JLabel("Fecha desde:");
 	JTextField txtFechaDesde = new JTextField();
 	JLabel lblFechaHasta = new JLabel("Fecha hasta:");
@@ -86,14 +85,7 @@ public class ReporteTiempoPromedioRespuesta extends javax.swing.JFrame implement
 					btnVerReporte.setText("Ver reporte");
 					btnVerReporte.addActionListener(this);
 				}
-				//ArrayList<String> columnNames = new ArrayList<String>();
-				//columnNames.add("Nombre cliente");
-				//columnNames.add("Cantidad reclamos");
-				//this.itemsReporte = new ArrayList<ReporteView>(
-				//		SistemaAdministracionReclamos.getInstancia().obtenerReporteRankingClientes());
-				//tableModel = new ReporteRankingClientesTableModel(columnNames, itemsReporte);
 				tablaReporte = new JTable();
-				//tablaReporte.setModel(tableModel);
 				JScrollPane pane = new JScrollPane(tablaReporte);
 				pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 				getContentPane().add(pane, new GridBagConstraints(0, 1, 3, 4, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
@@ -128,6 +120,9 @@ public class ReporteTiempoPromedioRespuesta extends javax.swing.JFrame implement
 			} else if (fechaHastaParseada == null) {
 				JOptionPane.showMessageDialog(null, "La fecha hasta es inválida.");
 			}
+			else if (fechaHastaParseada.compareTo(fechaDesdeParseada) < 0) {
+				JOptionPane.showMessageDialog(null, "La fecha hasta no puede ser anterior a la fecha desde.");
+			}
 			else {								
 				ArrayList<ReporteView> itemsReporte = new ArrayList<ReporteView>(
 						SistemaAdministracionReclamos.getInstancia().obtenerReporteTiempoPromedioRespuesta(fechaDesdeParseada, fechaHastaParseada));	
@@ -142,9 +137,8 @@ public class ReporteTiempoPromedioRespuesta extends javax.swing.JFrame implement
 	private void llenarTabla(ArrayList<ReporteView> itemsReporte) {
 		ArrayList<String> columnNames = new ArrayList<String>();
 		columnNames.add("Nombre de usuario");
-		columnNames.add("Tiempo de respuesta promedio");
+		columnNames.add("Tiempo de respuesta promedio (en horas)");
 		tableModel = new ReporteTiempoPromedioRespuestaTableModel(columnNames, itemsReporte);
-		tablaReporte = new JTable();
 		tablaReporte.setModel(tableModel);
 	}
 }

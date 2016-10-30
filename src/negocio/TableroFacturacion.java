@@ -3,7 +3,7 @@ package negocio;
 import java.util.Vector;
 
 import persistencia.ReclamoFacturacionMapper;
-import swing.ReclamoFacturacionView;
+import vista.ReclamoFacturacionView;
 
 public class TableroFacturacion {
 
