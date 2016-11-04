@@ -46,6 +46,13 @@ public class AltaReclamoProducto extends javax.swing.JFrame {
 	private JLabel lblDescripcion;
 	private JLabel lblNroCliente;
 	
+	private AltaReclamoCompuesto compuesto;
+	
+	public AltaReclamoProducto(AltaReclamoCompuesto parent){
+		this();
+		this.compuesto = parent;
+	}
+	
 	
 	public AltaReclamoProducto() {
 		super();
@@ -115,6 +122,9 @@ public class AltaReclamoProducto extends javax.swing.JFrame {
 								String mensaje = "";
 								if (rdo > 0) {
 									mensaje = "El reclamo se ha registrado con éxito.";
+									if(compuesto != null){
+										compuesto.registrarReclamo(rdo);
+									}
 								} else  if (rdo == ExitCodes.NO_EXISTE_CLIENTE) {
 										mensaje = "No existe el cliente.";
 								} else  if (rdo == ExitCodes.NO_EXISTE_PRODUCTO) {

@@ -45,6 +45,13 @@ public class AltaReclamoCantidades extends javax.swing.JFrame {
 	private JLabel lblDescripcion;
 	private JLabel lblNroCliente;
 	
+	private AltaReclamoCompuesto compuesto;
+	
+	public AltaReclamoCantidades(AltaReclamoCompuesto parent){
+		this();
+		this.compuesto = parent;
+	}
+	
 	public AltaReclamoCantidades() {
 		super();
 		initGUI();
@@ -118,6 +125,9 @@ public class AltaReclamoCantidades extends javax.swing.JFrame {
 										rdo2=SistemaAdministracionReclamos.getInstancia().agregarProductoReclamoCantidades(rdo, Integer.parseInt(codProducto), Integer.parseInt(cant));
 										if (rdo2 > 0) {
 											mensaje=mensaje.concat("El reclamo se ha registrado con éxito.");
+											if(compuesto != null){
+												compuesto.registrarReclamo(rdo);
+											}
 										}
 									}
 									

@@ -1,5 +1,5 @@
 jdbc=jdbc:sqlserver://
-servidor=localhost:1433
+servidor=mssql2.gear.host
 usuario=reclamosdbo
-password=reclamosdbo
+password=reclamosdbo!
 conexiones=3

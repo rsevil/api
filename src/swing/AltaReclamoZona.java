@@ -43,6 +43,13 @@ public class AltaReclamoZona extends javax.swing.JFrame {
 	private JLabel lblDescripcion;
 	private JLabel lblNroCliente;
 
+	private AltaReclamoCompuesto compuesto;
+	
+	public AltaReclamoZona(AltaReclamoCompuesto parent){
+		this();
+		this.compuesto = parent;
+	}
+	
 	public AltaReclamoZona() {
 		super();
 		initGUI();
@@ -106,6 +113,9 @@ public class AltaReclamoZona extends javax.swing.JFrame {
 								String mensaje = "";
 								if (rdo > 0) {
 									mensaje = "El reclamo se ha registrado con éxito.";
+									if(compuesto != null){
+										compuesto.registrarReclamo(rdo);
+									}
 								} else  if (rdo == ExitCodes.NO_EXISTE_CLIENTE) {
 										mensaje = "No existe el cliente.";
 								}

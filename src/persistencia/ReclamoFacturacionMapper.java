@@ -57,7 +57,7 @@ public class ReclamoFacturacionMapper extends BaseReclamoMapper<ReclamoFacturaci
 			s.setInt(2, nroReclamo);
 		});
 	}
-
+	
 	public void delete(ReclamoFacturacion o) {
 		deleteDetalles(o);
 		super.deleteReclamo(o);

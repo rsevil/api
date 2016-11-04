@@ -1,5 +1,6 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Observer;
 import java.util.Vector;
@@ -7,10 +8,33 @@ import java.util.function.Function;
 
 import enums.ExitCodes;
 import interfaces.SistemaFacturacion;
-import negocio.*;
-import persistencia.*;
+import negocio.Cliente;
+import negocio.NovedadReclamo;
+import negocio.Producto;
+import negocio.Reclamo;
+import negocio.ReclamoCantidades;
+import negocio.ReclamoCompuesto;
+import negocio.ReclamoFacturacion;
+import negocio.ReclamoFaltantes;
+import negocio.ReclamoProducto;
+import negocio.ReclamoZona;
+import negocio.Reporte;
+import negocio.Rol;
+import negocio.TableroFacturacion;
+import negocio.Usuario;
+import persistencia.ClienteMapper;
+import persistencia.ProductoMapper;
+import persistencia.ReclamoCantidadesMapper;
+import persistencia.ReclamoCompuestoMapper;
+import persistencia.ReclamoFacturacionMapper;
+import persistencia.ReclamoMapper;
+import persistencia.RolMapper;
+import persistencia.UsuarioMapper;
 import utils.Func;
-import vista.*;
+import vista.ReclamoFacturacionView;
+import vista.ReporteView;
+import vista.RolView;
+import vista.UsuarioView;
 
 public class SistemaAdministracionReclamos {
 	private static SistemaAdministracionReclamos instance;
@@ -229,9 +253,11 @@ public class SistemaAdministracionReclamos {
 		return TableroFacturacion.getInstance().getReclamos();
 	}
 
-	public boolean updateReclamo(int numeroReclamo, String estado) {
+	public boolean updateReclamo(int numeroReclamo, String estado, String novedad) {
 		try {
 			ReclamoFacturacionMapper.getInstancia().updateEstado(numeroReclamo, estado);
+			ReclamoMapper.getInstancia().addNovedad(
+					new NovedadReclamo(numeroReclamo, new java.sql.Date(System.currentTimeMillis()), novedad));
 		} catch (Exception e) {
 			return false;
 		}
@@ -286,43 +312,48 @@ public class SistemaAdministracionReclamos {
 	private ReclamoCantidades buscarReclamoCantidades(int nroReclamo) {
 		return buscarReclamo(nroReclamo, () -> ReclamoCantidadesMapper.getInstancia().selectOne(nroReclamo));
 	}
-	
-	
+
 	/* Reportes */
-	
+
 	public Vector<ReporteView> obtenerReporteRankingClientes() {
 		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteRankingClientes();
 		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
-		for (Reporte r: itemsReporte) {
+		for (Reporte r : itemsReporte) {
 			itemsReporteView.addElement(r.getView());
 		}
 		return itemsReporteView;
 	}
-	
+
 	public Vector<ReporteView> obtenerReporteReclamosTratadosMesAnio() {
 		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteReclamosTratadosMesAnio();
 		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
-		for (Reporte r: itemsReporte) {
+		for (Reporte r : itemsReporte) {
 			itemsReporteView.addElement(r.getView());
 		}
 		return itemsReporteView;
 	}
-	
+
 	public Vector<ReporteView> obtenerReporteRankingTratamientoReclamos(Date fechaDesde, Date fechaHasta) {
-		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteRankingTratamientoReclamos(fechaDesde, fechaHasta);
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteRankingTratamientoReclamos(fechaDesde,
+				fechaHasta);
 		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
-		for (Reporte r: itemsReporte) {
+		for (Reporte r : itemsReporte) {
 			itemsReporteView.addElement(r.getView());
 		}
 		return itemsReporteView;
 	}
 
 	public Vector<ReporteView> obtenerReporteTiempoPromedioRespuesta(Date fechaDesde, Date fechaHasta) {
-		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteTiempoPromedioRespuesta(fechaDesde, fechaHasta);
+		Vector<Reporte> itemsReporte = ReclamoMapper.getInstancia().getReporteTiempoPromedioRespuesta(fechaDesde,
+				fechaHasta);
 		Vector<ReporteView> itemsReporteView = new Vector<ReporteView>();
-		for (Reporte r: itemsReporte) {
+		for (Reporte r : itemsReporte) {
 			itemsReporteView.addElement(r.getView());
 		}
 		return itemsReporteView;
+	}
+	
+	public void borrarReclamos(ArrayList<Integer> ids){
+		ReclamoMapper.getInstancia().borrarReclamos(ids);
 	}
 }

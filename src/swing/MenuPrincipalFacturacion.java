@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JEditorPane;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -88,21 +89,23 @@ public class MenuPrincipalFacturacion extends javax.swing.JFrame {
 							ArrayList<JMenuItem> itemsMenu = getItemsMenu(tableModel.getItemRow(selectedRow));
 							for (JMenuItem jMenuItem : itemsMenu) {
 								popupMenu.add(jMenuItem);
-								System.out.println("MenuItem agregado:" + jMenuItem.getText());
+								// System.out.println("MenuItem agregado:" +
+								// jMenuItem.getText());
 							}
 						}
+						popupMenu.add(add(resfreshItem()));
 					}
 
 					@Override
 					public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 						popupMenu.removeAll();
-						System.out.println("Eliminados menu");
+						// System.out.println("Eliminados menu");
 					}
 
 					@Override
 					public void popupMenuCanceled(PopupMenuEvent e) {
 						popupMenu.removeAll();
-						System.out.println("Eliminados menu");
+						// System.out.println("Eliminados menu");
 					}
 				});
 				tablaReclamos.setComponentPopupMenu(popupMenu);
@@ -133,13 +136,26 @@ public class MenuPrincipalFacturacion extends javax.swing.JFrame {
 		return items;
 	}
 
+	private JMenuItem resfreshItem() {
+		JMenuItem refresh = new JMenuItem("Actualizar");
+		refresh.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actualizarDatos();
+			}
+
+		});
+		return refresh;
+	}
+
 	private JMenuItem enTratamientoItem() {
 		JMenuItem enTratamiento = new JMenuItem("Pasar a " + EstadosReclamo.EN_TRATAMIENTO.getTexto());
 		enTratamiento.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actualizarEstado(EstadosReclamo.EN_TRATAMIENTO);
+				mostrarPopUpNovedad(EstadosReclamo.EN_TRATAMIENTO);
 			}
 
 		});
@@ -152,7 +168,7 @@ public class MenuPrincipalFacturacion extends javax.swing.JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actualizarEstado(EstadosReclamo.CERRADO);
+				mostrarPopUpNovedad(EstadosReclamo.CERRADO);
 			}
 		});
 		return cerrado;
@@ -164,26 +180,40 @@ public class MenuPrincipalFacturacion extends javax.swing.JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actualizarEstado(EstadosReclamo.SOLUCIONADO);
+				mostrarPopUpNovedad(EstadosReclamo.SOLUCIONADO);
 			}
 		});
 		return solucionado;
 	}
 
-	private void actualizarEstado(EstadosReclamo estado) {
+	private void mostrarPopUpNovedad(EstadosReclamo estado) {
 		int selectedRow = tablaReclamos.getSelectedRow();
 		if (selectedRow > -1) {
 			ReclamoFacturacionView itemRow = tableModel.getItemRow(selectedRow);
-			boolean updateReclamo = SistemaAdministracionReclamos.getInstancia().updateReclamo(itemRow.getNroReclamo(),
-					estado.getTexto());
-			if (updateReclamo) {
-				JOptionPane.showMessageDialog(null, "El estado se actualizó correctamente!", "Info",
-						JOptionPane.INFORMATION_MESSAGE);
-				actualizarDatos();
+			String texto = estado.getTexto();
+			int nroReclamo = itemRow.getNroReclamo();
 
-			} else {
-				JOptionPane.showMessageDialog(null, "Error al actualizar estado!", "Error", JOptionPane.ERROR_MESSAGE);
+			String inputDialog = JOptionPane.showInputDialog("Ingrese una observación");
+			if (inputDialog != null) {
+				while (inputDialog != null && inputDialog.isEmpty()) {
+					inputDialog = JOptionPane.showInputDialog("Ingrese una observación");
+				}
+				if (inputDialog != null && !inputDialog.isEmpty()) {
+					cambiarEstado(texto, nroReclamo, inputDialog);
+				}
 			}
+		}
+	}
+
+	private void cambiarEstado(String texto, int nroReclamo, String novedad) {
+		boolean updateReclamo = SistemaAdministracionReclamos.getInstancia().updateReclamo(nroReclamo, texto, novedad);
+		if (updateReclamo) {
+			JOptionPane.showMessageDialog(null, "El estado se actualizó correctamente!", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
+			actualizarDatos();
+
+		} else {
+			JOptionPane.showMessageDialog(null, "Error al actualizar estado!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
