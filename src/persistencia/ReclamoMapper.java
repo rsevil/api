@@ -13,17 +13,9 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 
 	private static ReclamoMapper instance;
 
-	/*
-	 * private static final String RECLAMO_CANTIDADES = "ReclamoCantidades";
-	 * private static final String RECLAMO_COMPUESTO = "ReclamoCompuesto";
-	 * private static final String RECLAMO_FACTURACION = "ReclamoFacturacion";
-	 * private static final String RECLAMO_FALTANTES = "ReclamoFaltantes";
-	 * private static final String RECLAMO_PRODUCTO = "ReclamoProducto";
-	 */
-
 	private static final String INSERT_NOVEDAD = "INSERT INTO dbo.NovedadReclamo (nroReclamo, fecha, novedad) VALUES (?, ?, ?)";
 
-	private static final String DELETE_RECLAMO = "DELETE dbo.Reclamo WHERE nroReclamo = ?";
+	private static final String DELETE_RECLAMO = "UPDATE dbo.Reclamo SET activo = 1 WHERE nroReclamo = ?";
 
 	private static final String REPORTE_RANKING_CLIENTES = "select " + "c.nombre as nombreCliente, "
 			+ "count(*) as cantidad " + "from Reclamo r " + "inner join Cliente c on c.nroCliente = r.nroCliente "
