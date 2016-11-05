@@ -3,7 +3,6 @@ package persistencia;
 import java.util.Vector;
 
 import enums.EstadosReclamo;
-import negocio.DetalleReclamoFacturacion;
 import negocio.ItemReclamoCantidad;
 import negocio.ReclamoCantidades;
 

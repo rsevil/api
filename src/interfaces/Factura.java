@@ -9,6 +9,7 @@ public class Factura {
 	
 	private int idFactura;
 	private int nroCliente;
+	@SuppressWarnings("unused")
 	private Date fecha;
 	
 	private Vector<ItemFactura> items;

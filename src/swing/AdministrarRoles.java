@@ -94,6 +94,7 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				
 				cmbUsuario.addActionListener(new ActionListener()
 				{
+					@SuppressWarnings("unchecked")
 					public void actionPerformed(ActionEvent evt) 
 					{
 						ComboItem<Integer, String> usuarioSeleccionado = (ComboItem<Integer, String>)cmbUsuario.getSelectedItem(); 
@@ -144,6 +145,7 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				btnAsignarRol.setText("Asignar rol");
 				btnAsignarRol.addActionListener(new ActionListener()
 				{
+					@SuppressWarnings("unchecked")
 					public void actionPerformed(ActionEvent evt) 
 					{
 						ComboItem<Integer, String> usuarioSeleccionado = (ComboItem<Integer, String>)cmbUsuario.getSelectedItem(); 

@@ -6,6 +6,7 @@ public class ItemFactura {
 	
 	private int codigoProducto;
 	private int cantidad;
+	@SuppressWarnings("unused")
 	private float precio;
 	
 	public ItemFactura(
