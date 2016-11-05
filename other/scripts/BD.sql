@@ -4,7 +4,9 @@ CREATE DATABASE reclamosBD
 COLLATE Modern_Spanish_CI_AS
 GO
 
--- Crear usuario
+
+-- Crear usuario dbo
+
 USE [master]
 GO
 CREATE LOGIN [reclamosdbo] WITH PASSWORD=N'reclamosdbo', DEFAULT_DATABASE=[reclamosBD], DEFAULT_LANGUAGE=[Español], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
@@ -22,7 +24,9 @@ GO
 ALTER ROLE [db_owner] ADD MEMBER [reclamosdbo]
 GO
 
+
 -- Crear tablas
+
 USE [reclamosBD]
 GO
 
@@ -68,6 +72,7 @@ CREATE TABLE Producto
 	descripcion varchar(255) NOT NULL,
 	precio float NOT NULL,
 	activo bit NOT NULL,
+	codigoPublicacion varchar(255) NOT NULL,
 	CONSTRAINT Producto_PK PRIMARY KEY (codigoProducto)
 )
 GO
@@ -141,6 +146,29 @@ CREATE TABLE ReclamoCompuestoReclamoSimple
 )
 GO
 
+CREATE TABLE ItemReclamoCantidad
+(
+	nroReclamo int NOT NULL,
+	codigoProducto int NOT NULL,
+	cantidad int,
+	activo bit NOT NULL,
+	CONSTRAINT ItemReclamoCantidad_PK PRIMARY KEY (nroReclamo, codigoProducto),
+	CONSTRAINT ItemReclamoCantidad_Reclamo_FK FOREIGN KEY (nroReclamo) REFERENCES Reclamo(nroReclamo),
+	CONSTRAINT ItemReclamoCantidad_Producto_FK FOREIGN KEY (codigoProducto) REFERENCES Producto(codigoProducto)
+)
+GO
+
+CREATE TABLE NovedadReclamo
+(
+	idNovedadReclamo int NOT NULL IDENTITY(1,1),
+	nroReclamo int NOT NULL,
+	fecha datetime NOT NULL,
+	novedad varchar(255) NOT NULL,
+	CONSTRAINT NovedadReclamo_PK PRIMARY KEY (idNovedadReclamo),
+	CONSTRAINT NovedadReclamo_Reclamo_FK FOREIGN KEY (nroReclamo) REFERENCES Reclamo(nroReclamo)
+)
+
+
 -- Datos de prueba
 
 -- Roles
@@ -164,3 +192,40 @@ SET IDENTITY_INSERT [dbo].[Usuario] ON
 		(5, 'admin', 'admin', 1, 5),
 		(6, 'consulta', 'consulta', 1, 6)
 SET IDENTITY_INSERT [dbo].[Usuario] OFF
+
+-- Clientes
+INSERT INTO [dbo].[Cliente] ([nroCliente],[nombre],[domicilio],[telefono],[mail],[activo]) VALUES
+    (1,'Cliente 1','Domicilio 1','1111-1111','cliente1@reclamos.com',1),
+	(2,'Cliente 2','Domicilio 2','2222-2222','cliente2@reclamos.com',1),
+	(3,'Cliente 3','Domicilio 3','3333-3333','cliente3@reclamos.com',1),
+	(4,'Cliente 4','Domicilio 4','4444-4444','cliente4@reclamos.com',1),
+	(5,'Cliente 5','Domicilio 5','5555-5555','cliente5@reclamos.com',1)
+GO
+
+-- Productos
+INSERT INTO [dbo].[Producto] ([codigoProducto],[titulo],[descripcion],[precio],[activo],[codigoPublicacion]) VALUES
+    (1,'Producto 1','Descripción Producto 1',1.00,1,'Prod1'),
+	(2,'Producto 2','Descripción Producto 2',2.00,1,'Prod2'),
+	(3,'Producto 3','Descripción Producto 3',3.00,1,'Prod3'),
+	(4,'Producto 4','Descripción Producto 4',4.00,1,'Prod4'),
+	(5,'Producto 5','Descripción Producto 5',5.00,1,'Prod5')
+GO
+
+-- Facturas
+INSERT INTO [dbo].[Factura] ([idFactura],[nroCliente],[fecha],[activo]) VALUES
+	(1,1,'20161009',1),
+	(2,2,'20161009',1),
+	(3,3,'20161009',1),
+	(4,4,'20161009',1),
+	(5,5,'20161009',1)
+GO
+
+-- Items Facturas
+INSERT INTO [dbo].[ItemFactura] ([idItemFactura],[idFactura],[codigoProducto],[cantidad],[precio],[activo]) VALUES
+	(1,1,1,1,1.0,1),
+	(2,1,2,2,4.0,1),
+	(3,2,2,1,2.0,1),
+	(4,3,3,1,3.0,1),
+	(5,4,4,1,4.0,1),
+	(6,5,5,1,5.0,1)
+GO
