@@ -205,7 +205,15 @@ public class MenuPrincipalFacturacion extends javax.swing.JFrame {
 	}
 
 	private void cambiarEstado(String texto, int nroReclamo, String novedad) {
-		boolean updateReclamo = SistemaAdministracionReclamos.getInstancia().updateReclamo(nroReclamo, texto, novedad);
+		boolean updateReclamo = false;
+		
+		if (texto.equals(EstadosReclamo.CERRADO.getTexto())) {
+			updateReclamo = SistemaAdministracionReclamos.getInstancia().cerrarReclamo(nroReclamo, texto, novedad);
+		}
+		else {
+			updateReclamo = SistemaAdministracionReclamos.getInstancia().updateReclamo(nroReclamo, texto, novedad);
+		}
+		
 		if (updateReclamo) {
 			JOptionPane.showMessageDialog(null, "El estado se actualizó correctamente!", "Info",
 					JOptionPane.INFORMATION_MESSAGE);

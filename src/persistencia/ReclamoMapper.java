@@ -17,6 +17,10 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 
 	private static final String DELETE_RECLAMO = "UPDATE dbo.Reclamo SET activo = 1 WHERE nroReclamo = ?";
 
+	private static final String CERRAR_RECLAMO = "UPDATE dbo.Reclamo SET estado = ?, fechaCierre = ? WHERE nroReclamo = ?";
+	
+	private static final String UPDATE_ESTADO = "UPDATE dbo.Reclamo SET estado = ? WHERE nroReclamo = ?";
+	
 	private static final String REPORTE_RANKING_CLIENTES = "select " + "c.nombre as nombreCliente, "
 			+ "count(*) as cantidad " + "from Reclamo r " + "inner join Cliente c on c.nroCliente = r.nroCliente "
 			+ "group by c.nombre " + "order by count(*) desc";
@@ -180,4 +184,18 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 		}
 	}
 
+	public void cerrarReclamo(int nroReclamo, String estado, java.sql.Date fecha) {
+		tryCommand(CERRAR_RECLAMO, s -> {
+			s.setString(1, estado);
+			s.setDate(2, fecha);
+			s.setInt(3, nroReclamo);
+		});
+	}
+	
+	public void updateEstado(final int nroReclamo, final String estado){
+		tryCommand(UPDATE_ESTADO, s -> {
+			s.setString(1, estado);
+			s.setInt(2, nroReclamo);
+		});
+	}
 }

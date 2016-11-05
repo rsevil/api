@@ -255,7 +255,18 @@ public class SistemaAdministracionReclamos {
 
 	public boolean updateReclamo(int numeroReclamo, String estado, String novedad) {
 		try {
-			ReclamoFacturacionMapper.getInstancia().updateEstado(numeroReclamo, estado);
+			ReclamoMapper.getInstancia().updateEstado(numeroReclamo, estado);
+			ReclamoMapper.getInstancia().addNovedad(
+					new NovedadReclamo(numeroReclamo, new java.sql.Date(System.currentTimeMillis()), novedad));
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean cerrarReclamo(int numeroReclamo, String estado, String novedad) {
+		try {
+			ReclamoMapper.getInstancia().cerrarReclamo(numeroReclamo, estado, new java.sql.Date(System.currentTimeMillis()));
 			ReclamoMapper.getInstancia().addNovedad(
 					new NovedadReclamo(numeroReclamo, new java.sql.Date(System.currentTimeMillis()), novedad));
 		} catch (Exception e) {
