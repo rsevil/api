@@ -15,7 +15,7 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 
 	private static final String INSERT_NOVEDAD = "INSERT INTO dbo.NovedadReclamo (nroReclamo, fecha, novedad) VALUES (?, ?, ?)";
 
-	private static final String DELETE_RECLAMO = "UPDATE dbo.Reclamo SET activo = 1 WHERE nroReclamo = ?";
+	private static final String DELETE_RECLAMO = "UPDATE dbo.Reclamo SET activo = 0 WHERE nroReclamo = ?";
 
 	private static final String CERRAR_RECLAMO = "UPDATE dbo.Reclamo SET estado = ?, fechaCierre = ? WHERE nroReclamo = ?";
 	
