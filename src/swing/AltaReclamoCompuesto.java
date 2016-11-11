@@ -129,6 +129,7 @@ public class AltaReclamoCompuesto extends javax.swing.JFrame {
 							}
 							if (rdo >= 0 && rdo2 >= 0) {
 								mensaje = mensaje.concat("Reclamo generado correctamente.");
+								AltaReclamoCompuesto.this.dispose();
 							}
 
 							JOptionPane.showMessageDialog(null, mensaje);
