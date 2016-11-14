@@ -1,11 +1,15 @@
 package persistencia;
 
+import java.util.Vector;
+
 import enums.EstadosReclamo;
 import negocio.ReclamoFaltantes;
 
 public class ReclamoFaltanteMapper extends BaseReclamoMapper<ReclamoFaltantes> {
 
 	private static ReclamoFaltanteMapper instance;
+	
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r AND r.tipoReclamo = ? AND activo = 1";
 	
 	private ReclamoFaltanteMapper() {
 		super(ReclamoFaltantes.class);
@@ -73,5 +77,14 @@ public class ReclamoFaltanteMapper extends BaseReclamoMapper<ReclamoFaltantes> {
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						rs.getInt("cantFaltante"),
 						ProductoMapper.getInstancia().selectOne(rs.getInt("codigoProducto"))));
+	}
+	
+	public Vector<ReclamoFaltantes> selectAll() {
+		return tryQueryMany(SELECT_ALL, s -> {
+			s.setString(1, tipoReclamo.getSimpleName());
+		} , rs -> new ReclamoFaltantes(rs.getInt("nroReclamo"), rs.getDate("fecha"), rs.getDate("fechaCierre"),
+				rs.getString("descripcionReclamo"), EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
+				ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")), rs.getInt("cantFaltante"),
+				ProductoMapper.getInstancia().selectOne(rs.getInt("codigoProducto"))));
 	}
 }

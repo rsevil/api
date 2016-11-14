@@ -21,6 +21,7 @@ import negocio.ReclamoZona;
 import negocio.Reporte;
 import negocio.Rol;
 import negocio.TableroFacturacion;
+import negocio.TableroZona;
 import negocio.Usuario;
 import persistencia.ClienteMapper;
 import persistencia.ProductoMapper;
@@ -32,6 +33,7 @@ import persistencia.RolMapper;
 import persistencia.UsuarioMapper;
 import utils.Func;
 import vista.ReclamoFacturacionView;
+import vista.ReclamoZonaView;
 import vista.ReporteView;
 import vista.RolView;
 import vista.UsuarioView;
@@ -252,7 +254,11 @@ public class SistemaAdministracionReclamos {
 	public Vector<ReclamoFacturacionView> obtenerReclamosFacturacionTratamiento() {
 		return TableroFacturacion.getInstance().getReclamos();
 	}
-
+	
+	public Vector<ReclamoZonaView> obtenerReclamosZonasTratamiento() {
+		return TableroZona.getInstance().getReclamos();
+	}
+	
 	public boolean updateReclamo(int numeroReclamo, String estado, String novedad) {
 		try {
 			ReclamoMapper.getInstancia().updateEstado(numeroReclamo, estado);

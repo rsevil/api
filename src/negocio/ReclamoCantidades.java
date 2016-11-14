@@ -6,69 +6,54 @@ import java.util.Vector;
 
 import enums.EstadosReclamo;
 import persistencia.ReclamoCantidadesMapper;
+import vista.ReclamoDistribucionView;
 
 public class ReclamoCantidades extends Reclamo {
-	
+
 	private Vector<ItemReclamoCantidad> items;
-	
-	private ReclamoCantidades(
-			int nroReclamo, 
-			Date fecha, 
-			Date fechaCierre,
-			String descripcionReclamo, 
-			EstadosReclamo estado, 
-			Cliente cliente, 
-			Vector<ItemReclamoCantidad> items,
-			boolean persistir) {
+
+	private ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre, String descripcionReclamo,
+			EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items, boolean persistir) {
 		super(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente);
 		this.items = items;
-		
+
 		if (persistir)
 			ReclamoCantidadesMapper.getInstancia().insert(this);
 	}
-	
-	public ReclamoCantidades(
-			int nroReclamo, 
-			Date fecha, 
-			Date fechaCierre,
-			String descripcionReclamo, 
-			EstadosReclamo estado, 
-			Cliente cliente, 
-			Vector<ItemReclamoCantidad> items) {
+
+	public ReclamoCantidades(int nroReclamo, Date fecha, Date fechaCierre, String descripcionReclamo,
+			EstadosReclamo estado, Cliente cliente, Vector<ItemReclamoCantidad> items) {
 		this(nroReclamo, fecha, fechaCierre, descripcionReclamo, estado, cliente, items, false);
 	}
-	
-	public ReclamoCantidades(
-			String descripcionReclamo,
-			Cliente cliente){
-		this(ReclamoCantidadesMapper.getInstancia().getUltimoId(),
-				new Date(Calendar.getInstance().getTimeInMillis()),
-				null,
-				descripcionReclamo,
-				EstadosReclamo.INGRESADO,
-				cliente,
-				new Vector<ItemReclamoCantidad>(),
-				true); 
+
+	public ReclamoCantidades(String descripcionReclamo, Cliente cliente) {
+		this(ReclamoCantidadesMapper.getInstancia().getUltimoId(), new Date(Calendar.getInstance().getTimeInMillis()),
+				null, descripcionReclamo, EstadosReclamo.INGRESADO, cliente, new Vector<ItemReclamoCantidad>(), true);
 	}
-	
-	public void agregarProducto(Producto producto, int cantidad){
-		if (cantidad < 1){
-			// QUE HACEMOS??		
+
+	public void agregarProducto(Producto producto, int cantidad) {
+		if (cantidad < 1) {
+			// QUE HACEMOS??
 		}
-		
+
 		ItemReclamoCantidad item = null;
-		for(ItemReclamoCantidad i : items)
+		for (ItemReclamoCantidad i : items)
 			if (i.getProducto().sosProducto(producto.getCodigoProducto()))
 				item = i;
-		
-		if (item == null){
+
+		if (item == null) {
 			item = new ItemReclamoCantidad(cantidad, producto);
 			this.items.add(item);
 			ReclamoCantidadesMapper.getInstancia().insertItemReclamoCantidad(this, item);
-		}else{ //si se llama a agregarProducto de nuevo, se agrega la cantidad al item
+		} else { // si se llama a agregarProducto de nuevo, se agrega la
+					// cantidad al item
 			item.agregarCantidad(cantidad);
 			ReclamoCantidadesMapper.getInstancia().updateItemReclamoCantidad(this, item);
 		}
-				
+
+	}
+
+	public ReclamoDistribucionView getView() {
+		return new ReclamoDistribucionView(this);
 	}
 }

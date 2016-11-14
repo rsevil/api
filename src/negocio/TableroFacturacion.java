@@ -9,6 +9,8 @@ public class TableroFacturacion {
 
 	private static TableroFacturacion instance;
 
+	private Vector<ReclamoFacturacion> reclamos;
+
 	private TableroFacturacion() {
 	}
 
@@ -20,7 +22,7 @@ public class TableroFacturacion {
 	}
 
 	public Vector<ReclamoFacturacionView> getReclamos() {
-		Vector<ReclamoFacturacion> reclamos = ReclamoFacturacionMapper.getInstancia().selectAll(true);
+		this.reclamos = ReclamoFacturacionMapper.getInstancia().selectAll(true);
 		Vector<ReclamoFacturacionView> r = new Vector<ReclamoFacturacionView>();
 		for (ReclamoFacturacion reclamoFacturacion : reclamos) {
 			r.addElement(reclamoFacturacion.getView());

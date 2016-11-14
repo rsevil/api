@@ -1,10 +1,13 @@
 package persistencia;
 
+import java.util.Vector;
+
 import enums.EstadosReclamo;
 import negocio.ReclamoZona;
 
 public class ReclamoZonaMapper extends BaseReclamoMapper<ReclamoZona> {
 
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r AND r.tipoReclamo = ? AND activo = 1";
 	private static ReclamoZonaMapper instance;
 	
 	private ReclamoZonaMapper() {
@@ -68,5 +71,13 @@ public class ReclamoZonaMapper extends BaseReclamoMapper<ReclamoZona> {
 						EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						rs.getString("zonaAfectada")));
+	}
+	
+	public Vector<ReclamoZona> selectAll() {
+		return tryQueryMany(SELECT_ALL, s -> {
+			s.setString(1, tipoReclamo.getSimpleName());
+		} , rs -> new ReclamoZona(rs.getInt("nroReclamo"), rs.getDate("fecha"), rs.getDate("fechaCierre"),
+				rs.getString("descripcionReclamo"), EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
+				ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")), rs.getString("zonaAfectada")));
 	}
 }

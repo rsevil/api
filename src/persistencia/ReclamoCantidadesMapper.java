@@ -7,6 +7,8 @@ import negocio.ItemReclamoCantidad;
 import negocio.ReclamoCantidades;
 
 public class ReclamoCantidadesMapper extends BaseReclamoMapper<ReclamoCantidades> {
+	
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r AND r.tipoReclamo = ? AND activo = 1";
 
 	private static ReclamoCantidadesMapper instance;
 	
@@ -67,6 +69,14 @@ public class ReclamoCantidadesMapper extends BaseReclamoMapper<ReclamoCantidades
 						EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
 						ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")),
 						getItems(id)));
+	}
+	
+	public Vector<ReclamoCantidades> selectAll() {
+		return tryQueryMany(SELECT_ALL, s -> {
+			s.setString(1, tipoReclamo.getSimpleName());
+		} , rs -> new ReclamoCantidades(rs.getInt("nroReclamo"), rs.getDate("fecha"), rs.getDate("fechaCierre"),
+				rs.getString("descripcionReclamo"), EstadosReclamo.getEstadoReclamo(rs.getString("estado")),
+				ClienteMapper.getInstancia().selectOne(rs.getInt("nroCliente")), getItems(rs.getInt("nroReclamo"))));
 	}
 
 	private Vector<ItemReclamoCantidad> getItems(int nroReclamo){

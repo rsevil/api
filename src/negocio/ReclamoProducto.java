@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.Calendar;
 
 import persistencia.ReclamoProductoMapper;
+import vista.ReclamoDistribucionView;
 import enums.EstadosReclamo;
 
 public class ReclamoProducto extends Reclamo {
@@ -71,5 +72,9 @@ public class ReclamoProducto extends Reclamo {
 	
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+	
+	public ReclamoDistribucionView getView() {
+		return new ReclamoDistribucionView(this);
 	}
 }
