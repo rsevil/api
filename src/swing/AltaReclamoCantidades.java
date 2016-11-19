@@ -68,7 +68,7 @@ public class AltaReclamoCantidades extends javax.swing.JFrame {
 						"max(p;5dlu), max(p;5dlu), max(p;5dlu), 115dlu", 
 						"max(p;5dlu), max(p;5dlu), max(p;5dlu), 69dlu, max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)");
 				getContentPane().setLayout(thisLayout);
-				this.setTitle("Ingresar Reclamo de Producto");
+				this.setTitle("Ingresar Reclamo de Cantidades");
 				{
 					lblNroCliente = new JLabel();
 					getContentPane().add(lblNroCliente, new CellConstraints("2, 2, 1, 1, default, default"));
@@ -113,34 +113,33 @@ public class AltaReclamoCantidades extends javax.swing.JFrame {
 								if (!NumeroUtils.isInteger(nroCliente)) {
 									JOptionPane.showMessageDialog(null, "El número de cliente es inválido.");
 								} else if (!NumeroUtils.isInteger(codProducto)) {
-										JOptionPane.showMessageDialog(null, "El número de producto es inválido.");
+										JOptionPane.showMessageDialog(null, "El código de producto es inválido.");
 								} else if (!NumeroUtils.isInteger(cant) || Integer.parseInt(cant) < 1) {
 									JOptionPane.showMessageDialog(null, "La cantidad es inválida.");
 								} else {								
 									//int rdo = SistemaAdministracionReclamos.getInstancia().registrarReclamoProducto(Integer.parseInt(nroCliente), descripcion, Integer.parseInt(codProducto), Integer.parseInt(cant));
 									int rdo = SistemaAdministracionReclamos.getInstancia().registrarReclamoCantidades(Integer.parseInt(nroCliente), descripcion);
 									String mensaje = "";
-									int rdo2= -99;
+									int rdo2 = -99;
 									if (rdo > 0) {
-										rdo2=SistemaAdministracionReclamos.getInstancia().agregarProductoReclamoCantidades(rdo, Integer.parseInt(codProducto), Integer.parseInt(cant));
-										if (rdo2 > 0) {
-											mensaje=mensaje.concat("El reclamo se ha registrado con éxito.");
+										rdo2 = SistemaAdministracionReclamos.getInstancia().agregarProductoReclamoCantidades(rdo, Integer.parseInt(codProducto), Integer.parseInt(cant));
+										if (rdo2 == ExitCodes.OK) {
+											mensaje = mensaje.concat("El reclamo se ha registrado con éxito.");
 											if(compuesto != null){
 												compuesto.registrarReclamo(rdo);
 											}
 										}
 									}
 									
-									
 									if (rdo == ExitCodes.NO_EXISTE_CLIENTE) {
-										mensaje=mensaje.concat("No existe el cliente.\n");
+										mensaje = mensaje.concat("No existe el cliente.\n");
 									}
 									if (rdo2 == ExitCodes.NO_EXISTE_PRODUCTO) {
-										mensaje=mensaje.concat("No existe el producto.");
+										mensaje = mensaje.concat("No existe el producto.");
 									}
 									
 									JOptionPane.showMessageDialog(null, mensaje);
-									if (rdo > 0){
+									if (rdo > 0 && rdo2 == ExitCodes.OK){
 										txtNroCliente.setText("");
 										txtDescripcion.setText("");
 										txtCodigoProducto.setText("");

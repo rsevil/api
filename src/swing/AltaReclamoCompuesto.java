@@ -20,6 +20,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import controlador.SistemaAdministracionReclamos;
 import enums.ExitCodes;
 import utils.NumeroUtils;
+import utils.TextoUtils;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -101,13 +102,23 @@ public class AltaReclamoCompuesto extends javax.swing.JFrame {
 					public void actionPerformed(ActionEvent evt) {
 						String nroCliente = txtNroCliente.getText();
 						String descripcion = txtDescripcion.getText();
-
-						if (reclamosSimplesVector.isEmpty()) {
-							JOptionPane.showMessageDialog(null, "No se puede Crear un reclamo Compuesto sin reclamos!");
+						
+						
+						if (TextoUtils.isNullOrEmpty(nroCliente) ||
+								TextoUtils.isNullOrEmpty(descripcion)) {
+							JOptionPane.showMessageDialog(null, "Por favor, ingrese todos los datos.");
 							return;
 						}
+
 						if (!NumeroUtils.isInteger(nroCliente)) {
 							JOptionPane.showMessageDialog(null, "El número de cliente es inválido.");
+							return;
+						}
+						
+						if (reclamosSimplesVector.isEmpty()) {
+							JOptionPane.showMessageDialog(null, "No se puede crear un reclamo compuesto sin reclamos.");
+						}else if (reclamosSimplesVector.size() < 2) {
+								JOptionPane.showMessageDialog(null, "No se puede crear un reclamo compuesto por un solo reclamo.");
 						} else {
 							int rdo = SistemaAdministracionReclamos.getInstancia()
 									.registrarReclamoCompuesto(Integer.parseInt(nroCliente), descripcion);

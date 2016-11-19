@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import utils.TextoUtils;
 import vista.RolView;
 import controlador.SistemaAdministracionReclamos;
 import enums.ExitCodes;
@@ -100,53 +101,62 @@ public class Login extends javax.swing.JFrame {
 				btnLogin.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) 
 					{
-						int rdo = SistemaAdministracionReclamos.getInstancia().iniciarSesion(txtUsuario.getText(), String.valueOf(txtContrasenia.getPassword()));
-					
-						String mensaje = "";
-						switch(rdo) {
-						case ExitCodes.OK: {
-							mensaje = "Datos correctos. Bienvenido!";	
-							break;
-						}
-						case ExitCodes.DATOS_INGRESO_INCORRECTOS: {
-							mensaje = "El usuario o contraseña es inválido.";	
-							break;
-						}
-						default: {
-							break;
-						}	
-					}
-						JOptionPane.showMessageDialog(null, mensaje);						
-						if (rdo == ExitCodes.OK) {							
-							txtUsuario.setText("");
-							txtContrasenia.setText("");
+						String usuario = txtUsuario.getText();
+						String contrasenia = String.valueOf(txtContrasenia.getPassword());
+								
+						if (!TextoUtils.isNullOrEmpty(usuario) &&
+								!TextoUtils.isNullOrEmpty(contrasenia)) {
 							
-							// Cierro la ventana actual.
-							dispose();
-							
-							RolView rol = SistemaAdministracionReclamos.getInstancia().obtenerRolDelUsuarioLogueado();
-							
-							if (rol != null) {
-						        try {
-						        	// Levanto la ventana según la configuración en la base de datos.
-									Class.forName(rol.getVista()).newInstance();
-								} 
-						        catch (InstantiationException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} 
-						        catch (IllegalAccessException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (ClassNotFoundException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+							int rdo = SistemaAdministracionReclamos.getInstancia().iniciarSesion(usuario, contrasenia);
+						
+							String mensaje = "";
+							switch(rdo) {
+								case ExitCodes.OK: {
+									mensaje = "Datos correctos. Bienvenido!";	
+									break;
+								}
+								case ExitCodes.DATOS_INGRESO_INCORRECTOS: {
+									mensaje = "El usuario o contraseña es inválido.";	
+									break;
+								}
+								default: {
+									break;
 								}	
 							}
+							JOptionPane.showMessageDialog(null, mensaje);						
+							if (rdo == ExitCodes.OK) {							
+								txtUsuario.setText("");
+								txtContrasenia.setText("");
+								
+								// Cierro la ventana actual.
+								dispose();
+								
+								RolView rol = SistemaAdministracionReclamos.getInstancia().obtenerRolDelUsuarioLogueado();
+								
+								if (rol != null) {
+							        try {
+							        	// Levanto la ventana según la configuración en la base de datos.
+										Class.forName(rol.getVista()).newInstance();
+									} 
+							        catch (InstantiationException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} 
+							        catch (IllegalAccessException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} catch (ClassNotFoundException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}	
+								}
+							}
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Por favor, ingrese todos los datos.");
 						}
 					}
-				}
-			);
+				});
 			}
 			getRootPane().setDefaultButton(btnLogin);
 			pack();
