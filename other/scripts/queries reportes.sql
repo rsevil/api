@@ -22,24 +22,28 @@ group by datepart(mm, fecha), datepart(yy, fecha)
 declare @fechaDesde as datetime
 declare @fechaHasta as datetime
 
-set @fechaDesde = '20161009'
-set @fechaHasta = '20161026'
+set @fechaDesde = '20161001'
+set @fechaHasta = '20161201'
 
-select 
-		--r.tipoReclamo,
-		case 
-			when r.tipoReclamo = 'ReclamoFacturacion' then 'facturacion'
-			when r.tipoReclamo = 'ReclamoCantidades' then 'distribucion'
-			when r.tipoReclamo = 'ReclamoFaltantes' then 'distribucion'
-			when r.tipoReclamo = 'ReclamoProducto' then 'distribucion'
-			when r.tipoReclamo = 'ReclamoZona' then 'zona'
-			else '' 
-		end as nombreUsuario,
-		count(*) as cantidad
-from Reclamo r
-where r.fecha between @fechaDesde and @fechaHasta and r.tipoReclamo <> 'ReclamoCompuesto' 
-group by r.tipoReclamo
-order by count(*) desc
+select t.nombreUsuario, sum(t.cantidad) as cantidad
+from
+(
+	select 
+			case 
+				when r.tipoReclamo = 'ReclamoFacturacion' then 'facturacion'
+				when r.tipoReclamo = 'ReclamoCantidades' then 'distribucion'
+				when r.tipoReclamo = 'ReclamoFaltantes' then 'distribucion'
+				when r.tipoReclamo = 'ReclamoProducto' then 'distribucion'
+				when r.tipoReclamo = 'ReclamoZona' then 'zona'
+				else '' 
+			end as nombreUsuario,
+			count(*) as cantidad
+	from Reclamo r
+	where r.fecha between @fechaDesde and @fechaHasta and r.tipoReclamo <> 'ReclamoCompuesto' 
+	group by r.tipoReclamo
+) as t
+group by t.nombreUsuario
+order by cantidad desc
 
 
 /* Reporte 4: tiempo promedio de respuesta de los reclamos por responsable */

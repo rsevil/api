@@ -29,7 +29,7 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 			+ "datepart(yy, fecha) as anio, " + "count(*) as cantidad " + "from Reclamo "
 			+ "group by datepart(mm, fecha), datepart(yy, fecha)";
 
-	private static final String REPORTE_RANKING_TRATAMIENTO_RECLAMOS = "select " + "case "
+	/*private static final String REPORTE_RANKING_TRATAMIENTO_RECLAMOS = "select " + "case "
 			+ "when r.tipoReclamo = 'ReclamoFacturacion' then 'facturacion' "
 			+ "when r.tipoReclamo = 'ReclamoCantidades' then 'distribucion' "
 			+ "when r.tipoReclamo = 'ReclamoFaltantes' then 'distribucion' "
@@ -37,7 +37,27 @@ public class ReclamoMapper extends BaseReclamoMapper<Reclamo> {
 			+ "when r.tipoReclamo = 'ReclamoZona' then 'zona' " + "else '' " + "end as nombreUsuario, "
 			+ "count(*) as cantidad " + "from Reclamo r "
 			+ "where r.fecha between ? and ? and r.tipoReclamo <> 'ReclamoCompuesto' " + "group by r.tipoReclamo "
-			+ "order by count(*) desc";
+			+ "order by count(*) desc";*/
+
+	private static final String REPORTE_RANKING_TRATAMIENTO_RECLAMOS = "select t.nombreUsuario, sum(t.cantidad) as cantidad "
+			+ "from "
+			+ "( "
+			+ "select " 
+			+ "case "
+			+ "when r.tipoReclamo = 'ReclamoFacturacion' then 'facturacion' "
+			+ "when r.tipoReclamo = 'ReclamoCantidades' then 'distribucion' "
+			+ "when r.tipoReclamo = 'ReclamoFaltantes' then 'distribucion' "
+			+ "when r.tipoReclamo = 'ReclamoProducto' then 'distribucion' "
+			+ "when r.tipoReclamo = 'ReclamoZona' then 'zona' "
+			+ "else ''  "
+			+ "end as nombreUsuario, "
+			+ "count(*) as cantidad "
+			+ "from Reclamo r "
+			+ "where r.fecha between ? and ? and r.tipoReclamo <> 'ReclamoCompuesto' "
+			+ "group by r.tipoReclamo "
+			+ ") as t "
+			+ "group by t.nombreUsuario "
+			+ "order by cantidad desc ";
 
 	private static final String REPORTE_TIEMPO_PROMEDIO_RESPUESTA = "select " + "case "
 			+ "when r.tipoReclamo = 'ReclamoFacturacion' then 'facturacion' "
