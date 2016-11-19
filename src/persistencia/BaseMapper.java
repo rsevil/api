@@ -10,7 +10,7 @@ import utils.Func2;
 
 public abstract class BaseMapper
 {	
-	private boolean mostrarExcepciones = true;
+	private boolean mostrarExcepciones = false;
 	
 	protected void tryCommand(String command, Action<PreparedStatement> config) {
 		try {
@@ -56,13 +56,13 @@ public abstract class BaseMapper
 	}
 	
 	protected <TReturn> Vector<TReturn> tryQueryMany(String query, Action<PreparedStatement> config, Func2<ResultSet, TReturn> fn){
+		Vector<TReturn> o = new Vector<TReturn>();
 		try {
 			Connection c = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = c.prepareStatement(query);
 			if (config != null)
 				config.apply(s);
 			ResultSet rs = s.executeQuery();
-			Vector<TReturn> o = new Vector<TReturn>();
 			while (rs.next()){
 				o.add(fn.apply(rs));				
 			}
@@ -76,6 +76,6 @@ public abstract class BaseMapper
 				e.printStackTrace();
 			}
 		}
-		return null;
+		return o;
 	}
 }

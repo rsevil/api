@@ -16,6 +16,9 @@ public class TableroZona {
 	}
 
 	public static TableroZona getInstance() {
+		if (instance == null) {
+			instance = new TableroZona();
+		}
 		return instance;
 	}
 

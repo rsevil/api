@@ -7,7 +7,7 @@ import negocio.ReclamoZona;
 
 public class ReclamoZonaMapper extends BaseReclamoMapper<ReclamoZona> {
 
-	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r AND r.tipoReclamo = ? AND activo = 1";
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r WHERE r.tipoReclamo = ? AND activo = 1";
 	private static ReclamoZonaMapper instance;
 	
 	private ReclamoZonaMapper() {
