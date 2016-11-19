@@ -9,7 +9,9 @@ public class ReclamoProductoMapper extends BaseReclamoMapper<ReclamoProducto> {
 
 	private static ReclamoProductoMapper instance;
 	
-	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r AND r.tipoReclamo = ? AND activo = 1";
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r WHERE r.tipoReclamo = ? AND activo = 1";
+	
+	private static final String SELECT_ALL_NOT_RESOLVED = SELECT_ALL + " AND (estado <> 'Solucionado' AND estado <> 'Cerrado')";
 	
 	private ReclamoProductoMapper() {
 		super(ReclamoProducto.class);
@@ -80,8 +82,12 @@ public class ReclamoProductoMapper extends BaseReclamoMapper<ReclamoProducto> {
 						ProductoMapper.getInstancia().selectOne(rs.getInt("codigoProducto"))));
 	}
 	
-	public Vector<ReclamoProducto> selectAll() {
-		return tryQueryMany(SELECT_ALL, s -> {
+	public Vector<ReclamoProducto> selectAll(boolean noSolucionados) {
+		String query = SELECT_ALL;
+		if(noSolucionados){
+			query = SELECT_ALL_NOT_RESOLVED;
+		}
+		return tryQueryMany(query, s -> {
 			s.setString(1, tipoReclamo.getSimpleName());
 		} , rs -> new ReclamoProducto(rs.getInt("nroReclamo"), rs.getDate("fecha"), rs.getDate("fechaCierre"),
 				rs.getString("descripcionReclamo"), EstadosReclamo.getEstadoReclamo(rs.getString("estado")),

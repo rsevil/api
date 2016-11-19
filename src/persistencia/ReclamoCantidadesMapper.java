@@ -8,7 +8,9 @@ import negocio.ReclamoCantidades;
 
 public class ReclamoCantidadesMapper extends BaseReclamoMapper<ReclamoCantidades> {
 	
-	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r AND r.tipoReclamo = ? AND activo = 1";
+	private static final String SELECT_ALL = "SELECT * FROM dbo.Reclamo r WHERE r.tipoReclamo = ? AND activo = 1";
+	
+	private static final String SELECT_ALL_NOT_RESOLVED = SELECT_ALL + " AND (estado <> 'Solucionado' AND estado <> 'Cerrado')";
 
 	private static ReclamoCantidadesMapper instance;
 	
@@ -71,8 +73,12 @@ public class ReclamoCantidadesMapper extends BaseReclamoMapper<ReclamoCantidades
 						getItems(id)));
 	}
 	
-	public Vector<ReclamoCantidades> selectAll() {
-		return tryQueryMany(SELECT_ALL, s -> {
+	public Vector<ReclamoCantidades> selectAll(boolean noSolucionados) {
+		String query = SELECT_ALL;
+		if(noSolucionados){
+			query = SELECT_ALL_NOT_RESOLVED;
+		}
+		return tryQueryMany(query, s -> {
 			s.setString(1, tipoReclamo.getSimpleName());
 		} , rs -> new ReclamoCantidades(rs.getInt("nroReclamo"), rs.getDate("fecha"), rs.getDate("fechaCierre"),
 				rs.getString("descripcionReclamo"), EstadosReclamo.getEstadoReclamo(rs.getString("estado")),

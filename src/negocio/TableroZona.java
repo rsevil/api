@@ -23,7 +23,7 @@ public class TableroZona {
 	}
 
 	public Vector<ReclamoZonaView> getReclamos() {
-		this.reclamos = ReclamoZonaMapper.getInstancia().selectAll();
+		this.reclamos = ReclamoZonaMapper.getInstancia().selectAll(true);
 		Vector<ReclamoZonaView> views = new Vector<ReclamoZonaView>();
 		for (ReclamoZona reclamoZona : reclamos) {
 			views.addElement(reclamoZona.getView());

@@ -24,6 +24,8 @@ public class ReclamoDistribucionView {
 	private String estado;
 
 	private String cliente;
+	
+	private String tipo;
 
 	/**
 	 * TODO
@@ -36,7 +38,7 @@ public class ReclamoDistribucionView {
 	 * Productos
 	 */
 
-	private int cantidadProductos;
+	private String cantidadProductos;
 
 	private String producto;
 
@@ -44,7 +46,7 @@ public class ReclamoDistribucionView {
 	 * Faltantes
 	 */
 
-	private int cantidadFaltante;
+	private String cantidadFaltante;
 
 	private String productoFaltante;
 
@@ -55,13 +57,13 @@ public class ReclamoDistribucionView {
 
 	public ReclamoDistribucionView(final ReclamoProducto reclamo) {
 		this((Reclamo) reclamo);
-		this.cantidadProductos = reclamo.getCantidad();
+		this.cantidadProductos = String.valueOf(reclamo.getCantidad());
 		this.producto = reclamo.getProducto().getTitulo();
 	}
 
 	public ReclamoDistribucionView(final ReclamoFaltantes reclamo) {
 		this((Reclamo) reclamo);
-		this.cantidadFaltante = reclamo.getCantFaltante();
+		this.cantidadFaltante = String.valueOf(reclamo.getCantFaltante());
 		this.productoFaltante = reclamo.getProducto().getTitulo();
 	}
 
@@ -76,6 +78,11 @@ public class ReclamoDistribucionView {
 		this.descripcionReclamo = reclamo.getDescripcionReclamo();
 		this.estado = reclamo.getEstado();
 		this.cliente = reclamo.getCliente().getNombre();
+		this.producto = "-";
+		this.cantidadProductos = "-";
+		this.productoFaltante = "-";
+		this.cantidadFaltante = "-";
+		this.tipo = reclamo.getClass().getSimpleName();
 	}
 
 	public int getNroReclamo() {
@@ -114,7 +121,7 @@ public class ReclamoDistribucionView {
 		return items;
 	}
 
-	public int getCantidadProductos() {
+	public String getCantidadProductos() {
 		return cantidadProductos;
 	}
 
@@ -122,11 +129,15 @@ public class ReclamoDistribucionView {
 		return producto;
 	}
 
-	public int getCantidadFaltante() {
+	public String getCantidadFaltante() {
 		return cantidadFaltante;
 	}
 
 	public String getProductoFaltante() {
 		return productoFaltante;
+	}
+
+	public String getTipo() {
+		return tipo;
 	}
 }
