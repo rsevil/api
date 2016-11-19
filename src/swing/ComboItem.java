@@ -25,6 +25,11 @@ public class ComboItem<V, L> {
 	{
 		@SuppressWarnings("unchecked")
 		ComboItem<V, L> item = (ComboItem<V, L>)object;
-		return this.value.equals(item.getValue());
+		if (item != null && this.value != null) {
+			return this.value.equals(item.getValue());
+		}
+		else {
+			return false;
+		}
 	}
 }
