@@ -51,7 +51,7 @@ public class MenuPrincipalAdmin extends javax.swing.JFrame {
 				});
 			}
 			pack();
-			setSize(400, 300);
+			this.setSize(430, 117);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

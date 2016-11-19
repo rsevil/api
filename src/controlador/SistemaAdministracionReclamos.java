@@ -2,7 +2,6 @@ package controlador;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Observer;
 import java.util.Vector;
 import java.util.function.Function;
 
@@ -110,18 +109,11 @@ public class SistemaAdministracionReclamos {
 		return ExitCodes.OK;
 	}
 
-	public void addObserver(Observer o) {
-
+	public UsuarioView obtenerUsuario(int id) {
+		Usuario usuario = UsuarioMapper.getInstancia().selectById(id);
+		return usuario.getView();
 	}
-
-	public void removeObserver(Observer o) {
-
-	}
-
-	public void notifyAll(Usuario u) {
-
-	}
-
+	
 	public int registrarReclamoProducto(int nroCliente, String descripcion, int codProducto, int cant) {
 		Cliente cliente = this.buscarCliente(nroCliente);
 

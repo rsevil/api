@@ -75,20 +75,7 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				lblRol.setText("Rol");
 			}
 			{
-				this.usuariosView = SistemaAdministracionReclamos.getInstancia().listarUsuarios();
-				Vector<ComboItem<Integer, String>> itemsUsuarios;
-				cmbUsuario = new JComboBox<ComboItem<Integer, String>>();
-				if (usuariosView != null && usuariosView.size() > 0) {
-					itemsUsuarios =  new Vector<ComboItem<Integer, String>>();
-					itemsUsuarios.add(new ComboItem<Integer, String>(0, "Seleccione...")); 
-					for (UsuarioView uv : usuariosView) {
-						itemsUsuarios.add(new ComboItem<Integer, String>(uv.getId(), uv.getNombre()));
-					}
-					
-					cmbUsuario = new JComboBox<ComboItem<Integer, String>>(itemsUsuarios);
-				} else {
-					cmbUsuario = new JComboBox<ComboItem<Integer, String>>();
-				}
+				this.cargarComboUsuarios();
 				
 				getContentPane().add(cmbUsuario, new CellConstraints("4, 2, 1, 1, default, default"));
 				
@@ -122,20 +109,7 @@ public class AdministrarRoles extends javax.swing.JFrame {
 				});
 			}
 			{
-				this.rolesView = SistemaAdministracionReclamos.getInstancia().listarRoles();
-				Vector<ComboItem<Integer, String>> itemsRoles;
-				cmbRol = new JComboBox<ComboItem<Integer, String>>();
-				if (rolesView  != null && rolesView.size() > 0) {
-					itemsRoles =  new Vector<ComboItem<Integer, String>>();
-					itemsRoles.add(new ComboItem<Integer, String>(0, "Seleccione...")); 
-					for (RolView rv : rolesView) {
-						itemsRoles.add(new ComboItem<Integer, String>(rv.getId(), rv.getDescripcion()));
-					}
-					
-					cmbRol = new JComboBox<ComboItem<Integer, String>>(itemsRoles);
-				} else {
-					cmbRol = new JComboBox<ComboItem<Integer, String>>();
-				}
+				this.cargarComboRoles();
 				
 				getContentPane().add(cmbRol, new CellConstraints("4, 4, 1, 1, default, default"));
 			}
@@ -187,4 +161,37 @@ public class AdministrarRoles extends javax.swing.JFrame {
 		}
 	}
 
+	private void cargarComboRoles() {
+		this.rolesView = SistemaAdministracionReclamos.getInstancia().listarRoles();
+		Vector<ComboItem<Integer, String>> itemsRoles;
+		cmbRol = new JComboBox<ComboItem<Integer, String>>();
+		if (rolesView  != null && rolesView.size() > 0) {
+			itemsRoles =  new Vector<ComboItem<Integer, String>>();
+			itemsRoles.add(new ComboItem<Integer, String>(0, "Seleccione...")); 
+			for (RolView rv : rolesView) {
+				itemsRoles.add(new ComboItem<Integer, String>(rv.getId(), rv.getDescripcion()));
+			}
+			
+			cmbRol = new JComboBox<ComboItem<Integer, String>>(itemsRoles);
+		} else {
+			cmbRol = new JComboBox<ComboItem<Integer, String>>();
+		}
+	}
+
+	private void cargarComboUsuarios() {
+		this.usuariosView = SistemaAdministracionReclamos.getInstancia().listarUsuarios();
+		Vector<ComboItem<Integer, String>> itemsUsuarios;
+		cmbUsuario = new JComboBox<ComboItem<Integer, String>>();
+		if (usuariosView != null && usuariosView.size() > 0) {
+			itemsUsuarios =  new Vector<ComboItem<Integer, String>>();
+			itemsUsuarios.add(new ComboItem<Integer, String>(0, "Seleccione...")); 
+			for (UsuarioView uv : usuariosView) {
+				itemsUsuarios.add(new ComboItem<Integer, String>(uv.getId(), uv.getNombre()));
+			}
+			
+			cmbUsuario = new JComboBox<ComboItem<Integer, String>>(itemsUsuarios);
+		} else {
+			cmbUsuario = new JComboBox<ComboItem<Integer, String>>();
+		}
+	}
 }
